@@ -20,17 +20,17 @@
     var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="title: Dell工作站CentOS装机及深度学习环境配置date: 2020-06-07 11:10:46tags: 装机 Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen(R) E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文">
+  <meta name="description" content="Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen(R) E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文章将分为以下几部分介绍：  CentOS7系统安装； 显卡驱动、CUDA Toolkit以及cuDNN安装； 深度学习环境配置，诸">
 <meta property="og:type" content="article">
-<meta property="og:title" content="工作站装机及深度学习环境配置">
+<meta property="og:title" content="Dell工作站CentOS装机及深度学习环境配置">
 <meta property="og:url" content="http://yoursite.com/2020/06/07/%E5%B7%A5%E4%BD%9C%E7%AB%99%E8%A3%85%E6%9C%BA%E5%8F%8A%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/index.html">
 <meta property="og:site_name" content="GeophyAI">
-<meta property="og:description" content="title: Dell工作站CentOS装机及深度学习环境配置date: 2020-06-07 11:10:46tags: 装机 Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen(R) E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文">
+<meta property="og:description" content="Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen(R) E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文章将分为以下几部分介绍：  CentOS7系统安装； 显卡驱动、CUDA Toolkit以及cuDNN安装； 深度学习环境配置，诸">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-07T12:42:53.956Z">
-<meta property="article:modified_time" content="2020-06-07T12:42:53.956Z">
+<meta property="article:published_time" content="2020-06-07T03:10:46.000Z">
+<meta property="article:modified_time" content="2020-06-07T12:50:06.520Z">
 <meta property="article:author" content="shaowinw">
-<meta property="article:tag" content="AI;data-processing">
+<meta property="article:tag" content="装机">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://yoursite.com/2020/06/07/%E5%B7%A5%E4%BD%9C%E7%AB%99%E8%A3%85%E6%9C%BA%E5%8F%8A%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE/">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>工作站装机及深度学习环境配置 | GeophyAI</title>
+  <title>Dell工作站CentOS装机及深度学习环境配置 | GeophyAI</title>
   
 
 
@@ -165,7 +165,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          工作站装机及深度学习环境配置
+          Dell工作站CentOS装机及深度学习环境配置
         </h1>
 
         <div class="post-meta">
@@ -174,8 +174,9 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2020-06-07 20:42:53" itemprop="dateCreated datePublished" datetime="2020-06-07T20:42:53+08:00">2020-06-07</time>
+              <time title="创建时间：2020-06-07 11:10:46 / 修改时间：20:50:06" itemprop="dateCreated datePublished" datetime="2020-06-07T11:10:46+08:00">2020-06-07</time>
             </span>
 
           
@@ -203,16 +204,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>title: Dell工作站CentOS装机及深度学习环境配置<br>date: 2020-06-07 11:10:46<br>tags: 装机</p>
-<h1 id="Centos安装及深度学习环境配置"><a href="#Centos安装及深度学习环境配置" class="headerlink" title="Centos安装及深度学习环境配置"></a>Centos安装及深度学习环境配置</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本次装机的工作站型号为Dell Precision T3630，搭载有<strong>Intel(R)Xoen(R) E2286G</strong>处理器（6核心/12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及<strong>RTX2080Ti</strong>显卡一张（单涡轮）。文章将分为以下几部分介绍：</p>
+        <h1 id="Centos安装及深度学习环境配置"><a href="#Centos安装及深度学习环境配置" class="headerlink" title="Centos安装及深度学习环境配置"></a>Centos安装及深度学习环境配置</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本次装机的工作站型号为Dell Precision T3630，搭载有<strong>Intel(R)Xoen(R) E2286G</strong>处理器（6核心/12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及<strong>RTX2080Ti</strong>显卡一张（单涡轮）。文章将分为以下几部分介绍：</p>
 <ol>
 <li><strong>CentOS7</strong>系统安装；</li>
 <li>显卡驱动、<strong>CUDA Toolkit</strong>以及<strong>cuDNN</strong>安装；</li>
 <li>深度学习环境配置，诸如常用的框架Tensorflow、Keras等；</li>
 </ol>
 <p><em>需要注意的是除系统iso文件外，其他所有安装包作者均在安装完的系统内部下载的（主机插了网线，下载速度比较快，卧室离路由器太远收不到5GHz的信号，2.5GHz下载实在是太慢了）</em>，如果没有有线网络的小伙伴可以考虑将手机接到主机上联网下载，而且这台工作站支持Type-c接口哦。</p>
-<h2 id="CentOS7系统安装"><a href="#CentOS7系统安装" class="headerlink" title="CentOS7系统安装"></a>CentOS7系统安装</h2><p><em>准备工作</em>：一个6G及以上内存的U盘（用于镜像文件的制作，CentOS7安装文件大小为4.8G），一个U盘启动制作工具以及CentOS-7-x86_64-xxx.iso镜像文件一个。<br>U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">UltraISO</a>，镜像文件使用国内的<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/" target="_blank" rel="noopener">阿里云源</a>下载，作者安装的是DVD版本（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" target="_blank" rel="noopener">CentOS-7-x86_64-DVD-2003.iso</a>），文件大小为4.5G，此安装包内能够满足一般用户的需求，并且在安装过程中可以根据实际需要对packages进行选择。选择此版本的原因是保持与实验室工作站环境的一致性，尽量减少代码移植过程中出现的问题（但人工智能的代码的可移植性是比较差的，其主要与<em>Tensorflow</em>、<em>Keras</em>等框架的版本相关）。</p>
-<h2 id="CentOS7-64bit系统安装"><a href="#CentOS7-64bit系统安装" class="headerlink" title="CentOS7-64bit系统安装"></a>CentOS7-64bit系统安装</h2><h4 id="U盘启动制作"><a href="#U盘启动制作" class="headerlink" title="U盘启动制作"></a>U盘启动制作</h4><ol>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p><em>准备工作</em>：一个6G及以上内存的U盘（用于镜像文件的制作，CentOS7安装文件大小为4.8G），一个U盘启动制作工具以及CentOS-7-x86_64-xxx.iso镜像文件一个。<br>U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">UltraISO</a>，镜像文件使用国内的<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/" target="_blank" rel="noopener">阿里云源</a>下载，作者安装的是DVD版本（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" target="_blank" rel="noopener">CentOS-7-x86_64-DVD-2003.iso</a>），文件大小为4.5G，此安装包内能够满足一般用户的需求，并且在安装过程中可以根据实际需要对packages进行选择。选择此版本的原因是保持与实验室工作站环境的一致性，尽量减少代码移植过程中出现的问题（但人工智能的代码的可移植性是比较差的，其主要与<em>Tensorflow</em>、<em>Keras</em>等框架的版本相关）。</p>
+<h3 id="CentOS7-64bit系统安装"><a href="#CentOS7-64bit系统安装" class="headerlink" title="CentOS7-64bit系统安装"></a>CentOS7-64bit系统安装</h3><h4 id="U盘启动制作"><a href="#U盘启动制作" class="headerlink" title="U盘启动制作"></a>U盘启动制作</h4><ol>
 <li>下载并安装UltraISO（<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">下载地址</a>）；</li>
 <li>下载CentosOS-7镜像文件（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/" target="_blank" rel="noopener">下载地址</a>），选择DVD版本（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" target="_blank" rel="noopener">CentOS-7-x86_64-DVD-2003.iso</a>）；</li>
 <li>备用电脑中插入U盘（制作启动U盘需要将其格式化，所以先要备份好U盘中的原始数据）；</li>
@@ -232,17 +232,20 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E8%A3%85%E6%9C%BA/" rel="tag"># 装机</a>
+          </div>
 
         
 
 
         
     <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/2020/06/07/install_cuda/" rel="prev" title="Hello CUDA and cnDNN">
-      <i class="fa fa-chevron-left"></i> Hello CUDA and cnDNN
-    </a></div>
       <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/07/install_cuda/" rel="next" title="Hello CUDA and cnDNN">
+      Hello CUDA and cnDNN <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -302,7 +305,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos安装及深度学习环境配置"><span class="nav-number">1.</span> <span class="nav-text">Centos安装及深度学习环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7系统安装"><span class="nav-number">1.2.</span> <span class="nav-text">CentOS7系统安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-64bit系统安装"><span class="nav-number">1.3.</span> <span class="nav-text">CentOS7-64bit系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#U盘启动制作"><span class="nav-number">1.3.0.1.</span> <span class="nav-text">U盘启动制作</span></a></li></ol></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos安装及深度学习环境配置"><span class="nav-number">1.</span> <span class="nav-text">Centos安装及深度学习环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#CentOS7-64bit系统安装"><span class="nav-number">1.2.1.</span> <span class="nav-text">CentOS7-64bit系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#U盘启动制作"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">U盘启动制作</span></a></li></ol></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -319,6 +322,10 @@
           <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
       </div>
   </nav>
 </div>
