@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/u_modify.png">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/grub.png">
 <meta property="article:published_time" content="2020-06-07T03:10:46.000Z">
-<meta property="article:modified_time" content="2020-06-07T14:11:53.118Z">
+<meta property="article:modified_time" content="2020-06-07T14:15:32.720Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="装机">
 <meta name="twitter:card" content="summary">
@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-07 11:10:46 / 修改时间：22:11:53" itemprop="dateCreated datePublished" datetime="2020-06-07T11:10:46+08:00">2020-06-07</time>
+              <time title="创建时间：2020-06-07 11:10:46 / 修改时间：22:15:32" itemprop="dateCreated datePublished" datetime="2020-06-07T11:10:46+08:00">2020-06-07</time>
             </span>
 
           
@@ -221,29 +221,16 @@
 <p><em>需要注意的是除系统iso文件外，其他所有安装包作者均在安装完的系统内部下载的（主机插了网线，下载速度比较快，卧室离路由器太远收不到5GHz的信号，2.5GHz下载实在是太慢了）</em>，如果没有有线网络的小伙伴可以考虑将手机接到主机上联网下载，而且这台工作站支持Type-c接口哦。</p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p><em>准备工作</em>：一个6G及以上内存的U盘（用于镜像文件的制作，CentOS7安装文件大小为4.8G），一个U盘启动制作工具以及CentOS-7-x86_64-xxx.iso镜像文件一个。<br>U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">UltraISO</a>，镜像文件使用国内的<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/" target="_blank" rel="noopener">阿里云源</a>下载，作者安装的是DVD版本（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" target="_blank" rel="noopener">CentOS-7-x86_64-DVD-2003.iso</a>），文件大小为4.5G，此安装包内能够满足一般用户的需求，并且在安装过程中可以根据实际需要对packages进行选择。选择此版本的原因是保持与实验室工作站环境的一致性，尽量减少代码移植过程中出现的问题（但人工智能的代码的可移植性是比较差的，其主要与<em>Tensorflow</em>、<em>Keras</em>等框架的版本相关）。</p>
 <h2 id="CentOS7-64bit系统安装"><a href="#CentOS7-64bit系统安装" class="headerlink" title="CentOS7-64bit系统安装"></a>CentOS7-64bit系统安装</h2><h3 id="U盘启动制作"><a href="#U盘启动制作" class="headerlink" title="U盘启动制作"></a>U盘启动制作</h3><ol>
-<li><p>下载并安装UltraISO（<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">下载地址</a>）；</p>
-</li>
-<li><p>下载CentosOS-7镜像文件（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/" target="_blank" rel="noopener">下载地址</a>），选择DVD版本（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" target="_blank" rel="noopener">CentOS-7-x86_64-DVD-2003.iso</a>）；</p>
-</li>
-<li><p>备用电脑中插入U盘（制作启动U盘需要将其格式化，所以先要备份好U盘中的原始数据）；</p>
-</li>
-<li><p>打开UltraISO程序—<strong>继续试用</strong>；<br><img src="/2020/06/07/installation/ultraiso_enter.png" alt="UltraISO"></p>
-</li>
-<li><p>单击左上角<strong>文件</strong>—<strong>打开</strong>；<br><img src="/2020/06/07/installation/ultraiso_open.png" alt="UltraISOstart"></p>
-</li>
-<li><p>选择下载好的iso文件；<br><img src="/2020/06/07/installation/ultraiso_select.png" alt="SelectISO"></p>
-</li>
-<li><p><strong>启动</strong>—<strong>写入硬盘映像</strong><br><img src="/2020/06/07/installation/ultraiso_start.png" alt="WriteSelect"></p>
-</li>
-<li><p>在<strong>硬盘驱动器</strong>一栏选择自己的U盘，其他设置保持默认，然后单击<strong>写入</strong>开始U盘启动制作过程；<br><img src="/2020/06/07/installation/ultraiso_write.png" alt="WriteToUdisk"></p>
-</li>
-<li><p>写入完成后我们可以看到U盘盘符的名字有些奇怪(UltraISO软件问题，使用其他U盘启动制作工具可能会解决该问题)，如果直接用它安装系统会出现错误，这时我们要修改U盘的盘符(U盘处右键—属性)为引号内的内容“ <strong>CENTOS7</strong> ”（必须为大写）；<br><img src="/2020/06/07/installation/u_modify.png" alt="ModifyU"></p>
-</li>
-<li><p>然后进入<em>U盘/EFI/BOOT</em>，在目录中找到grub.cfg文件并打开，将其中所有的 <strong>CentOS\x207\x20x86_64</strong> 替换为 <strong>CENTOS7</strong>（与U盘盘符保持一致），这样启动盘就制作完成了。<br><img src="/2020/06/07/installation/grub.png" alt="Grub"></p>
-<h3 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h3><p>作者使用的主机没有预装系统，决定只安装<strong>CentOS7</strong>供科研使用，具体安装步骤如下。</p>
-</li>
-<li><p>打开主机，在屏幕显示 <strong>Dell</strong> 图标后按 <strong>F2</strong> 进入 BIOS 设置界面</p>
-</li>
+<li>下载并安装UltraISO（<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">下载地址</a>）；</li>
+<li>下载CentosOS-7镜像文件（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/" target="_blank" rel="noopener">下载地址</a>），选择DVD版本（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" target="_blank" rel="noopener">CentOS-7-x86_64-DVD-2003.iso</a>）；</li>
+<li>备用电脑中插入U盘（制作启动U盘需要将其格式化，所以先要备份好U盘中的原始数据）；</li>
+<li>打开UltraISO程序—<strong>继续试用</strong>；<br><img src="/2020/06/07/installation/ultraiso_enter.png" alt="UltraISO"></li>
+<li>单击左上角<strong>文件</strong>—<strong>打开</strong>；<br><img src="/2020/06/07/installation/ultraiso_open.png" alt="UltraISOstart"></li>
+<li>选择下载好的iso文件；<br><img src="/2020/06/07/installation/ultraiso_select.png" alt="SelectISO"></li>
+<li><strong>启动</strong>—<strong>写入硬盘映像</strong><br><img src="/2020/06/07/installation/ultraiso_start.png" alt="WriteSelect"></li>
+<li>在<strong>硬盘驱动器</strong>一栏选择自己的U盘，其他设置保持默认，然后单击<strong>写入</strong>开始U盘启动制作过程；<br><img src="/2020/06/07/installation/ultraiso_write.png" alt="WriteToUdisk"></li>
+<li>写入完成后我们可以看到U盘盘符的名字有些奇怪(UltraISO软件问题，使用其他U盘启动制作工具可能会解决该问题)，如果直接用它安装系统会出现错误，这时我们要修改U盘的盘符(U盘处右键—属性)为引号内的内容“ <strong>CENTOS7</strong> ”（必须为大写）；<br><img src="/2020/06/07/installation/u_modify.png" alt="ModifyU"></li>
+<li>然后进入<em>U盘/EFI/BOOT</em>，在目录中找到grub.cfg文件并打开，将其中所有的 <strong>CentOS\x207\x20x86_64</strong> 替换为 <strong>CENTOS7</strong>（与U盘盘符保持一致），这样启动盘就制作完成了。<br><img src="/2020/06/07/installation/grub.png" alt="Grub"></li>
 </ol>
 
     </div>
@@ -326,7 +313,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos安装及深度学习环境配置"><span class="nav-number">1.</span> <span class="nav-text">Centos安装及深度学习环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-64bit系统安装"><span class="nav-number">1.3.</span> <span class="nav-text">CentOS7-64bit系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘启动制作"><span class="nav-number">1.3.1.</span> <span class="nav-text">U盘启动制作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统安装"><span class="nav-number">1.3.2.</span> <span class="nav-text">系统安装</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos安装及深度学习环境配置"><span class="nav-number">1.</span> <span class="nav-text">Centos安装及深度学习环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-64bit系统安装"><span class="nav-number">1.3.</span> <span class="nav-text">CentOS7-64bit系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘启动制作"><span class="nav-number">1.3.1.</span> <span class="nav-text">U盘启动制作</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
