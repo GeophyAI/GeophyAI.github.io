@@ -17,25 +17,25 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"geophyai.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen(R) E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文章将分为以下几部分介绍：  CentOS7系统安装； 显卡驱动、CUDA Toolkit以及cuDNN安装； 深度学习环境配置，诸">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dell工作站CentOS装机及深度学习环境配置">
-<meta property="og:url" content="http://yoursite.com/2020/06/07/installation/index.html">
+<meta property="og:url" content="http://geophyai.github.io/2020/06/07/installation/index.html">
 <meta property="og:site_name" content="GeophyAI">
 <meta property="og:description" content="Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen(R) E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文章将分为以下几部分介绍：  CentOS7系统安装； 显卡驱动、CUDA Toolkit以及cuDNN安装； 深度学习环境配置，诸">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://yoursite.com/.com//ultraiso_enter.png">
+<meta property="og:image" content="http://geophyai.github.io/.io//ultraiso_enter.png">
 <meta property="article:published_time" content="2020-06-07T03:10:46.000Z">
 <meta property="article:modified_time" content="2020-06-07T13:29:06.379Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="装机">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://yoursite.com/.com//ultraiso_enter.png">
+<meta name="twitter:image" content="http://geophyai.github.io/.io//ultraiso_enter.png">
 
-<link rel="canonical" href="http://yoursite.com/2020/06/07/installation/">
+<link rel="canonical" href="http://geophyai.github.io/2020/06/07/installation/">
 
 
 <script id="page-configurations">
@@ -154,7 +154,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/07/installation/">
+    <link itemprop="mainEntityOfPage" href="http://geophyai.github.io/2020/06/07/installation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -218,7 +218,7 @@
 <li>下载并安装UltraISO（<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">下载地址</a>）；</li>
 <li>下载CentosOS-7镜像文件（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/" target="_blank" rel="noopener">下载地址</a>），选择DVD版本（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" target="_blank" rel="noopener">CentOS-7-x86_64-DVD-2003.iso</a>）；</li>
 <li>备用电脑中插入U盘（制作启动U盘需要将其格式化，所以先要备份好U盘中的原始数据）；</li>
-<li>打开UltraISO程序—<strong>继续试用</strong>；<br><img src="/.com//ultraiso_enter.png" alt="UltraISO"></li>
+<li>打开UltraISO程序—<strong>继续试用</strong>；<br><img src="/.io//ultraiso_enter.png" alt="UltraISO"></li>
 <li>单击左上角<strong>文件</strong>—<strong>打开</strong>；</li>
 <li>选择下载好的iso文件；</li>
 <li><strong>启动</strong>—<strong>写入硬盘映像</strong></li>
