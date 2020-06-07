@@ -34,8 +34,14 @@
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_write.png">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/u_modify.png">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/grub.png">
+<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/boot.png">
+<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/uefi.png">
+<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ahci.png">
+<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/f10.png">
+<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/install_centos7.jpg">
+<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/selection.jpg">
 <meta property="article:published_time" content="2020-06-07T03:10:46.000Z">
-<meta property="article:modified_time" content="2020-06-07T14:15:32.720Z">
+<meta property="article:modified_time" content="2020-06-07T15:31:34.787Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="装机">
 <meta name="twitter:card" content="summary">
@@ -184,7 +190,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-07 11:10:46 / 修改时间：22:15:32" itemprop="dateCreated datePublished" datetime="2020-06-07T11:10:46+08:00">2020-06-07</time>
+              <time title="创建时间：2020-06-07 11:10:46 / 修改时间：23:31:34" itemprop="dateCreated datePublished" datetime="2020-06-07T11:10:46+08:00">2020-06-07</time>
             </span>
 
           
@@ -231,6 +237,19 @@
 <li>在<strong>硬盘驱动器</strong>一栏选择自己的U盘，其他设置保持默认，然后单击<strong>写入</strong>开始U盘启动制作过程；<br><img src="/2020/06/07/installation/ultraiso_write.png" alt="WriteToUdisk"></li>
 <li>写入完成后我们可以看到U盘盘符的名字有些奇怪(UltraISO软件问题，使用其他U盘启动制作工具可能会解决该问题)，如果直接用它安装系统会出现错误，这时我们要修改U盘的盘符(U盘处右键—属性)为引号内的内容“ <strong>CENTOS7</strong> ”（必须为大写）；<br><img src="/2020/06/07/installation/u_modify.png" alt="ModifyU"></li>
 <li>然后进入<em>U盘/EFI/BOOT</em>，在目录中找到grub.cfg文件并打开，将其中所有的 <strong>CentOS\x207\x20x86_64</strong> 替换为 <strong>CENTOS7</strong>（与U盘盘符保持一致），这样启动盘就制作完成了。<br><img src="/2020/06/07/installation/grub.png" alt="Grub"></li>
+</ol>
+<h3 id="系统安装"><a href="#系统安装" class="headerlink" title="系统安装"></a>系统安装</h3><p> 作者使用的主机没有预装其它系统，准备只安装 <strong>CentOS7</strong> 用于科研。</p>
+<ol>
+<li>启动主机，在显示器显示 <strong><em>DELL</em></strong> 商标时 按下 <strong>F2</strong> 进入 <strong>BIOS</strong> 设置界面；<br><img src="/2020/06/07/installation/boot.png" alt="F2"></li>
+<li>在 <strong>Settings—General—Boot Squence</strong> 右侧选择 <strong>UEFI</strong> 模式并点击下方的 <strong>Apply</strong> 按钮；<br><img src="/2020/06/07/installation/uefi.png" alt="BOOT"></li>
+<li>在 <strong>Settings—System Configuration—SATA Operation</strong> 右侧选择 <strong>AHCI</strong> （默认为 <strong>RAID ON</strong>）使硬盘处于可发现模式，点击下方的 <strong>Apply</strong> 按钮；<br><img src="/2020/06/07/installation/ahci.png" alt="AHCI"></li>
+<li>按下 <strong>Esc</strong> 保存设置，重启主机并在 <strong><em>DELL</em></strong> 商标界面按下 <strong>F10</strong>进入启动盘选择界面 ，确认 <strong>Boot mode</strong> 是否为 <strong>UEFI</strong> 以及 <strong>Secure Boot</strong> 是否为 <strong>off</strong> 状态，若状态有误则返回 <strong>BIOS</strong> 重新设置；<br><img src="/2020/06/07/installation/f10.png" alt="SELECTU"></li>
+<li>若没有错误，选择 *<em>UEFI BOOT: *</em>下方的U盘并按回车、进入；</li>
+<li>在安装界面选择 <strong>Install CentOS7</strong>；<br><img src="/2020/06/07/installation/install_centos7.jpg" alt="CENTOS7"></li>
+<li><strong>SOFTWARE SELECTION</strong> 选择 <strong>GNOME Desktop</strong>，右侧可自定义需要安装的软件包以及环境；<br><img src="/2020/06/07/installation/selection.jpg" alt="SOFTWAVESELECTION"></li>
+<li><strong>INSTALLATION DESTINATION</strong>  选择512G的固态硬盘并选择自动分区（在硬盘选择界面下方 <strong>Other Storage Options—Partitioning</strong> 处选择 <strong>Automatically configure partitioning</strong> ）</li>
+<li><strong>Begin Installation</strong>；</li>
+<li>系统安装过程中需要完成用户信息的设置，等待完成后 <strong>Reboot</strong>进入系统。</li>
 </ol>
 
     </div>
@@ -313,7 +332,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos安装及深度学习环境配置"><span class="nav-number">1.</span> <span class="nav-text">Centos安装及深度学习环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-64bit系统安装"><span class="nav-number">1.3.</span> <span class="nav-text">CentOS7-64bit系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘启动制作"><span class="nav-number">1.3.1.</span> <span class="nav-text">U盘启动制作</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos安装及深度学习环境配置"><span class="nav-number">1.</span> <span class="nav-text">Centos安装及深度学习环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-64bit系统安装"><span class="nav-number">1.3.</span> <span class="nav-text">CentOS7-64bit系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘启动制作"><span class="nav-number">1.3.1.</span> <span class="nav-text">U盘启动制作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统安装"><span class="nav-number">1.3.2.</span> <span class="nav-text">系统安装</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
