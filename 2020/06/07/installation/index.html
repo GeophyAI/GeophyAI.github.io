@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"geophyai.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen(R) E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文章将分为以下几部分介绍：  CentOS7系统安装； 显卡驱动、CUDA Toolkit以及cuDNN安装； 深度学习环境配置，诸">
+  <meta name="description" content="Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen@E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文章将分为以下几部分介绍：  CentOS7系统安装； 显卡驱动、CUDA Toolkit以及cuDNN安装； 深度学习环境配置，诸如常用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dell工作站CentOS装机及深度学习环境配置">
 <meta property="og:url" content="http://geophyai.github.io/2020/06/07/installation/index.html">
 <meta property="og:site_name" content="GeophyAI">
-<meta property="og:description" content="Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen(R) E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文章将分为以下几部分介绍：  CentOS7系统安装； 显卡驱动、CUDA Toolkit以及cuDNN安装； 深度学习环境配置，诸">
+<meta property="og:description" content="Centos安装及深度学习环境配置简介本次装机的工作站型号为Dell Precision T3630，搭载有Intel(R)Xoen@E2286G处理器（6核心&#x2F;12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及RTX2080Ti显卡一张（单涡轮）。文章将分为以下几部分介绍：  CentOS7系统安装； 显卡驱动、CUDA Toolkit以及cuDNN安装； 深度学习环境配置，诸如常用">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_enter.png">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_open.png">
@@ -35,7 +35,7 @@
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/u_modify.png">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/grub.png">
 <meta property="article:published_time" content="2020-06-07T03:10:46.000Z">
-<meta property="article:modified_time" content="2020-06-07T13:52:02.566Z">
+<meta property="article:modified_time" content="2020-06-07T13:57:58.599Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="装机">
 <meta name="twitter:card" content="summary">
@@ -184,7 +184,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-06-07 11:10:46 / 修改时间：21:52:02" itemprop="dateCreated datePublished" datetime="2020-06-07T11:10:46+08:00">2020-06-07</time>
+              <time title="创建时间：2020-06-07 11:10:46 / 修改时间：21:57:58" itemprop="dateCreated datePublished" datetime="2020-06-07T11:10:46+08:00">2020-06-07</time>
             </span>
 
           
@@ -212,7 +212,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Centos安装及深度学习环境配置"><a href="#Centos安装及深度学习环境配置" class="headerlink" title="Centos安装及深度学习环境配置"></a>Centos安装及深度学习环境配置</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本次装机的工作站型号为Dell Precision T3630，搭载有<strong>Intel(R)Xoen(R) E2286G</strong>处理器（6核心/12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及<strong>RTX2080Ti</strong>显卡一张（单涡轮）。文章将分为以下几部分介绍：</p>
+        <h1 id="Centos安装及深度学习环境配置"><a href="#Centos安装及深度学习环境配置" class="headerlink" title="Centos安装及深度学习环境配置"></a>Centos安装及深度学习环境配置</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本次装机的工作站型号为<strong>Dell Precision T3630</strong>，搭载有<strong>Intel(R)Xoen@E2286G</strong>处理器（6核心/12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及<strong>RTX2080Ti</strong>显卡一张（单涡轮）。文章将分为以下几部分介绍：</p>
 <ol>
 <li><strong>CentOS7</strong>系统安装；</li>
 <li>显卡驱动、<strong>CUDA Toolkit</strong>以及<strong>cuDNN</strong>安装；</li>
@@ -229,7 +229,7 @@
 <li>选择下载好的iso文件；<br><img src="/2020/06/07/installation/ultraiso_select.png" alt="SelectISO"></li>
 <li><strong>启动</strong>—<strong>写入硬盘映像</strong><br><img src="/2020/06/07/installation/ultraiso_start.png" alt="WriteSelect"></li>
 <li>在<strong>硬盘驱动器</strong>一栏选择自己的U盘，其他设置保持默认，然后单击<strong>写入</strong>开始U盘启动制作过程；<br><img src="/2020/06/07/installation/ultraiso_write.png" alt="WriteToUdisk"></li>
-<li>写入完成后我们可以看到U盘盘符的名字有些奇怪，如果直接用它安装系统会出现错误，这时我们要修改U盘的盘符(U盘处右键—属性)为引号内的内容“ <strong>CENTOS7</strong> ”（必须为大写）；<br><img src="/2020/06/07/installation/u_modify.png" alt="ModifyU"></li>
+<li>写入完成后我们可以看到U盘盘符的名字有些奇怪(UltraISO软件问题，使用其他U盘启动制作工具可能会解决该问题)，如果直接用它安装系统会出现错误，这时我们要修改U盘的盘符(U盘处右键—属性)为引号内的内容“ <strong>CENTOS7</strong> ”（必须为大写）；<br><img src="/2020/06/07/installation/u_modify.png" alt="ModifyU"></li>
 <li>然后进入<em>U盘/EFI/BOOT</em>，在目录中找到grub.cfg文件并打开，将其中所有的 <strong>CentOS\x207\x20x86_64</strong> 替换为 <strong>CENTOS7</strong>（与U盘盘符保持一致），这样启动盘就制作完成了。<br><img src="/2020/06/07/installation/grub.png" alt="Grub"></li>
 </ol>
 
