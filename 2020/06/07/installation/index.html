@@ -20,12 +20,12 @@
     var CONFIG = {"hostname":"geophyai.github.io","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="工作站的CentOS-7安装，深度学习环境配置等。">
+  <meta name="description" content="工作站的CentOS-7安装">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Dell工作站CentOS装机及深度学习环境配置">
+<meta property="og:title" content="Dell工作站CentOS-7装机">
 <meta property="og:url" content="http://geophyai.github.io/2020/06/07/installation/index.html">
 <meta property="og:site_name" content="GeophyAI">
-<meta property="og:description" content="工作站的CentOS-7安装，深度学习环境配置等。">
+<meta property="og:description" content="工作站的CentOS-7安装">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_enter.png">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_open.png">
@@ -41,7 +41,7 @@
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/install_centos7.jpg">
 <meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/selection.jpg">
 <meta property="article:published_time" content="2020-06-07T03:10:46.000Z">
-<meta property="article:modified_time" content="2020-06-09T13:26:00.273Z">
+<meta property="article:modified_time" content="2020-06-09T17:10:01.307Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="装机">
 <meta name="twitter:card" content="summary">
@@ -60,7 +60,7 @@
   };
 </script>
 
-  <title>Dell工作站CentOS装机及深度学习环境配置 | GeophyAI</title>
+  <title>Dell工作站CentOS-7装机 | GeophyAI</title>
   
 
 
@@ -179,7 +179,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Dell工作站CentOS装机及深度学习环境配置
+          Dell工作站CentOS-7装机
         </h1>
 
         <div class="post-meta">
@@ -196,7 +196,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2020-06-09 21:26:00" itemprop="dateModified" datetime="2020-06-09T21:26:00+08:00">2020-06-09</time>
+                <time title="修改时间：2020-06-10 01:10:01" itemprop="dateModified" datetime="2020-06-10T01:10:01+08:00">2020-06-10</time>
               </span>
 
           
@@ -214,7 +214,7 @@
   </span>
   
   
-            <div class="post-description">工作站的CentOS-7安装，深度学习环境配置等。</div>
+            <div class="post-description">工作站的CentOS-7安装</div>
 
         </div>
       </header>
@@ -225,14 +225,14 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="Centos安装及深度学习环境配置"><a href="#Centos安装及深度学习环境配置" class="headerlink" title="Centos安装及深度学习环境配置"></a>Centos安装及深度学习环境配置</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本次装机的工作站型号为<strong>Dell Precision T3630</strong>，搭载有<strong>Intel(R)Xoen@E2286G</strong>处理器（6核心/12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及<strong>RTX2080Ti</strong>显卡一张（单涡轮）。文章将分为以下几部分介绍：</p>
+        <h1 id="工作站CentOS7装机"><a href="#工作站CentOS7装机" class="headerlink" title="工作站CentOS7装机"></a>工作站CentOS7装机</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>本次装机的工作站型号为<strong>Dell Precision T3630</strong>，搭载有<strong>Intel(R)Xoen@E2286G</strong>处理器（6核心/12线程，4.00GHz），512G固态硬盘、1T机械硬盘以及<strong>RTX2080Ti</strong>显卡一张（单涡轮）。文章将分为以下几部分介绍：</p>
 <a id="more"></a>
 <ol>
 <li><strong>CentOS7</strong>系统安装；</li>
 <li>显卡驱动、<strong>CUDA Toolkit</strong>以及<strong>cuDNN</strong>安装；</li>
 <li>深度学习环境配置，诸如常用的框架 <strong>Tensorflow</strong>、<strong>Keras</strong>等；</li>
 </ol>
-<p><em>需要注意的是除系统iso文件外，其他所有安装包作者均在安装完的系统内部下载的（主机插了网线，下载速度比较快，卧室离路由器太远收不到5GHz的信号，2.5GHz下载实在是太慢了），如果没有有线网络的小伙伴可以考虑将手机接到主机上联网下载，而且这台工作站支持Type-c接口哦。</em></p>
+<p><em>本章节主要介绍第一部分内容，其它内容将在其它日志中更新，欢迎关注。需要注意的是除系统iso文件外，其他所有安装包作者均在安装完的系统内部下载的（主机插了网线，下载速度比较快，卧室离路由器太远收不到5GHz的信号，2.5GHz下载实在是太慢了），如果没有有线网络的小伙伴可以考虑将手机接到主机上联网下载，而且这台工作站支持Type-c接口哦。</em></p>
 <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p><em>准备工作</em>：一个6G及以上内存的U盘（用于镜像文件的制作，CentOS7安装文件大小为4.8G），一个U盘启动制作工具以及CentOS-7-x86_64-xxx.iso镜像文件一个。<br>U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">UltraISO</a>，镜像文件使用国内的<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/" target="_blank" rel="noopener">阿里云源</a>下载，作者安装的是DVD版本（<a href="http://mirrors.aliyun.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-2003.iso" target="_blank" rel="noopener">CentOS-7-x86_64-DVD-2003.iso</a>），文件大小为4.5G，此安装包内能够满足一般用户的需求，并且在安装过程中可以根据实际需要对packages进行选择。选择此版本的原因是保持与实验室工作站环境的一致性，尽量减少代码移植过程中出现的问题（但人工智能的代码的可移植性是比较差的，其主要与<em>Tensorflow</em>、<em>Keras</em>等框架的版本相关）。</p>
 <h2 id="CentOS7-64bit系统安装"><a href="#CentOS7-64bit系统安装" class="headerlink" title="CentOS7-64bit系统安装"></a>CentOS7-64bit系统安装</h2><h3 id="U盘启动制作"><a href="#U盘启动制作" class="headerlink" title="U盘启动制作"></a>U盘启动制作</h3><ol>
 <li>下载并安装UltraISO（<a href="https://cn.ultraiso.net/xiazai.html" target="_blank" rel="noopener">下载地址</a>）；</li>
@@ -257,8 +257,14 @@
 <li><strong>SOFTWARE SELECTION</strong> 选择 <strong>GNOME Desktop</strong>，右侧可自定义需要安装的软件包以及环境；<br><img src="/2020/06/07/installation/selection.jpg" alt="SOFTWAVESELECTION"></li>
 <li><strong>INSTALLATION DESTINATION</strong>  选择512G的固态硬盘并选择自动分区（在硬盘选择界面下方 <strong>Other Storage Options—Partitioning</strong> 处选择 <strong>Automatically configure partitioning</strong> ）</li>
 <li><strong>Begin Installation</strong>；</li>
-<li>系统安装过程中需要完成用户信息的设置，等待完成后 <strong>Reboot</strong>进入系统。</li>
+<li>系统安装过程中需要完成用户信息的设置，等待完成后 <strong>Reboot</strong>进入系统。<h2 id="系统环境配置"><a href="#系统环境配置" class="headerlink" title="系统环境配置"></a>系统环境配置</h2>在 <strong>CentOS</strong> 使用过程中，我们经常需要从网络上下载各种安装包， <strong>yum(CentOS)</strong> 或 <strong>apt-get(Ubuntu)</strong> 是比较常用的方式，但是系统自带的安装源服务器都在国外，下载速度非常慢，因此我们需要使用国内的诸如清华源、豆瓣源、阿里源等加速下载，下面介绍一些简单的下载加速技巧。<br>（以下操作均需要在 <strong>root</strong> 权限下运行）首先，查看系统是否安装有 <strong>wget</strong>：</li>
 </ol>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ wget --version</span><br></pre></td></tr></table></figure>
+<p>如果未安装的话首先使用 <strong>yum</strong> 进行安装（）：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root]$ yum -y install wget</span><br><span class="line"><span class="comment"># -y 表示安装的自动选择</span></span><br></pre></td></tr></table></figure>
+<p>再次查询即可看到 <strong>wget</strong> 的安装位置、版本等信息。<br>然后备份系统原有的 <strong>yum</strong> 下载源并下载阿里源、生成缓存：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root] cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak</span><br><span class="line">[root] wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo <span class="comment">#阿里云安装，也可以安装网易等源</span></span><br><span class="line">[root] yum makecache <span class="comment">#生成缓存</span></span><br></pre></td></tr></table></figure>
+<p>这时就可以畅快地使用 <code>yum -y install</code>畅快地下载各种安装包啦。</p>
 
     </div>
 
@@ -275,6 +281,13 @@
 
 
         
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/06/10/RTX2080Ti+CUDA10.0+cudnn7+Anaconda3/" rel="next" title="CentOS下Anaconda及Tensorflow安装">
+      CentOS下Anaconda及Tensorflow安装 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
       </footer>
     
   </article>
@@ -333,7 +346,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Centos安装及深度学习环境配置"><span class="nav-number">1.</span> <span class="nav-text">Centos安装及深度学习环境配置</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-64bit系统安装"><span class="nav-number">1.3.</span> <span class="nav-text">CentOS7-64bit系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘启动制作"><span class="nav-number">1.3.1.</span> <span class="nav-text">U盘启动制作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统安装"><span class="nav-number">1.3.2.</span> <span class="nav-text">系统安装</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#工作站CentOS7装机"><span class="nav-number">1.</span> <span class="nav-text">工作站CentOS7装机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#简介"><span class="nav-number">1.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.2.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CentOS7-64bit系统安装"><span class="nav-number">1.3.</span> <span class="nav-text">CentOS7-64bit系统安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#U盘启动制作"><span class="nav-number">1.3.1.</span> <span class="nav-text">U盘启动制作</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#系统安装"><span class="nav-number">1.3.2.</span> <span class="nav-text">系统安装</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#系统环境配置"><span class="nav-number">1.4.</span> <span class="nav-text">系统环境配置</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -347,12 +360,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">1</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">标签</span>
       </div>
   </nav>
