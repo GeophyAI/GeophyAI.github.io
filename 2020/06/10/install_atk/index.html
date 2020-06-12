@@ -28,7 +28,7 @@
 <meta property="og:description" content="CentOS深度学习环境配置,包括Anaconda安装、conda环境配置、源地址更换、Tensorflow以及Keras安装等内容，过程比较简单，但在版本选择时需要注意与自己代码所依赖的生产环境相适应。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-09T19:30:58.000Z">
-<meta property="article:modified_time" content="2020-06-09T17:15:17.262Z">
+<meta property="article:modified_time" content="2020-06-12T12:10:25.735Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="深度学习环境配置">
 <meta name="twitter:card" content="summary">
@@ -174,26 +174,18 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2020-06-10 03:30:58 / 修改时间：01:15:17" itemprop="dateCreated datePublished" datetime="2020-06-10T03:30:58+08:00">2020-06-10</time>
+              <time title="创建时间：2020-06-10 03:30:58" itemprop="dateCreated datePublished" datetime="2020-06-10T03:30:58+08:00">2020-06-10</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-06-12 20:10:25" itemprop="dateModified" datetime="2020-06-12T20:10:25+08:00">2020-06-12</time>
+              </span>
 
           
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/06/10/install_atk/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/10/install_atk/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
             <div class="post-description">CentOS深度学习环境配置,包括Anaconda安装、conda环境配置、源地址更换、Tensorflow以及Keras安装等内容，过程比较简单，但在版本选择时需要注意与自己代码所依赖的生产环境相适应。</div>
 
         </div>
@@ -205,12 +197,12 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="CentOS7下深度学习环境配置（Anaconda-Tensorflow-Keras）"><a href="#CentOS7下深度学习环境配置（Anaconda-Tensorflow-Keras）" class="headerlink" title="CentOS7下深度学习环境配置（Anaconda+Tensorflow+Keras）"></a>CentOS7下深度学习环境配置（Anaconda+Tensorflow+Keras）</h1><p>笔者的CPU和GPU型号分别如下：</p>
+        <h1 id="CentOS7下深度学习环境配置（Anaconda-Tensorflow-Keras）"><a href="#CentOS7下深度学习环境配置（Anaconda-Tensorflow-Keras）" class="headerlink" title="CentOS7下深度学习环境配置（Anaconda+Tensorflow+Keras）"></a>CentOS7下深度学习环境配置（Anaconda+Tensorflow+Keras）</h1><h2 id="硬件信息查询"><a href="#硬件信息查询" class="headerlink" title="硬件信息查询"></a>硬件信息查询</h2><p>笔者的CPU和GPU型号分别如下：</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ cat /proc/cpuinfo |grep name|cut -f2 -d:|uniq -c <span class="comment">#查看CPU型号</span></span><br><span class="line"> 12  Intel(R) Xeon(R) E-2286G CPU @ 4.00GHz</span><br><span class="line">$ lspci | grep -i nvidia 查看连接的GPU设备</span><br><span class="line">01:00.0 VGA compatible controller: NVIDIA Corporation TU102 [GeForce RTX 2080 Ti Rev. A] (rev a1)</span><br><span class="line">01:00.1 Audio device: NVIDIA Corporation TU102 High Definition Audio Controller (rev a1)</span><br><span class="line">01:00.2 USB controller: NVIDIA Corporation TU102 USB 3.1 Host Controller (rev a1)</span><br><span class="line">01:00.3 Serial bus controller [0c80]: NVIDIA Corporation TU102 USB Type-C UCSI Controller (rev a1)</span><br><span class="line"><span class="comment">#如果CUDA和驱动已经安装完成并且～/.bashrc也配置完成则可以通过 nvidia-smi 查询驱动及GPU信息。</span></span><br><span class="line">$ nvidia-smi <span class="comment">#输出GPU运行状态及驱动版本</span></span><br><span class="line">Tue Jun  9 11:30:14 2020       </span><br><span class="line">+-----------------------------------------------------------------------------+</span><br><span class="line">| NVIDIA-SMI 440.82       Driver Version: 440.82       CUDA Version: 10.2     |</span><br><span class="line">|-------------------------------+----------------------+----------------------+</span><br><span class="line">| GPU  Name        Persistence-M| Bus-Id        Disp.A | Volatile Uncorr. ECC |</span><br><span class="line">| Fan  Temp  Perf  Pwr:Usage/Cap|         Memory-Usage | GPU-Util  Compute M. |</span><br><span class="line">|===============================+======================+======================|</span><br><span class="line">|   0  GeForce RTX 208...  Off  | 00000000:01:00.0  On |                  N/A |</span><br><span class="line">| 66%   84C    P2   233W / 250W |  10969MiB / 11016MiB |     91%      Default |</span><br><span class="line">+-------------------------------+----------------------+----------------------+</span><br></pre></td></tr></table></figure>
 <p>另外，对于 <strong>CUDA</strong> 和 <strong>cuDNN</strong> 版本的查询可通过以下方式进行：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ nvcc --version <span class="comment">#查询cuda版本</span></span><br><span class="line">nvcc: NVIDIA (R) Cuda compiler driver</span><br><span class="line">Copyright (c) 2005-2018 NVIDIA Corporation</span><br><span class="line">Built on Sat_Aug_25_21:08:01_CDT_2018</span><br><span class="line">Cuda compilation tools, release 10.0, V10.0.130</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line">$ cat /usr/<span class="built_in">local</span>/cuda/version.txt</span><br><span class="line">CUDA Version 10.0.130</span><br><span class="line">$ cat /usr/<span class="built_in">local</span>/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2 <span class="comment">#查询cudnn版本</span></span><br><span class="line"><span class="comment">#define CUDNN_MAJOR 7</span></span><br><span class="line"><span class="comment">#define CUDNN_MINOR 6</span></span><br><span class="line"><span class="comment">#define CUDNN_PATCHLEVEL 5</span></span><br><span class="line">--</span><br><span class="line"><span class="comment">#define CUDNN_VERSION (CUDNN_MAJOR * 1000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)</span></span><br><span class="line"><span class="comment">#include "driver_types.h"</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ nvcc --version <span class="comment">#查询cuda版本</span></span><br><span class="line">nvcc: NVIDIA (R) Cuda compiler driver</span><br><span class="line">Copyright (c) 2005-2018 NVIDIA Corporation</span><br><span class="line">Built on Sat_Aug_25_21:08:01_CDT_2018</span><br><span class="line">Cuda compilation tools, release 10.0, V10.0.130</span><br><span class="line"><span class="comment">#或者</span></span><br><span class="line">$ cat /usr/<span class="built_in">local</span>/cuda/version.txt</span><br><span class="line">CUDA Version 10.0.130</span><br><span class="line">$ cat /usr/<span class="built_in">local</span>/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2 <span class="comment">#查询cudnn版本</span></span><br><span class="line"><span class="comment">#define CUDNN_MAJOR 7</span></span><br><span class="line"><span class="comment">#define CUDNN_MINOR 6</span></span><br><span class="line"><span class="comment">#define CUDNN_PATCHLEVEL 5</span></span><br><span class="line">--</span><br><span class="line"><span class="comment">#define CUDNN_VERSION (CUDNN_MAJOR * 1000 + CUDNN_MINOR * 100 + CUDNN_PATCHLEVEL)</span></span><br><span class="line"><span class="comment">#include "driver_types.h"</span></span><br><span class="line"></span><br><span class="line"><span class="comment">## Anaconda安装 ##</span></span><br></pre></td></tr></table></figure>
 <p>64位Linux的 <strong>Anacoda</strong> 安装包可以到<a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/" target="_blank" rel="noopener">清华源</a>上下载，笔者下载安装的是5.3.1版本（<a href="https://mirrors.tuna.tsinghua.edu.cn/anaconda/archive/Anaconda3-5.3.1-Linux-x86_64.sh" target="_blank" rel="noopener">下载地址</a>），文件格式为 <strong>.sh</strong>，安装包下载完成后，我们进入到下载目录中，打开 <strong>terminal</strong> 并输入</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ bash Anaconda3-5.3.1-Linux-x86_64.sh -u <span class="comment"># -u可自定义安装目录</span></span><br><span class="line"><span class="comment">#进入安装后敲回车,直到出现界面并输入yes继续安装或者no退出安装:</span></span><br><span class="line">$ Please answer <span class="string">'yes'</span> or <span class="string">'no'</span>:<span class="string">'</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; yes</span></span><br><span class="line"><span class="string">Anaconda3 will now be installed into this location:</span></span><br><span class="line"><span class="string">/当前将要安装的目录</span></span><br><span class="line"><span class="string">  - Press ENTER to confirm the location</span></span><br><span class="line"><span class="string">  - Press CTRL-C to abort the installation</span></span><br><span class="line"><span class="string">  - Or specify a different location below</span></span><br><span class="line"><span class="string">[/home/wangsw/anaconda3] &gt;&gt;&gt; /此处输入你需要安装的目录</span></span><br><span class="line"><span class="string">#部分目录需要其它用户或者root权限，确认之后之后将会完成安装，最后会提示是否需要将Anaconda路径写入环境变量（推荐自动写入）以及是否需要使用VSCode（根据个人需要）：</span></span><br><span class="line"><span class="string">$ Do you wish the installer to initialize Anaconda3</span></span><br><span class="line"><span class="string">in your /root/.bashrc ? [yes|no]</span></span><br><span class="line"><span class="string">[no] &gt;&gt;&gt; no</span></span><br><span class="line"><span class="string">$ Do you wish to proceed with the installation of Microsoft VSCode? [yes|no]</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; no</span></span><br><span class="line"><span class="string">#此时安装已经完成。</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">$ bash Anaconda3-5.3.1-Linux-x86_64.sh -u <span class="comment"># -u可自定义安装目录</span></span><br><span class="line"><span class="comment">#进入安装后敲回车,直到出现界面并输入yes继续安装或者no退出安装:</span></span><br><span class="line">$ Please answer <span class="string">'yes'</span> or <span class="string">'no'</span>:<span class="string">'</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; yes</span></span><br><span class="line"><span class="string">Anaconda3 will now be installed into this location:</span></span><br><span class="line"><span class="string">/当前将要安装的目录</span></span><br><span class="line"><span class="string">  - Press ENTER to confirm the location</span></span><br><span class="line"><span class="string">  - Press CTRL-C to abort the installation</span></span><br><span class="line"><span class="string">  - Or specify a different location below</span></span><br><span class="line"><span class="string">[/home/wangsw/anaconda3] &gt;&gt;&gt; /此处输入你需要安装的目录</span></span><br><span class="line"><span class="string">#部分目录需要其它用户或者root权限，确认之后之后将会完成安装，最后会提示是否需要将Anaconda路径写入环境变量（推荐自动写入）以及是否需要使用VSCode（根据个人需要）：</span></span><br><span class="line"><span class="string">$ Do you wish the installer to initialize Anaconda3</span></span><br><span class="line"><span class="string">in your /root/.bashrc ? [yes|no]</span></span><br><span class="line"><span class="string">[no] &gt;&gt;&gt; no</span></span><br><span class="line"><span class="string">$ Do you wish to proceed with the installation of Microsoft VSCode? [yes|no]</span></span><br><span class="line"><span class="string">&gt;&gt;&gt; no</span></span><br><span class="line"><span class="string">#此时安装已经完成。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">## conda 环境创建 ##</span></span><br></pre></td></tr></table></figure>
 <p>然后我们开始配置 <strong>conda</strong> 环境，不同 <strong>conda</strong> 环境可以安装不同 <strong>python</strong> 版本以及 <strong>tensorflow</strong> 等版本，其相当于一个容器，可用于不同需求的生产环境。为了加速 <strong>conda</strong> 环境配置过程，与安装完系统后进行相同的操作：更新下载源（可使用清华源、中科大源等）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">$ conda config --show <span class="comment">#输入后找到 channels 属性可查看已有下载源，若没有镜像源则执行以下命令</span></span><br><span class="line">$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/cloud/conda-forge/</span><br><span class="line">$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</span><br><span class="line">$ conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/</span><br><span class="line">$ conda config --<span class="built_in">set</span> show_channel_urls yes <span class="comment">#该命令可允许下载时显示源地址</span></span><br><span class="line">$ conda clean -i <span class="comment">#清除索引缓存，保证用的是镜像站提供的索引。</span></span><br><span class="line">$ conda config --show <span class="comment">#查看是否源地址是否更新完成</span></span><br></pre></td></tr></table></figure>
 <p>更新完源之后我们建立深度学习环境，首先创建一个特定 <strong>python</strong> 版本的 <strong>conda</strong> 环境：</p>
@@ -257,7 +249,6 @@
 
           </div>
           
-    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -304,7 +295,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS7下深度学习环境配置（Anaconda-Tensorflow-Keras）"><span class="nav-number">1.</span> <span class="nav-text">CentOS7下深度学习环境配置（Anaconda+Tensorflow+Keras）</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#CentOS7下深度学习环境配置（Anaconda-Tensorflow-Keras）"><span class="nav-number">1.</span> <span class="nav-text">CentOS7下深度学习环境配置（Anaconda+Tensorflow+Keras）</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件信息查询"><span class="nav-number">1.1.</span> <span class="nav-text">硬件信息查询</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -409,36 +400,6 @@
   
 
   
-
-<script src="../js/src/av-min.js"></script>
-<script src="../js/src/valine.min.js"></script>
-<script>
-NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
-  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
-    var GUEST = ['nick', 'mail', 'link'];
-    var guest = 'nick,mail,link';
-    guest = guest.split(',').filter(item => {
-      return GUEST.includes(item);
-    });
-    new Valine({
-      el         : '#valine-comments',
-      verify     : false,
-      notify     : false,
-      appId      : 'xGkAfNjiLy2iAFwuv2Itmye6-gzGzoHsz',
-      appKey     : 'IGOUrFEiKTeXfsDJwsmNLMnd',
-      placeholder: "Just go go",
-      avatar     : 'mm',
-      meta       : guest,
-      pageSize   : '10' || 10,
-      visitor    : false,
-      lang       : '' || 'zh-cn',
-      path       : location.pathname,
-      recordIP   : false,
-      serverURLs : ''
-    });
-  }, window.Valine);
-});
-</script>
 
 </body>
 </html>
