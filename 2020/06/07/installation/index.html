@@ -17,37 +17,37 @@
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"geophyai.github.io","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+    var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
   <meta name="description" content="工作站的CentOS-7安装,笔者的第一篇个人博客，后续将记录一系列装机以及环境配置中出现的问题，供日后参考。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Dell工作站CentOS-7装机">
-<meta property="og:url" content="http://geophyai.github.io/2020/06/07/installation/index.html">
+<meta property="og:url" content="http://blog.geophyai.com/2020/06/07/installation/index.html">
 <meta property="og:site_name" content="GeophyAI">
 <meta property="og:description" content="工作站的CentOS-7安装,笔者的第一篇个人博客，后续将记录一系列装机以及环境配置中出现的问题，供日后参考。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_enter.png">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_open.png">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_select.png">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_start.png">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_write.png">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/u_modify.png">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/grub.png">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/f2.jpg">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/uefi.jpg">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/ahci.jpg">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/f10.jpg">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/install_centos7.jpg">
-<meta property="og:image" content="http://geophyai.github.io/2020/06/07/installation/selection.jpg">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/ultraiso_enter.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/ultraiso_open.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/ultraiso_select.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/ultraiso_start.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/ultraiso_write.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/u_modify.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/grub.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/f2.jpg">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/uefi.jpg">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/ahci.jpg">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/f10.jpg">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/install_centos7.jpg">
+<meta property="og:image" content="http://blog.geophyai.com/2020/06/07/installation/selection.jpg">
 <meta property="article:published_time" content="2020-06-07T03:10:46.000Z">
-<meta property="article:modified_time" content="2020-06-13T07:52:25.180Z">
+<meta property="article:modified_time" content="2020-06-13T08:08:50.019Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="装机">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://geophyai.github.io/2020/06/07/installation/ultraiso_enter.png">
+<meta name="twitter:image" content="http://blog.geophyai.com/2020/06/07/installation/ultraiso_enter.png">
 
-<link rel="canonical" href="http://geophyai.github.io/2020/06/07/installation/">
+<link rel="canonical" href="http://blog.geophyai.com/2020/06/07/installation/">
 
 
 <script id="page-configurations">
@@ -194,7 +194,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://geophyai.github.io/2020/06/07/installation/">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/06/07/installation/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -302,7 +302,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://geophyai.github.io/2020/06/07/installation/" title="Dell工作站CentOS-7装机">http://geophyai.github.io/2020/06/07/installation/</a>
+    <a href="http://blog.geophyai.com/2020/06/07/installation/" title="Dell工作站CentOS-7装机">http://blog.geophyai.com/2020/06/07/installation/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
