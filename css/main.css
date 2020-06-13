@@ -193,7 +193,7 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Microsoft YaHei', "Microsoft YaHei", "PingFang SC", sans-serif;
+  font-family: 'Microsoft YaHei', 'Microsoft YaHei', "Microsoft YaHei", "PingFang SC", sans-serif;
   font-weight: bold;
   line-height: 1.5;
   margin: 20px 0 15px;
@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #0659ff;
+  background: #3be08e;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
