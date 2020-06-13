@@ -45,8 +45,11 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root] cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak</span><br><span class="line">[root] wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo <span class="comment">#阿里云安装，也可以安装网易等源</span></span><br><span class="line">[root] yum makecache <span class="comment">#生成缓存</span></span><br></pre></td></tr></table></figure>
 <p>这时就可以畅快地使用 <code>yum -y install</code>畅快地下载各种安装包啦。</p>
 ]]></content>
+      <categories>
+        <category>装机</category>
+      </categories>
       <tags>
-        <tag>装机</tag>
+        <tag>CentOS系统安装</tag>
       </tags>
   </entry>
   <entry>
@@ -73,6 +76,9 @@
 
 
 ]]></content>
+      <categories>
+        <category>装机</category>
+      </categories>
       <tags>
         <tag>深度学习环境配置</tag>
       </tags>
@@ -165,6 +171,9 @@
 
 
 ]]></content>
+      <categories>
+        <category>装机</category>
+      </categories>
       <tags>
         <tag>CUDA及cuDNN下载与安装</tag>
       </tags>
