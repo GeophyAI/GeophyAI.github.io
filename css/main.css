@@ -977,7 +977,7 @@ pre .javascript .function {
   border-bottom: none;
   color: var(--brand-color);
   display: inline-block;
-  line-height: 1.375em;
+  line-height: 2.125em;
   padding: 0 40px;
   position: relative;
 }
@@ -986,7 +986,7 @@ pre .javascript .function {
 }
 .site-title {
   font-family: 'Microsoft YaHei', "Microsoft YaHei", "PingFang SC", sans-serif;
-  font-size: 1.375em;
+  font-size: 2.125em;
   font-weight: normal;
   margin: 0;
 }
@@ -1063,7 +1063,7 @@ pre .javascript .function {
 .menu-item span.exturl {
   border-bottom: 0;
   display: block;
-  font-size: 0.8125em;
+  font-size: 0.875em;
   transition-property: border-color;
   transition-delay: 0s;
   transition-duration: 0.2s;
@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ffb8a7;
+  background: #12aa29;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
