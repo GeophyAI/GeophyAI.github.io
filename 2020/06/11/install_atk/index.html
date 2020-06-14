@@ -28,7 +28,7 @@
 <meta property="og:description" content="CentOS深度学习环境配置,包括Anaconda安装、conda环境配置、源地址更换、Tensorflow以及Keras安装等内容，过程比较简单，但在版本选择时需要注意与自己代码所依赖的生产环境相适应。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-10T19:30:58.000Z">
-<meta property="article:modified_time" content="2020-06-14T12:31:49.343Z">
+<meta property="article:modified_time" content="2020-06-14T12:36:00.369Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="深度学习环境配置">
 <meta name="twitter:card" content="summary">
@@ -276,7 +276,7 @@
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#笔者使用的生产环境之一为：</span></span><br><span class="line">(env_name)[root]$ pip install tensorflow-gpu==1.14.0</span><br><span class="line">(env_name)[root]$ pip install keras==2.2.5</span><br><span class="line">(env_name)[root]$ pip install numpy==1.16.0</span><br><span class="line">(env_name)[root]$ <span class="built_in">source</span> deactivate <span class="comment">#退出已打开的环境env_name</span></span><br></pre></td></tr></table></figure>
 <h2 id="conda-常用命令"><a href="#conda-常用命令" class="headerlink" title="conda 常用命令"></a>conda 常用命令</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ conda --version <span class="comment">#查看conda版本</span></span><br><span class="line">$ conda creat -n your_env_name python==3.x <span class="comment">#创建python版本为3.x的conda环境</span></span><br><span class="line">$ conda remove --name your_env_name –all <span class="comment">#删除已创建环境</span></span><br><span class="line">$ conda create --name new_env --<span class="built_in">clone</span> old_env <span class="comment">#创建新conda环境new_env并将old_env环境复制到前者中</span></span><br><span class="line">$ <span class="built_in">source</span> activate your_env_name <span class="comment">#激活已创建环境</span></span><br><span class="line">$ <span class="built_in">source</span> deactivate <span class="comment">#退出当前窗口中已激活环境</span></span><br><span class="line">$ conda info -e  <span class="comment">#查询已安装环境</span></span><br><span class="line">$ conda install --name your_env_name package_name <span class="comment">#在指定环境your_env_name中安装package_name包（例如conda install my_env tensorflow-gpu==2.0.0）</span></span><br><span class="line">$ conda update conda <span class="comment">#（不推荐）将conda更新至最新版本，但也会更新其它相关包</span></span><br></pre></td></tr></table></figure>
 
-<p><a href . f10.jpg"">测试下载</a></p>
+<p><a href . installation f10.jpg"">测试下载</a></p>
 
     </div>
 
