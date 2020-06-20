@@ -43,6 +43,9 @@
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ yum -y install wget</span><br><span class="line"><span class="comment"># -y 表示安装的自动选择</span></span><br></pre></td></tr></table></figure>
 <p>再次查询即可看到 <strong>wget</strong> 的安装位置、版本等信息。<br>然后备份系统原有的 <strong>yum</strong> 下载源并下载阿里源、生成缓存：</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root] cp /etc/yum.repos.d/CentOS-Base.repo /etc/yum.repos.d/CentOS-Base.repo.bak</span><br><span class="line">[root] wget -O /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-7.repo <span class="comment">#阿里云安装，也可以安装网易等源</span></span><br><span class="line">[root] yum makecache <span class="comment">#生成缓存</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root] wget https://tuxera.com/opensource/ntfs-3g_ntfsprogs-2017.3.23.tgz</span><br><span class="line">[root] tar zxvf ntfs-3g_ntfsprogs-2017.3.23.tgz</span><br><span class="line">[root] ./configure</span><br><span class="line">[root] make</span><br><span class="line">[root] make install</span><br><span class="line">[root] mount -t ntfs-3g /deb/sda2 /mnt/data/</span><br></pre></td></tr></table></figure>
+
 <p>这时就可以畅快地使用 <code>yum -y install</code>畅快地下载各种安装包啦。</p>
 ]]></content>
       <categories>
