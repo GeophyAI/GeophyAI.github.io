@@ -58,6 +58,29 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux中论文写作环境搭建</title>
+    <url>/2020/07/02/paper_env/</url>
+    <content><![CDATA[<h1 id="文字编辑器"><a href="#文字编辑器" class="headerlink" title="文字编辑器"></a>文字编辑器</h1><p>使用 <a href="https://linux.wps.cn/" target="_blank" rel="noopener">WPS for linux</a>，安装包格式为rpm，安装过程如下：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[usrname]$ rpm -ivh wps-office-11.1.0.9522-1.x86_64.rpm</span><br><span class="line"><span class="comment">#安装完成后可能会缺少相关字体，例如中文论文常用的宋体、黑体等，可以从windows中拷贝到linux下，将ttf字体文件复制到/usr/share/fonts/wps-office文件夹中，重启wps即可看到中文字体</span></span><br><span class="line">[usrname]$ wps <span class="comment"># 安装包中包含PDF、Presentation、Spreadsheets和Writter</span></span><br></pre></td></tr></table></figure>
+<p>常用部分中文 <strong>ttf</strong> 格式字体下载地址。</p>
+<h1 id="公式编辑器"><a href="#公式编辑器" class="headerlink" title="公式编辑器"></a>公式编辑器</h1><p>使用 <strong><a href="https://www.xm1math.net/texmaker/download.html" target="_blank" rel="noopener">texmaker</a></strong>，实际上完全可以使用 <strong>texmaker</strong> 完成整个论文撰写工作。（<code>#texmaker 的下载要注意与qt版本相对应</code>）</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[usrname]$ tar -jxvf texmaker-5.0.3.tar.bz2</span><br><span class="line">[usrname]$ <span class="built_in">cd</span> texmaker-5.0.3/</span><br><span class="line">[usrname]$ qmake texmaker.pro</span><br><span class="line">[usrname]$ make &amp;&amp; make install</span><br><span class="line">[usrname]$ texmaker</span><br></pre></td></tr></table></figure>
+<h1 id="安装32位wine"><a href="#安装32位wine" class="headerlink" title="安装32位wine"></a>安装32位wine</h1><p>在研究 <strong>LaTex</strong> 搭配 <strong>python</strong> 中的 <code>pandoc</code>实现 <code>tex2word</code> 无果后（经由<code>pandoc</code>转换出的word文件会丢失部分 <strong>tex</strong> 中设置好的格式，可能是<code>\usepackage</code>导致的；但如果只需要由 <strong>tex</strong> 生成 <strong>pdf</strong>文件，LaTex还是值得深入学习一下的），退而求其次，本来想通过wine安装 <strong>MS office</strong>，但转念一想不如装个 <strong>MathTpye</strong> 来的方便，结果也没好装到哪去。。。</p>
+<p>为了使用32位MathType，首先安装32位wine，小编安装的是<a href="https://dl.winehq.org/wine/source/5.0/wine-5.0.1.tar.xz" target="_blank" rel="noopener">5.0.1版本源码</a>，由于主机环境为x86_64，所以我们需要为系统安装32位依赖环境，否则无法执行 <strong>./configure</strong> ：</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ yum install glibc-devel.i686 dbus-devel.i686 freetype-devel.i686 pulseaudio-libs-devel.i686 libX11-devel.i686 mesa-libGLU-devel.i686 libICE-devel.i686 libXext-devel.i686 libXcursor-devel.i686 libXi-devel.i686 libXxf86vm-devel.i686 libXrender-devel.i686 libXinerama-devel.i686 libXcomposite-devel.i686 libXrandr-devel.i686 mesa-libGL-devel.i686 mesa-libOSMesa-devel.i686 libxml2-devel.i686 libxslt-devel.i686 zlib-devel.i686 gnutls-devel.i686 ncurses-devel.i686 sane-backends-devel.i686 libv4l-devel.i686 libgphoto2-devel.i686 libexif-devel.i686 lcms2-devel.i686 gettext-devel.i686 isdn4k-utils-devel.i686 cups-devel.i686 fontconfig-devel.i686 gsm-devel.i686 libjpeg-turbo-devel.i686 pkgconfig.i686 libtiff-devel.i686 unixODBC.i686 openldap-devel.i686 alsa-lib-devel.i686 audiofile-devel.i686 freeglut-devel.i686 giflib-devel.i686 gstreamer-devel.i686 gstreamer-plugins-base-devel.i686 libXmu-devel.i686 libXxf86dga-devel.i686 libieee1284-devel.i686 libpng-devel.i686 librsvg2-devel.i686 libstdc++-devel.i686 libusb-devel.i686 unixODBC-devel.i686 qt-devel.i686</span><br><span class="line">[root]$ yum install libXext.i686</span><br><span class="line">[root]$ yum install libXext.x86_64</span><br><span class="line">[root]$ yum install ia32-libs.i686</span><br><span class="line">[root]$ yum install xulrunner.i686</span><br><span class="line">[root]$ yum install libX11-devel freetype-devel zlib-devel libxcb-devel</span><br><span class="line">[root]$ tar -xvf wine-5.0.1.tar.xz</span><br><span class="line">[root]$ <span class="built_in">cd</span> wine-5.0.1</span><br><span class="line">[root]$ ./configure</span><br><span class="line">[root]$ make <span class="comment">#make耗费时间比较长，耐心等待即可</span></span><br><span class="line">[root]$ make install</span><br><span class="line">[root]$ wine --version <span class="comment">#查看32位wine版本</span></span><br></pre></td></tr></table></figure>
+<p>然后执行<code>winecfg</code>，如果系统默认语言为 <strong>en</strong>，此时看到的 <strong>wine</strong> 配置界面应同样为英文，若系统已经安装了中文字体，例如 <strong>simsun.ttf</strong> 等，在 <strong>terminal</strong> 执行<code>export LANG=zh_CN.utf8</code> 即可将语言临时调整为中文。</p>
+<h1 id="中文版MathType安装及语言配置"><a href="#中文版MathType安装及语言配置" class="headerlink" title="中文版MathType安装及语言配置"></a>中文版MathType安装及语言配置</h1><p>下载好 <strong>Mathtype</strong> 之后，打开系统（屏幕左上角）的<code>Applications &gt; Wine &gt; Wine Software uninstaller</code>，点击其中的<code>install</code>并选择安装包即可完成安装。可以通过<code>Applications &gt; Wine &gt; MathType</code>打开公式编辑器。</p>
+<p>如果字体出现乱码等情况，首先要考虑是否系统环境与wine环境不一致所导致，详情请参考：<a href="http://linux-wiki.cn/wiki/zh-hans/wine%E7%9A%84%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B8%8E%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE" target="_blank" rel="noopener">这位热心网友的解答</a>。</p>
+<p>小编在修改完<code>~/.wine/system.reg</code>以及<code>~/.wine//drive_c/windows/win.ini</code>（root用户和普通用户根目录下都含有此文件，均做修改并不能解决字体部分乱码问题，怀疑是系统语言的限制）后运行 <strong>MathType</strong> 过程中出现部分中文字体为 ？？？的情况，再次运行<code>export LANG=zh_CN.utf8</code>即可显示所有中文字体。（不知直接运行<code>export LANG=zh_CN.utf8</code>再打开 <strong>MathType</strong> 是否可以解决这一问题？）</p>
+]]></content>
+      <categories>
+        <category>paper</category>
+      </categories>
+      <tags>
+        <tag>Linux&amp;Windows--cross</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python之import argparse</title>
     <url>/2020/06/21/python_argparse/</url>
     <content><![CDATA[<h1 id="Python之命令行解析–argparse"><a href="#Python之命令行解析–argparse" class="headerlink" title="Python之命令行解析–argparse"></a>Python之命令行解析–argparse</h1><p>在 <strong>terminal</strong> 执行 <strong>.py</strong> 文件经常遇到。</p>
