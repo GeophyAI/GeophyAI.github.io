@@ -71,7 +71,7 @@
 <p>然后执行<code>winecfg</code>，如果系统默认语言为 <strong>en</strong>，此时看到的 <strong>wine</strong> 配置界面应同样为英文，若系统已经安装了中文字体，例如 <strong>simsun.ttf</strong> 等，在 <strong>terminal</strong> 执行<code>export LANG=zh_CN.utf8</code> 即可将语言临时调整为中文。</p>
 <h1 id="中文版MathType安装及语言配置"><a href="#中文版MathType安装及语言配置" class="headerlink" title="中文版MathType安装及语言配置"></a>中文版MathType安装及语言配置</h1><p>下载好 <strong>Mathtype</strong> 之后，打开系统（屏幕左上角）的<code>Applications &gt; Wine &gt; Wine Software uninstaller</code>，点击其中的<code>install</code>并选择安装包即可完成安装。可以通过<code>Applications &gt; Wine &gt; MathType</code>打开公式编辑器。</p>
 <p>如果字体出现乱码等情况，首先要考虑是否系统环境与wine环境不一致所导致，详情请参考：<a href="http://linux-wiki.cn/wiki/zh-hans/wine%E7%9A%84%E4%B8%AD%E6%96%87%E6%98%BE%E7%A4%BA%E4%B8%8E%E5%AD%97%E4%BD%93%E8%AE%BE%E7%BD%AE" target="_blank" rel="noopener">这位热心网友的解答</a>。</p>
-<p>小编在修改完<code>~/.wine/system.reg</code>以及<code>~/.wine//drive_c/windows/win.ini</code>（root用户和普通用户根目录下都含有此文件，均做修改并不能解决字体部分乱码问题，怀疑是系统语言的限制）后运行 <strong>MathType</strong> 过程中出现部分中文字体为 ？？？的情况，再次运行<code>export LANG=zh_CN.utf8</code>即可显示所有中文字体。（不知直接运行<code>export LANG=zh_CN.utf8</code>再打开 <strong>MathType</strong> 是否可以解决这一问题？）</p>
+<p>小编在修改完<code>~/.wine/system.reg</code>以及<code>~/.wine//drive_c/windows/win.ini</code>（root用户和普通用户根目录下都含有此文件，均做修改并不能解决字体部分乱码问题，怀疑是系统语言的限制）后运行 <strong>MathType</strong> 过程中出现部分中文字体为 ？？？的情况，再次运行<code>export LANG=zh_CN.utf8</code>即可显示所有中文字体。（测试发现，如果系统环境为en，需要在每次启动MathType时在terminal中临时切换为中文，即运行上述代码。或者，使用 <code>alias</code> 为软件创建命令行快捷打开方式）。</p>
 ]]></content>
       <categories>
         <category>paper</category>
