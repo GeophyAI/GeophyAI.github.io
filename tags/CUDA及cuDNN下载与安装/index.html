@@ -434,6 +434,16 @@
   
 
   
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/tags/CUDA%E5%8F%8AcuDNN%E4%B8%8B%E8%BD%BD%E4%B8%8E%E5%AE%89%E8%A3%85/',]
+      });
+      });
+  </script>
 
 <script src="../js/src/av-min.js"></script>
 <script src="../js/src/valine.min.js"></script>

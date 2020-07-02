@@ -518,6 +518,16 @@
   
 
   
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/06/21/python_argparse/',]
+      });
+      });
+  </script>
 
 <script src="../js/src/av-min.js"></script>
 <script src="../js/src/valine.min.js"></script>
