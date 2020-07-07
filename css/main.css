@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #443e11;
+  background: #fff753;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -2679,6 +2679,13 @@ code {
   border-radius: 2px;
   font-size: 14px;
   font-weight: normal;
+}
+blockquote {
+  padding: 0 15px;
+  color: #000;
+  font-family: cursive;
+  background-color: #f0faf9;
+  border-left-color: #42c1b8;
 }
 .content .posts-expand .post-block {
   position: relative;
