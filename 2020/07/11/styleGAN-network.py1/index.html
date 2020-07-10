@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans SC:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="styleGAN代码拜读拆解，以及对于TF模块和pyhon语法的深度学习,第二部分。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="styleGAN源码解读之pretrained-example.py">
+<meta property="og:url" content="http://blog.geophyai.com/2020/07/11/styleGAN-network.py1/index.html">
+<meta property="og:site_name" content="GeophyAI">
+<meta property="og:description" content="styleGAN代码拜读拆解，以及对于TF模块和pyhon语法的深度学习,第二部分。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-07-10T16:45:58.000Z">
+<meta property="article:modified_time" content="2020-07-10T16:45:58.000Z">
+<meta property="article:author" content="shaowinw">
+<meta property="article:tag" content="styleGAN">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.geophyai.com/2020/07/11/styleGAN-network.py1/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>styleGAN源码解读之pretrained-example.py | GeophyAI</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">GeophyAI</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">人工智能与地球物理数据处理</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/07/11/styleGAN-network.py1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="shaowinw">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeophyAI">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          styleGAN源码解读之pretrained-example.py
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-11 00:45:58" itemprop="dateCreated datePublished" datetime="2020-07-11T00:45:58+08:00">2020-07-11</time>
+            </span>
+
+
+	
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/GAN/" itemprop="url" rel="index"><span itemprop="name">GAN</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/07/11/styleGAN-network.py1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/11/styleGAN-network.py1/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">styleGAN代码拜读拆解，以及对于TF模块和pyhon语法的深度学习,第二部分。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="styleGAN—network-py"><a href="#styleGAN—network-py" class="headerlink" title="styleGAN—network.py"></a>styleGAN—network.py</h1><h1 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h1><p>源码文件位于<code>dnnlib/tflib</code>中过长，将近<strong>600</strong>行，这里只放出<strong>Network</strong>类中部分函数，当存在函数调用关系时再给出相应的源码及其解读。(在代码的复制粘贴过程中源代码格式遭到破坏，请勿直接复制以下代码，如有需要请下载<a href="https://github.com/NVlabs/stylegan" target="_blank" rel="noopener">源代码&lt;Github项目链接&gt;</a>)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br></pre></td><td class="code"><pre><span class="line">﻿<span class="comment"># Copyright (c) 2019, NVIDIA CORPORATION. All rights reserved.</span></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"><span class="comment"># This work is licensed under the Creative Commons Attribution-NonCommercial</span></span><br><span class="line"><span class="comment"># 4.0 International License. To view a copy of this license, visit</span></span><br><span class="line"><span class="comment"># http://creativecommons.org/licenses/by-nc/4.0/ or send a letter to</span></span><br><span class="line"><span class="comment"># Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.</span></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Network</span>:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self,</span></span></span><br><span class="line"><span class="function"><span class="params">        *in_arrays: Tuple[Union[np.ndarray, None], ...],</span></span></span><br><span class="line"><span class="function"><span class="params">        input_transform: dict = None,</span></span></span><br><span class="line"><span class="function"><span class="params">        output_transform: dict = None,</span></span></span><br><span class="line"><span class="function"><span class="params">        return_as_list: bool = False,</span></span></span><br><span class="line"><span class="function"><span class="params">        print_progress: bool = False,</span></span></span><br><span class="line"><span class="function"><span class="params">        minibatch_size: int = None,</span></span></span><br><span class="line"><span class="function"><span class="params">        num_gpus: int = <span class="number">1</span>,</span></span></span><br><span class="line"><span class="function"><span class="params">        assume_frozen: bool = False,</span></span></span><br><span class="line"><span class="function"><span class="params">        **dynamic_kwargs)</span> -&gt; Union[np.ndarray, Tuple[np.ndarray, ...], List[np.ndarray]]:</span></span><br><span class="line"></span><br><span class="line">   <span class="keyword">assert</span> len(in_arrays) == self.num_inputs</span><br><span class="line">   <span class="keyword">assert</span> <span class="keyword">not</span> all(arr <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">for</span> arr <span class="keyword">in</span> in_arrays)</span><br><span class="line">   <span class="keyword">assert</span> input_transform <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> util.is_top_level_function(input_transform[<span class="string">"func"</span>])</span><br><span class="line">   <span class="keyword">assert</span> output_transform <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> util.is_top_level_function(output_transform[<span class="string">"func"</span>])</span><br><span class="line">   output_transform, dynamic_kwargs = _handle_legacy_output_transforms(output_transform, dynamic_kwargs)</span><br><span class="line">   num_items = in_arrays[<span class="number">0</span>].shape[<span class="number">0</span>]</span><br><span class="line">   <span class="keyword">if</span> minibatch_size <span class="keyword">is</span> <span class="literal">None</span>:</span><br><span class="line">       minibatch_size = num_items</span><br><span class="line"></span><br><span class="line">   <span class="comment"># Construct unique hash key from all arguments that affect the TensorFlow graph.</span></span><br><span class="line">   key = dict(input_transform=input_transform, output_transform=output_transform, num_gpus=num_gpus, assume_frozen=assume_frozen, dynamic_kwargs=dynamic_kwargs)</span><br><span class="line">   <span class="function"><span class="keyword">def</span> <span class="title">unwind_key</span><span class="params">(obj)</span>:</span></span><br><span class="line">       <span class="keyword">if</span> isinstance(obj, dict):</span><br><span class="line">           <span class="keyword">return</span> [(key, unwind_key(value)) <span class="keyword">for</span> key, value <span class="keyword">in</span> sorted(obj.items())]</span><br><span class="line">       <span class="keyword">if</span> callable(obj):</span><br><span class="line">           <span class="keyword">return</span> util.get_top_level_function_name(obj)</span><br><span class="line">       <span class="keyword">return</span> obj</span><br><span class="line">   key = repr(unwind_key(key))</span><br><span class="line"></span><br><span class="line">   <span class="comment"># Build graph.</span></span><br><span class="line">   <span class="keyword">if</span> key <span class="keyword">not</span> <span class="keyword">in</span> self._run_cache:</span><br><span class="line">       <span class="keyword">with</span> tfutil.absolute_name_scope(self.scope + <span class="string">"/_Run"</span>), tf.control_dependencies(<span class="literal">None</span>):</span><br><span class="line">           <span class="keyword">with</span> tf.device(<span class="string">"/cpu:0"</span>):</span><br><span class="line">               in_expr = [tf.placeholder(tf.float32, name=name) <span class="keyword">for</span> name <span class="keyword">in</span> self.input_names]</span><br><span class="line">               in_split = list(zip(*[tf.split(x, num_gpus) <span class="keyword">for</span> x <span class="keyword">in</span> in_expr]))</span><br><span class="line"></span><br><span class="line">           out_split = []</span><br><span class="line">           <span class="keyword">for</span> gpu <span class="keyword">in</span> range(num_gpus):</span><br><span class="line">               <span class="keyword">with</span> tf.device(<span class="string">"/gpu:%d"</span> % gpu):</span><br><span class="line">                   net_gpu = self.clone() <span class="keyword">if</span> assume_frozen <span class="keyword">else</span> self</span><br><span class="line">                   in_gpu = in_split[gpu]</span><br><span class="line"></span><br><span class="line">                   <span class="keyword">if</span> input_transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                       in_kwargs = dict(input_transform)</span><br><span class="line">                       in_gpu = in_kwargs.pop(<span class="string">"func"</span>)(*in_gpu, **in_kwargs)</span><br><span class="line">                       in_gpu = [in_gpu] <span class="keyword">if</span> tfutil.is_tf_expression(in_gpu) <span class="keyword">else</span> list(in_gpu)</span><br><span class="line"></span><br><span class="line">                   <span class="keyword">assert</span> len(in_gpu) == self.num_inputs</span><br><span class="line">                   out_gpu = net_gpu.get_output_for(*in_gpu, return_as_list=<span class="literal">True</span>, **dynamic_kwargs)</span><br><span class="line"></span><br><span class="line">                   <span class="keyword">if</span> output_transform <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">                       out_kwargs = dict(output_transform)</span><br><span class="line">                       out_gpu = out_kwargs.pop(<span class="string">"func"</span>)(*out_gpu, **out_kwargs)</span><br><span class="line">                       out_gpu = [out_gpu] <span class="keyword">if</span> tfutil.is_tf_expression(out_gpu) <span class="keyword">else</span> list(out_gpu)</span><br><span class="line"></span><br><span class="line">                   <span class="keyword">assert</span> len(out_gpu) == self.num_outputs</span><br><span class="line">                   out_split.append(out_gpu)</span><br><span class="line"></span><br><span class="line">           <span class="keyword">with</span> tf.device(<span class="string">"/cpu:0"</span>):</span><br><span class="line">               out_expr = [tf.concat(outputs, axis=<span class="number">0</span>) <span class="keyword">for</span> outputs <span class="keyword">in</span> zip(*out_split)]</span><br><span class="line">               self._run_cache[key] = in_expr, out_expr</span><br><span class="line"></span><br><span class="line">   <span class="comment"># Run minibatches.</span></span><br><span class="line">   in_expr, out_expr = self._run_cache[key]</span><br><span class="line">   out_arrays = [np.empty([num_items] + tfutil.shape_to_list(expr.shape)[<span class="number">1</span>:], expr.dtype.name) <span class="keyword">for</span> expr <span class="keyword">in</span> out_expr]</span><br><span class="line"></span><br><span class="line">   <span class="keyword">for</span> mb_begin <span class="keyword">in</span> range(<span class="number">0</span>, num_items, minibatch_size):</span><br><span class="line">       <span class="keyword">if</span> print_progress:</span><br><span class="line">           print(<span class="string">"\r%d / %d"</span> % (mb_begin, num_items), end=<span class="string">""</span>)</span><br><span class="line"></span><br><span class="line">       mb_end = min(mb_begin + minibatch_size, num_items)</span><br><span class="line">       mb_num = mb_end - mb_begin</span><br><span class="line">       mb_in = [src[mb_begin : mb_end] <span class="keyword">if</span> src <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span> <span class="keyword">else</span> np.zeros([mb_num] + shape[<span class="number">1</span>:]) <span class="keyword">for</span> src, shape <span class="keyword">in</span> zip(in_arrays, self.input_shapes)]</span><br><span class="line">       mb_out = tf.get_default_session().run(out_expr, dict(zip(in_expr, mb_in)))</span><br><span class="line"></span><br><span class="line">       <span class="keyword">for</span> dst, src <span class="keyword">in</span> zip(out_arrays, mb_out):</span><br><span class="line">           dst[mb_begin: mb_end] = src</span><br><span class="line"></span><br><span class="line">   <span class="comment"># Done.</span></span><br><span class="line">   <span class="keyword">if</span> print_progress:</span><br><span class="line">       print(<span class="string">"\r%d / %d"</span> % (num_items, num_items))</span><br><span class="line"></span><br><span class="line">   <span class="keyword">if</span> <span class="keyword">not</span> return_as_list:</span><br><span class="line">       out_arrays = out_arrays[<span class="number">0</span>] <span class="keyword">if</span> len(out_arrays) == <span class="number">1</span> <span class="keyword">else</span> tuple(out_arrays)</span><br><span class="line">   <span class="keyword">return</span> out_arrays</span><br></pre></td></tr></table></figure>
+
+<h1 id="代码微调"><a href="#代码微调" class="headerlink" title="代码微调"></a>代码微调</h1><p>如果你的机器环境为单节点单卡，请把以上函数中注释<code>#Build graph</code>以下的所有 <code>with tf.device()</code>设置为你的<strong>GPU</strong>，例如<code>with tf.device(&quot;/gpu:0&quot;)</code>(若只有一张显卡，其对应的设备号为<strong>0</strong>)，以下代码可以查看当前环境下可以使用的<strong>CPU/GPU</strong>设备号：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> tensorflow.python.client <span class="keyword">import</span> device_lib</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(device_lib.list_local_devices())</span><br></pre></td></tr></table></figure>
+
+<h1 id="代码逐行分析"><a href="#代码逐行分析" class="headerlink" title="代码逐行分析"></a>代码逐行分析</h1><h2 id="assert"><a href="#assert" class="headerlink" title="assert"></a>assert</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">assert</span> len(in_arrays) == self.num_inputs</span><br><span class="line"><span class="keyword">assert</span> <span class="keyword">not</span> all(arr <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">for</span> arr <span class="keyword">in</span> in_arrays)</span><br><span class="line"><span class="keyword">assert</span> input_transform <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> util.is_top_level_function(input_transform[<span class="string">"func"</span>])</span><br><span class="line"><span class="keyword">assert</span> output_transform <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> util.is_top_level_function(output_transform[<span class="string">"func"</span>])</span><br></pre></td></tr></table></figure>
+<p>我们首先看一下<code>assert</code>以及<code>all</code>，<code>not all</code>的用法：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># exampe1--assert</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">assert</span> <span class="number">0</span>,<span class="string">'请检查输入'</span></span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">AssertionError: 请检查输入</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">assert</span> <span class="number">1</span>,<span class="string">'pass'</span> <span class="comment"># 无输出</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">assert</span> <span class="literal">True</span> <span class="keyword">or</span> <span class="literal">False</span> <span class="comment"># 无输出</span></span><br><span class="line"><span class="comment"># example2--all, not all</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Signature: all(iterable, /)</span></span><br><span class="line"><span class="string">Docstring:</span></span><br><span class="line"><span class="string">若可迭代变量iterable中所有的值均为True，则all(iterable)返回True。</span></span><br><span class="line"><span class="string">若iterable为空，也返回True。</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>all([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>all([<span class="number">1</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">not</span> all([<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>])</span><br><span class="line"><span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>这里，第一行的<code>assert len(in_arrays) == self.num_inputs</code>首先判断输入是否与期望输入长度相等，<strong>in_arrays</strong>为<code>tuple</code>，<code>len(in_arrays)=self.num_inputs=2</code>，<strong>in_arrays[0]</strong> 是一个<strong>size</strong>为<code>(1,512)</code>的<code>np.array</code>，<strong>n_array[1]</strong> 为<strong>Nonetype</strong>。<br>第二行的<code>assert not all(arr is None for arr in in_arrays)</code>将对元组<strong>in_arrays</strong>中的元素进行判断，若所有元素均为<strong>Nonetype</strong>则抛出<code>AssertionError</code>。<br>第三和第四行分别对字典<strong>input_transform</strong>以及<strong>output_transform</strong>进行判断，若其为空或者并没有加载到内存中，则抛出<code>AssertionError</code>。</p>
+<h2 id="is-top-level-function"><a href="#is-top-level-function" class="headerlink" title="is_top_level_function"></a>is_top_level_function</h2><p><strong>or</strong>之后的函数原型为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">is_top_level_function</span><span class="params">(obj: Any)</span> -&gt; bool:</span></span><br><span class="line">    <span class="keyword">return</span> callable(obj) <span class="keyword">and</span> obj.__name__ <span class="keyword">in</span> sys.modules[obj.__module__].__dict__</span><br></pre></td></tr></table></figure>
+<p><code>is_top_level_function</code>用来判断obj是否为顶层函数，即是否是由<strong>def</strong>所定义，然后确认该函数是否已经读取到内存中。<code>sys.modules</code>是一个字典，加载到内存的模块将会以字典的形式存储在其中(第一次导入时自动记录所导入的模块为字典，第二导入则直接从字典中取出相应的键值)。(callable的应用可以查看<a href="https://www.runoob.com/python/python-func-callable.html" target="_blank" rel="noopener">链接</a>， 它用于检查一个对象是否是可调用的)</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">import</span> sys</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="class"><span class="keyword">class</span> <span class="title">Father</span><span class="params">(object)</span>:</span></span><br><span class="line"><span class="meta">... </span>    <span class="string">"sdfsfdfs"</span></span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, name)</span>:</span></span><br><span class="line"><span class="meta">... </span>        self.name=name</span><br><span class="line"><span class="meta">... </span>        <span class="keyword">print</span> ( <span class="string">"name: %s"</span> %( self.name) )</span><br><span class="line"><span class="meta">... </span>    <span class="function"><span class="keyword">def</span> <span class="title">getName</span><span class="params">(self)</span>:</span></span><br><span class="line"><span class="meta">... </span>        <span class="keyword">return</span> <span class="string">'Father '</span> + self.name</span><br><span class="line"><span class="meta">... </span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>sys.modules[Father.__module__].__dict__</span><br><span class="line">&#123;<span class="string">'__name__'</span>: <span class="string">'__main__'</span>,</span><br><span class="line"> <span class="string">'__doc__'</span>: <span class="literal">None</span>,</span><br><span class="line"> <span class="string">'__package__'</span>: <span class="literal">None</span>,</span><br><span class="line"> '__loader__': &lt;class '_frozen_importlib.BuiltinImporter'&gt;, </span><br><span class="line"> <span class="string">'__spec__'</span>: <span class="literal">None</span>, <span class="string">'__annotations__'</span>: &#123;&#125;,</span><br><span class="line"> <span class="string">'__builtins__'</span>: &lt;module <span class="string">'builtins'</span> (built-<span class="keyword">in</span>)&gt;,</span><br><span class="line"> <span class="string">'sys'</span>: &lt;module <span class="string">'sys'</span> (built-<span class="keyword">in</span>)&gt;, </span><br><span class="line"> <span class="string">'Father'</span>: &lt;<span class="class"><span class="keyword">class</span> '<span class="title">__main__</span>.<span class="title">Father</span>'&gt;&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="handle-legacy-output-transforms"><a href="#handle-legacy-output-transforms" class="headerlink" title="_handle_legacy_output_transforms"></a>_handle_legacy_output_transforms</h2><p><strong>**dynamic_kwargs</strong> 所接收的动态参数将会被存储为字典，所以<strong>output_transform</strong> 和<strong>dynamic_kwargs</strong>是两个字典，在运行pretrained.py时，二者的<strong>key</strong>和<strong>value</strong>分别为：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(output_transform)</span><br><span class="line">&#123;<span class="string">'func'</span>: &lt;function convert_images_to_uint8 at <span class="number">0x7f7dd9468378</span>&gt;, <span class="string">'nchw_to_nhwc'</span>: <span class="literal">True</span>&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(dynamic_kwargs)</span><br><span class="line">&#123;<span class="string">'truncation_psi'</span>: <span class="number">0.7</span>, <span class="string">'randomize_noise'</span>: <span class="literal">True</span>&#125;</span><br></pre></td></tr></table></figure>
+<p>即分别为在<strong>Gs.run</strong>中输入的<code>(truncation_psi=0.7, randomize_noise=True, output_transform=fmt)</code></p>
+<h2 id="args-和-kwargs"><a href="#args-和-kwargs" class="headerlink" title="args 和 *kwargs"></a><em>args 和 *</em>kwargs</h2><p><strong>*args</strong>和 ** <strong>kargs</strong>常用于获取函数的额外参数，通过以下的小例子我们可以清楚看出二者的区别：</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">args_and_kwargs</span><span class="params">(*args, **kwargs)</span>:</span></span><br><span class="line">    print(type(args))</span><br><span class="line">    print(args)</span><br><span class="line">    print(type(kwargs))</span><br><span class="line">    print(kwargs)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>args_and_kwargs(<span class="number">6</span>, <span class="number">8</span>, <span class="string">'im args'</span>, num1 = <span class="number">6</span>, num2 = <span class="number">8</span>, strnum = <span class="string">'im kwargs'</span>)</span><br><span class="line">&lt;<span class="class"><span class="keyword">class</span> '<span class="title">tuple</span>'&gt;</span></span><br><span class="line"><span class="class"><span class="params">(<span class="number">6</span>, <span class="number">8</span>, <span class="string">'im args'</span>)</span></span></span><br><span class="line"><span class="class">&lt;<span class="title">class</span> '<span class="title">dict</span>'&gt;</span></span><br><span class="line">&#123;'num1': 6, 'num2': 8, 'strnum': 'im kwargs'&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="handle-legacy-output-transforms-1"><a href="#handle-legacy-output-transforms-1" class="headerlink" title="_handle_legacy_output_transforms"></a>_handle_legacy_output_transforms</h2><p>该函数对<strong>output_transform</strong>, <strong>dynamic_kwargs</strong>两字典中的值进行判断，这里我们只看运行<strong>pretrained.py</strong>时该函数的内部调用情况：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">_print_legacy_warning = <span class="literal">True</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">_handle_legacy_output_transforms</span><span class="params">(output_transform, dynamic_kwargs)</span>:</span></span><br><span class="line">    <span class="keyword">global</span> _print_legacy_warning</span><br><span class="line">    legacy_kwargs = [<span class="string">"out_mul"</span>, <span class="string">"out_add"</span>, <span class="string">"out_shrink"</span>, <span class="string">"out_dtype"</span>]</span><br><span class="line">    <span class="keyword">if</span> <span class="keyword">not</span> any(kwarg <span class="keyword">in</span> dynamic_kwargs <span class="keyword">for</span> kwarg <span class="keyword">in</span> legacy_kwargs):</span><br><span class="line">        <span class="keyword">return</span> output_transform, dynamic_kwargs</span><br></pre></td></tr></table></figure>
+<p>首先，<code>any</code>的用法如下：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Signature: any(iterable, /)</span></span><br><span class="line"><span class="string">Docstring:</span></span><br><span class="line"><span class="string">若可迭代变量iterable中的任一元素为True，则返回True。</span></span><br><span class="line"><span class="string">若iterable为空，则返回False</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>test = [<span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>, <span class="literal">False</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>any(test)</span><br><span class="line"><span class="literal">True</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">not</span> any(test)</span><br><span class="line"><span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>所以当 <strong>dynamic_kwargs</strong>与<strong>legacy_kwargs</strong>交集为空时，则原样返回。在刚开始看到类似<strong>kwarg in dynamic_kwargs for kwarg in legacy_kwargs</strong>的代码时可能会感到困惑，我们举一个简单的例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>b = [<span class="number">3</span>, <span class="number">4</span> ,<span class="number">5</span> ,<span class="number">6</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>c = [<span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>d = [a <span class="keyword">in</span> b <span class="keyword">for</span> a <span class="keyword">in</span> c]</span><br><span class="line">[<span class="literal">True</span>, <span class="literal">True</span>, <span class="literal">False</span>, <span class="literal">False</span>]</span><br><span class="line"><span class="comment"># d等价于下列算法中的k</span></span><br><span class="line">k=[]</span><br><span class="line"><span class="keyword">for</span> a <span class="keyword">in</span> c:</span><br><span class="line">	<span class="keyword">if</span> a <span class="keyword">in</span> b:</span><br><span class="line">    	k.append(<span class="literal">True</span>)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		k.append(<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+<p>接下来的<code>num_items = in_arrays[0].shape[0]</code>是对获取输入<strong>latent</strong>矢量的个数(每个长度为<strong>512</strong>)。</p>
+<h2 id="key"><a href="#key" class="headerlink" title="key"></a>key</h2><p>将<strong>input_transform</strong>、<strong>output_transform</strong>、<strong>num_gpus</strong>、<strong>assume_frozen</strong>、<strong>dynamic_kwargs</strong>包装为字典，其中第一、二、五位的键值为字典，即字典中的字典。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">unwind_key</span><span class="params">(obj)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> isinstance(obj, dict):</span><br><span class="line">        <span class="keyword">return</span> [(key, unwind_key(value)) <span class="keyword">for</span> key, value <span class="keyword">in</span> sorted(obj.items())]</span><br><span class="line">    <span class="keyword">if</span> callable(obj):</span><br><span class="line">        <span class="keyword">return</span> util.get_top_level_function_name(obj)</span><br><span class="line">    <span class="keyword">return</span> obj</span><br></pre></td></tr></table></figure>
+<p>接着，作者定了<code>unwind_key</code>用于“解压”字典或者函数<strong>module</strong>，这里我们先介绍第一种情况，即<strong>obj</strong>为字典：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">test = &#123;<span class="string">'k1'</span>: <span class="number">11</span>,<span class="string">'k2'</span>: <span class="number">22</span>,</span><br><span class="line">       <span class="string">'k3'</span>: &#123;<span class="string">'k1ink3'</span>: <span class="string">'value13'</span>,<span class="string">'k2ink3'</span>: <span class="string">'value23'</span>,&#125;&#125;</span><br><span class="line"><span class="comment"># 这里我们定义一个test字典，其中k1、k2和k3位于一级字典中，k1ink3和k2ink3位于k3的二级字典中</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(test)</span><br><span class="line">&#123;<span class="string">'k1'</span>: <span class="number">11</span>, <span class="string">'k2'</span>: <span class="number">22</span>, <span class="string">'k3'</span>: &#123;<span class="string">'k1ink3'</span>: <span class="string">'value13'</span>, <span class="string">'k2ink3'</span>: <span class="string">'value23'</span>&#125;&#125;</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>print(unwind_key(test))</span><br><span class="line">[(<span class="string">'k1'</span>, <span class="number">11</span>), (<span class="string">'k2'</span>, <span class="number">22</span>), (<span class="string">'k3'</span>, [(<span class="string">'k1ink3'</span>, <span class="string">'value13'</span>), (<span class="string">'k2ink3'</span>, <span class="string">'value23'</span>)])]</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>repr(unwind_key(test))</span><br><span class="line">[(<span class="string">'k1'</span>, <span class="number">11</span>), (<span class="string">'k2'</span>, <span class="number">22</span>), (<span class="string">'k3'</span>, [(<span class="string">'k1ink3'</span>, <span class="string">'value13'</span>), (<span class="string">'k2ink3'</span>, <span class="string">'value23'</span>)])]</span><br></pre></td></tr></table></figure>
+<p><code>unwind_key(test)</code>会把字典<strong>test</strong>转换为<code>list</code>，而<code>repr(unwind_key(test))</code>则将<code>unwind_key(test)</code>转换成了<code>str</code>。</p>
+<h2 id="tfutil-absolute-name-scope"><a href="#tfutil-absolute-name-scope" class="headerlink" title="tfutil.absolute_name_scope"></a>tfutil.absolute_name_scope</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ？</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">absolute_name_scope</span><span class="params">(scope: str)</span> -&gt; tf.name_scope:</span></span><br><span class="line">    <span class="string">"""强制进入特定scope."""</span></span><br><span class="line">    <span class="keyword">return</span> tf.name_scope(scope + <span class="string">"/"</span>)</span><br></pre></td></tr></table></figure>
+<p>tfutil.absolute_name_scope(self.scope + “/_Run”)创建了一个参数命名空间，在这个语境下，所有的参数名将变为<code>“%s/_Run/variable_name”%(self.scope)</code>的形式，即变为了<code>Gs/_Run/xxx/xxx</code>的形式。</p>
+<p>注：在<strong>tfutil.py</strong>的<code>_sanitize_tf_config</code>函数中添加<code>cfg[&quot;log_device_placement&quot;]             = True</code>即可输出所有变量的位置(<strong>CPU/GPU</strong>)。</p>
+<h2 id="tf-control-dependencies-control-inputs"><a href="#tf-control-dependencies-control-inputs" class="headerlink" title="tf.control_dependencies(control_inputs)"></a>tf.control_dependencies(control_inputs)</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span>tf.control_dependencies(control_inputs)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Signature: tf.control_dependencies(control_inputs)</span></span><br><span class="line"><span class="string">Docstring:</span></span><br><span class="line"><span class="string">Wrapper for `Graph.control_dependencies()` using the default graph.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">See `tf.Graph.control_dependencies`</span></span><br><span class="line"><span class="string">for more details.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">当动态图机制启用时，会自动调用list`control_inputs`中的可执行对象。</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Args:</span></span><br><span class="line"><span class="string">  control_inputs: op或者Tensor的列表，context中的内容会在control_inputs执行完成后才执行。也可以为‘None’来清空控制依赖</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="string">Returns:</span></span><br><span class="line"><span class="string"> 返回一个上下文管理器。</span></span><br><span class="line"><span class="string"> """</span></span><br></pre></td></tr></table></figure>
+
+<h2 id="in-expr-和-in-split"><a href="#in-expr-和-in-split" class="headerlink" title="in_expr 和 in_split"></a>in_expr 和 in_split</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.device(<span class="string">"/gpu:0"</span>):</span><br><span class="line">    in_expr = [tf.placeholder(tf.float32, name=name) <span class="keyword">for</span> name <span class="keyword">in</span> self.input_names]</span><br><span class="line">    in_split = list(zip(*[tf.split(x, num_gpus) <span class="keyword">for</span> x <span class="keyword">in</span> in_expr]))</span><br></pre></td></tr></table></figure>
+<p>这里我做了修改，把所有变量操作都放到<strong>GPU</strong>上运行。<br><code>in_expr</code>是一个长度为<strong>len(input_names)</strong> 的列表，其中的每一个变量都是类型为<code>tf.float32</code>，名称为<strong>self.input_names[i]</strong> 的<code>tf.Tensor</code>。<br><code>in_split</code>是将<code>in_expr</code>沿<strong>minibatch</strong>方向划分为<strong>num_gpus</strong>个<code>tf.Tensor</code></p>
+<h2 id="多GPU环境的graph构建"><a href="#多GPU环境的graph构建" class="headerlink" title="多GPU环境的graph构建"></a>多GPU环境的graph构建</h2><p><code>for gpu in range(num_gpus): with tf.device(&quot;/gpu:%d&quot; % gpu):</code>即在每个GPU上执行该上下文，若只用了单卡，<code>for</code>循环不起作用且在<code>&quot;/gpu:0&quot;</code>上执行。net_gpu = <code>self.clone() if assume_frozen else self</code>，当<strong>assume_frozen</strong>为<code>False</code>时将返回实例本身（默认），当其为<code>True</code>时会调用<code>self.clone()</code>,我们做一个简单的测试：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 这里我们以源代码为模板，构造以下函数</span></span><br><span class="line"><span class="keyword">import</span> multiprocessing</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">User</span><span class="params">(object)</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self,name)</span>:</span></span><br><span class="line">        self.name = name</span><br><span class="line">        self.cpu_count = multiprocessing.cpu_count()</span><br><span class="line">        print(<span class="string">"本机共有%d个CPU。"</span>%(self.cpu_count))</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">clone</span><span class="params">(self, name: str = None)</span>:</span></span><br><span class="line">        new = object.__new__(User)</span><br><span class="line">        <span class="keyword">return</span> new</span><br><span class="line">        </span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">run</span><span class="params">(self,)</span>:</span></span><br><span class="line">        <span class="keyword">for</span> cpu <span class="keyword">in</span> range(self.cpu_count):</span><br><span class="line">            <span class="keyword">with</span> tf.device(<span class="string">"/cpu:%d"</span>%cpu):</span><br><span class="line">                net_gpu = self.clone() <span class="keyword">if</span> <span class="literal">True</span> <span class="keyword">else</span> self</span><br><span class="line">                print(<span class="string">'/cpu:%d/%s'</span>%(cpu,str(net_gpu)))</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>test = User(<span class="string">"Test"</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>test.run()</span><br><span class="line">本机共有<span class="number">12</span>个CPU。</span><br><span class="line">/cpu:<span class="number">0</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf630</span>&gt;</span><br><span class="line">/cpu:<span class="number">1</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf550</span>&gt;</span><br><span class="line">/cpu:<span class="number">2</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf710</span>&gt;</span><br><span class="line">/cpu:<span class="number">3</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf588</span>&gt;</span><br><span class="line">/cpu:<span class="number">4</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf748</span>&gt;</span><br><span class="line">/cpu:<span class="number">5</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf7f0</span>&gt;</span><br><span class="line">/cpu:<span class="number">6</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceafa90</span>&gt;</span><br><span class="line">/cpu:<span class="number">7</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf828</span>&gt;</span><br><span class="line">/cpu:<span class="number">8</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf7b8</span>&gt;</span><br><span class="line">/cpu:<span class="number">9</span>/&lt;__main__.User object at <span class="number">0x7f4c3ceaf780</span>&gt;</span><br><span class="line">/cpu:<span class="number">10</span>/&lt;__main__.User object at <span class="number">0x7f4c3ce82278</span>&gt;</span><br><span class="line">/cpu:<span class="number">11</span>/&lt;__main__.User object at <span class="number">0x7f4c3ce825f8</span>&gt;</span><br></pre></td></tr></table></figure>
+<p><code>in_gpu = in_split[gpu]</code>是从分割后的元组<code>in_split</code>中按照设备号来访问其中的<code>tf.Tensor</code>，也就是将整个<strong>miniBatch</strong>均匀分配到各个<strong>GPU</strong>上。<code>if input_transform is not None:</code>判断是否需要对输入做变换，<code>in_kwargs = dict(input_transform)</code>将<code>input_transform</code>存放到字典<code>in_kwargs</code>中，实质上<code>input_transform</code>也为字典，这里可能是为了避免后续的<code>pop</code>操作将<code>input_transform</code>中的值删除。对输入做完预处理之后，若<code>in_gpu</code>为<code>tf.Tensor</code>、<code>tf.Variable</code>或者<code>tf.Operation</code>中的某一个，则返回<code>[in_gpu]</code>，否则返回<code>list(in_gpu)</code>。</p>
+<p><code>net_gpu.get_output_for</code>的返回值<strong>out_gpu</strong>为<code>&lt;tf.Tensor &#39;Gs/_Run/Gs/images_out:0&#39; shape=(?, 3, 1024, 1024) dtype=float32&gt;</code>，由于篇幅原因我们将这一函数单独放在另一篇文章中讲解。</p>
+<p>接下来的<code>output_transform</code>板块与上文中提到的<code>input_transform</code>所执行的操作比较相似，其是对输出<strong>out_gpu</strong>做了后续的处理，在运行<strong>pretrained.py</strong>时，<code>run</code>函数并没有执行<code>if input_transform</code>后面的代码，因为输入中并没有给出任何关于对输入信息进行转换的关键词或列表，但是需要将输出转换为<strong>unit8</strong>，即<code>output_transform = {&#39;func&#39;: &lt;function convert_images_to_uint8 at 0x7f9f38697378&gt;,&#39;nchw_to_nhwc&#39;:True}</code>代码如下：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">convert_images_to_uint8</span><span class="params">(images, drange=[<span class="number">-1</span>,<span class="number">1</span>], nchw_to_nhwc=False, shrink=<span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="string">"""根据输入的动态范围drange，将一个minibatch的图像从float32类型转换为unit8。可以作为Network.run()中的输出转换使用</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    images = tf.cast(images, tf.float32)</span><br><span class="line">    <span class="keyword">if</span> shrink &gt; <span class="number">1</span>:</span><br><span class="line">        ksize = [<span class="number">1</span>, <span class="number">1</span>, shrink, shrink]</span><br><span class="line">        images = tf.nn.avg_pool(images,ksize=ksize,strides=ksize,padding=<span class="string">"VALID"</span>,data_format=<span class="string">"NWHC"</span>)</span><br><span class="line">    <span class="keyword">if</span> nchw_to_nhwc:</span><br><span class="line">        images = tf.transpose(images, [<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">1</span>])</span><br><span class="line">    scale = <span class="number">255</span> / (drange[<span class="number">1</span>] - drange[<span class="number">0</span>])</span><br><span class="line">    images = images * scale + (<span class="number">0.5</span> - drange[<span class="number">0</span>] * scale)</span><br><span class="line">    <span class="keyword">return</span> tf.saturate_cast(images, tf.uint8)</span><br></pre></td></tr></table></figure>
+<p>我们来看一下上面代码块中出现的几个常用函数，首先看一下<code>tf.cast</code>以及<code>tf.saturate_cast</code>的区别：</p>
+<figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">Signature: tf.saturate_cast(value, dtype, name=None)</span></span><br><span class="line"><span class="string">Docstring:</span></span><br><span class="line"><span class="string">将value安全地转换为dtype类型，不进行任何缩放。当转换可能会出现泄露(overflow或 underflow)问题时,会首先将数据clamp到合适范围之内。</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="comment">#例如,我们要把一个float32转换为uint8类型：</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x = tf.constant([<span class="number">-1</span>, <span class="number">256</span>], dtype=tf.float32)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x1 = tf.saturate_cast(x, tf.uint8)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>x2 = tf.cast(x, tf.uint8)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">with</span> tf.Session() <span class="keyword">as</span> sess:</span><br><span class="line">        dx1, dx2 = sess.run([x1, x2])</span><br><span class="line">        print(<span class="string">'tf.saturate_cast:'</span>,dx1)</span><br><span class="line">        print(<span class="string">'tf.cast:'</span>,dx2)</span><br><span class="line">tf.saturate_cast: [<span class="number">0</span> <span class="number">255</span>]</span><br><span class="line">tf.cast: [<span class="number">0</span> <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>然后，<code>out_split.append(out_gpu)</code>将每个<strong>GPU</strong>得到的结果<code>out_gpu</code>添加到表<code>out_split</code>中，由<code>tf.concat(outputs, axis=0)</code>将所有结果沿<strong>minibatch</strong>方向连接，最后转化为<code>list</code>赋值给<code>out_expr</code>。</p>
+
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>shaowinw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.geophyai.com/2020/07/11/styleGAN-network.py1/" title="styleGAN源码解读之pretrained-example.py">http://blog.geophyai.com/2020/07/11/styleGAN-network.py1/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/styleGAN/" rel="tag"> <i class="fa fa-tag"></i> styleGAN</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/07/07/styleGAN-pretrained-example/" rel="prev" title="styleGAN源码解读之pretrained-example.py">
+      <i class="fa fa-chevron-left"></i> styleGAN源码解读之pretrained-example.py
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#styleGAN—network-py"><span class="nav-number">1.</span> <span class="nav-text">styleGAN—network.py</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码"><span class="nav-number">2.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码微调"><span class="nav-number">3.</span> <span class="nav-text">代码微调</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码逐行分析"><span class="nav-number">4.</span> <span class="nav-text">代码逐行分析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#assert"><span class="nav-number">4.1.</span> <span class="nav-text">assert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#is-top-level-function"><span class="nav-number">4.2.</span> <span class="nav-text">is_top_level_function</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#handle-legacy-output-transforms"><span class="nav-number">4.3.</span> <span class="nav-text">_handle_legacy_output_transforms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#args-和-kwargs"><span class="nav-number">4.4.</span> <span class="nav-text">args 和 *kwargs</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#handle-legacy-output-transforms-1"><span class="nav-number">4.5.</span> <span class="nav-text">_handle_legacy_output_transforms</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#key"><span class="nav-number">4.6.</span> <span class="nav-text">key</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tfutil-absolute-name-scope"><span class="nav-number">4.7.</span> <span class="nav-text">tfutil.absolute_name_scope</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#tf-control-dependencies-control-inputs"><span class="nav-number">4.8.</span> <span class="nav-text">tf.control_dependencies(control_inputs)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#in-expr-和-in-split"><span class="nav-number">4.9.</span> <span class="nav-text">in_expr 和 in_split</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多GPU环境的graph构建"><span class="nav-number">4.10.</span> <span class="nav-text">多GPU环境的graph构建</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">shaowinw</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">4</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">7</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备20023201号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shaowinw</span>
+</div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/07/11/styleGAN-network.py1/',]
+      });
+      });
+  </script>
+
+<script src="../js/src/av-min.js"></script>
+<script src="../js/src/valine.min.js"></script>
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/gh//AshinWang/SimpleValine/SimpleValine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'xGkAfNjiLy2iAFwuv2Itmye6-gzGzoHsz',
+      appKey     : 'IGOUrFEiKTeXfsDJwsmNLMnd',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
