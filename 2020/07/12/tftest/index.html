@@ -23,20 +23,20 @@
   <meta name="description" content="tensorflow中scope的定义与使用。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tensorflow之scope使用(一)">
-<meta property="og:url" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/index.html">
+<meta property="og:url" content="http://blog.geophyai.com/2020/07/12/tftest/index.html">
 <meta property="og:site_name" content="GeophyAI">
 <meta property="og:description" content="tensorflow中scope的定义与使用。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/variablescope.png">
-<meta property="og:image" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/namescope.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/07/12/tftest/variablescope.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/07/12/tftest/namescope.png">
 <meta property="article:published_time" content="2020-07-11T17:57:58.000Z">
 <meta property="article:modified_time" content="2020-07-12T01:19:58.000Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="scope">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/variablescope.png">
+<meta name="twitter:image" content="http://blog.geophyai.com/2020/07/12/tftest/variablescope.png">
 
-<link rel="canonical" href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/">
+<link rel="canonical" href="http://blog.geophyai.com/2020/07/12/tftest/">
 
 
 <script id="page-configurations">
@@ -198,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/07/12/tftest/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -252,8 +252,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/07/12/tf_name_scope_variable_scope_new/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/12/tf_name_scope_variable_scope_new/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/07/12/tftest/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/12/tftest/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -304,9 +304,9 @@
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">main_thread_scope = variable_scope.get_variable_scope()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Thread's target function:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">thread_target_fn</span><span class="params">(captured_scope)</span>:</span></span><br><span class="line">  <span class="keyword">with</span> variable_scope.variable_scope(captured_scope):</span><br><span class="line">    <span class="comment"># .... regular code for this thread</span></span><br><span class="line">    </span><br><span class="line">thread = threading.Thread(target=thread_target_fn, args=(main_thread_scope,))</span><br></pre></td></tr></table></figure>
 
 <h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><h2 id="variable-scope"><a href="#variable-scope" class="headerlink" title="variable_scope"></a>variable_scope</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">scope1 = <span class="string">"Test1"</span></span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(scope1):</span><br><span class="line">    testA = tf.get_variable(<span class="string">"testA1"</span>, [<span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>])</span><br><span class="line">    testB = tf.get_variable(<span class="string">"testA2"</span>, [<span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>])</span><br><span class="line">    testC = tf.multiply(testA, testB, name = <span class="string">"Mul-testA12"</span>)</span><br><span class="line">    testD = tf.Variable([<span class="number">1</span>],name=<span class="string">"testD"</span>)</span><br><span class="line"><span class="comment"># testA: &lt;tf.Variable 'Test1/testA1:0' shape=(3, 256, 256) dtype=float32_ref&gt;</span></span><br><span class="line"><span class="comment"># testB: &lt;tf.Variable 'Test1/testA2:0' shape=(3, 256, 256) dtype=float32_ref&gt;</span></span><br><span class="line"><span class="comment"># testC: Tensor("Test1/Mul-testA12:0", shape=(3, 256, 256), dtype=float32)</span></span><br><span class="line"><span class="comment"># testD: &lt;tf.Variable 'Test1/testD:0' shape=(1,) dtype=int32_ref&gt;</span></span><br></pre></td></tr></table></figure>
-<p>可以看到<code>variable_scope</code>能够同时影响到<code>tf.get_variable</code>以及<code>op</code>的命名，也就是说，变量域的作用范围内命名的变量，其前缀为变量域名。<br><img src="/2020/07/12/tf_name_scope_variable_scope_new/variablescope.png" alt="Tensorboard"></p>
+<p>可以看到<code>variable_scope</code>能够同时影响到<code>tf.get_variable</code>以及<code>op</code>的命名，也就是说，变量域的作用范围内命名的变量，其前缀为变量域名。<br><img src="/2020/07/12/tftest/variablescope.png" alt="Tensorboard"></p>
 <h2 id="name-scope"><a href="#name-scope" class="headerlink" title="name_scope"></a>name_scope</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">scope1 = <span class="string">"Test1"</span></span><br><span class="line"><span class="keyword">with</span> tf.name_scope(scope1):</span><br><span class="line">    testA = tf.get_variable(<span class="string">"testA1"</span>, [<span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>])</span><br><span class="line">    testB = tf.get_variable(<span class="string">"testA2"</span>, [<span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>])</span><br><span class="line">    testC = tf.multiply(testA, testB, name = <span class="string">"Mul-testA12"</span>)</span><br><span class="line">    testD = tf.Variable([<span class="number">1</span>],name=<span class="string">"testD"</span>)</span><br><span class="line"><span class="comment"># testA: &lt;tf.Variable 'testA1:0' shape=(3, 256, 256) dtype=float32_ref&gt;</span></span><br><span class="line"><span class="comment"># testB: &lt;tf.Variable 'testA2:0' shape=(3, 256, 256) dtype=float32_ref&gt;</span></span><br><span class="line"><span class="comment"># testC: Tensor("Test1/Mul-testAC:0", shape=(3, 256, 256), dtype=float32)</span></span><br><span class="line"><span class="comment"># testD: &lt;tf.Variable 'Test1/testD:0' shape=(1,) dtype=int32_ref&gt;</span></span><br></pre></td></tr></table></figure>
-<p>而在<code>name_scope</code>中，其不会影响到由<code>tf.get_variable</code>得到的变量，只会作用于<code>op</code>运算得到的变量以及由<code>tf.Variable</code>得到的变量。<br><img src="/2020/07/12/tf_name_scope_variable_scope_new/namescope.png" alt="Tensorboard"></p>
+<p>而在<code>name_scope</code>中，其不会影响到由<code>tf.get_variable</code>得到的变量，只会作用于<code>op</code>运算得到的变量以及由<code>tf.Variable</code>得到的变量。<br><img src="/2020/07/12/tftest/namescope.png" alt="Tensorboard"></p>
 
     </div>
 
@@ -322,7 +322,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/" title="tensorflow之scope使用(一)">http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/</a>
+    <a href="http://blog.geophyai.com/2020/07/12/tftest/" title="tensorflow之scope使用(一)">http://blog.geophyai.com/2020/07/12/tftest/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -342,10 +342,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/12/tftest/" rel="prev" title="tensorflow之scope使用(一)">
-      <i class="fa fa-chevron-left"></i> tensorflow之scope使用(一)
+    <a href="/2020/07/11/styleGAN-network.py1/" rel="prev" title="styleGAN源码解读之network.py(一)">
+      <i class="fa fa-chevron-left"></i> styleGAN源码解读之network.py(一)
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/12/tf_name_scope_variable_scope_new/" rel="next" title="tensorflow之scope使用(一)">
+      tensorflow之scope使用(一) <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -531,7 +534,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/07/12/tftest/',]
       });
       });
   </script>
