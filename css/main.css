@@ -1168,7 +1168,7 @@ pre .javascript .function {
 }
 .links-of-author a::before,
 .links-of-author span.exturl::before {
-  background: #ff578b;
+  background: #655801;
   border-radius: 50%;
   content: ' ';
   display: inline-block;
@@ -1822,7 +1822,7 @@ pre .javascript .function {
   color: #999;
   font-family: 'Noto Sans SC', "Microsoft YaHei", "PingFang SC", sans-serif;
   font-size: 0.75em;
-  margin: 3px 0 60px 0;
+  margin: 3px 0 30px 0;
   text-align: center;
 }
 .posts-expand .post-meta .post-description {
