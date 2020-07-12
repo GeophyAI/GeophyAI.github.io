@@ -23,17 +23,20 @@
   <meta name="description" content="tensorflow中scope的定义与使用。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="tensorflow之scope使用(一)">
-<meta property="og:url" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope/index.html">
+<meta property="og:url" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/index.html">
 <meta property="og:site_name" content="GeophyAI">
 <meta property="og:description" content="tensorflow中scope的定义与使用。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/variablescope.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/namescope.png">
 <meta property="article:published_time" content="2020-07-11T17:57:58.000Z">
-<meta property="article:modified_time" content="2020-07-11T17:57:58.000Z">
+<meta property="article:modified_time" content="2020-07-12T01:19:58.000Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="scope">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/variablescope.png">
 
-<link rel="canonical" href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope/">
+<link rel="canonical" href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/">
 
 
 <script id="page-configurations">
@@ -195,7 +198,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope/">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -223,6 +226,13 @@
 
 
 	
+          <span class="post-updated">
+    	    &nbsp; | &nbsp; 更新于
+    	    <time itemprop="dateUpdated" datetime="2020-07-12T09:19:58+08:00" content="2020-07-12">
+      	2020-07-12
+    	  </time> &nbsp; | &nbsp;
+  	  </span>
+	
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -242,8 +252,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/07/12/tf_name_scope_variable_scope/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/12/tf_name_scope_variable_scope/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/07/12/tf_name_scope_variable_scope_new/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/07/12/tf_name_scope_variable_scope_new/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -260,7 +270,7 @@
 
       
         <h1 id="tensorflow中名称作用域和变量作用域"><a href="#tensorflow中名称作用域和变量作用域" class="headerlink" title="tensorflow中名称作用域和变量作用域"></a>tensorflow中名称作用域和变量作用域</h1><p>名称作用域和变量作用域能让我们在<strong>tensorboard</strong>中更清晰得看到各类变量所处的命名空间以及输入、输出的流动方向。当神经网络架构较为复杂时，可以通过为网络不同块的变量和运算创建作用域的形式来使<strong>graph</strong>更整洁。(源码为官方代码，<strong>注释为翻译版</strong>，英文版请查看源码<strong>doc</strong>或者关注<a href="https://tensorflow.google.cn/api_docs/python/tf/compat/v1/variable_scope" target="_blank" rel="noopener">官方网站</a>)</p>
-<h2 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Init signature:</span><br><span class="line">tf.variable_scope(</span><br><span class="line">    name_or_scope, <span class="comment"># 传入&lt;str&gt;或者scope</span></span><br><span class="line">    default_name=<span class="literal">None</span>, <span class="comment"># 若name_or_scope==None，则自动生成具有唯一标示的名称；</span></span><br><span class="line">    values=<span class="literal">None</span>, <span class="comment"># 需要用于op的Tensor列表</span></span><br><span class="line">    initializer=<span class="literal">None</span>, <span class="comment"># 该scope中变量默认初始化方式</span></span><br><span class="line">    regularizer=<span class="literal">None</span>, <span class="comment"># 该scope中变量默认正则化方式</span></span><br><span class="line">    caching_device=<span class="literal">None</span>, <span class="comment"># 该scope中变量默认缓存设备</span></span><br><span class="line">    partitioner=<span class="literal">None</span>, <span class="comment"># 该scope中变量的默认分区</span></span><br><span class="line">    custom_getter=<span class="literal">None</span>, <span class="comment"># 不知道干啥的</span></span><br><span class="line">    reuse=<span class="literal">None</span>, <span class="comment"># 是否重用，True,None or tf.AUTO_REUSE</span></span><br><span class="line">    dtype=<span class="literal">None</span>, <span class="comment"># 变量类型(默认为传入的变量类型或者从父scope继承)</span></span><br><span class="line">    use_resource=<span class="literal">None</span>, <span class="comment"># False: 所有变量均为均为常规变量。\\ True: 具有良定义语义学的experimental ResourceVariables</span></span><br><span class="line">    constraint=<span class="literal">None</span>, <span class="comment"># 在优化器更新变量之后，使用一个投影函数对输出进行变换。</span></span><br><span class="line">    auxiliary_name_scope=<span class="literal">True</span>, <span class="comment"># True:创建一个辅助name scope;该变量不具有继承属性，\\ 只有第一次创建时才有作用；所以应在重新进入已经创建好的scope时才使用。</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># 函数返回一个可以被capture和reuse的socpe</span></span><br></pre></td></tr></table></figure>
+<h1 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h1><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">Init signature:</span><br><span class="line">tf.variable_scope(</span><br><span class="line">    name_or_scope, <span class="comment"># 传入&lt;str&gt;或者scope</span></span><br><span class="line">    default_name=<span class="literal">None</span>, <span class="comment"># 若name_or_scope==None，则自动生成具有唯一标示的名称；</span></span><br><span class="line">    values=<span class="literal">None</span>, <span class="comment"># 需要用于op的Tensor列表</span></span><br><span class="line">    initializer=<span class="literal">None</span>, <span class="comment"># 该scope中变量默认初始化方式</span></span><br><span class="line">    regularizer=<span class="literal">None</span>, <span class="comment"># 该scope中变量默认正则化方式</span></span><br><span class="line">    caching_device=<span class="literal">None</span>, <span class="comment"># 该scope中变量默认缓存设备</span></span><br><span class="line">    partitioner=<span class="literal">None</span>, <span class="comment"># 该scope中变量的默认分区</span></span><br><span class="line">    custom_getter=<span class="literal">None</span>, <span class="comment"># 不知道干啥的</span></span><br><span class="line">    reuse=<span class="literal">None</span>, <span class="comment"># 是否重用，True,None or tf.AUTO_REUSE</span></span><br><span class="line">    dtype=<span class="literal">None</span>, <span class="comment"># 变量类型(默认为传入的变量类型或者从父scope继承)</span></span><br><span class="line">    use_resource=<span class="literal">None</span>, <span class="comment"># False: 所有变量均为均为常规变量。\\ True: 具有良定义语义学的experimental ResourceVariables</span></span><br><span class="line">    constraint=<span class="literal">None</span>, <span class="comment"># 在优化器更新变量之后，使用一个投影函数对输出进行变换。</span></span><br><span class="line">    auxiliary_name_scope=<span class="literal">True</span>, <span class="comment"># True:创建一个辅助name scope;该变量不具有继承属性，\\ 只有第一次创建时才有作用；所以应在重新进入已经创建好的scope时才使用。</span></span><br><span class="line">)</span><br><span class="line"><span class="comment"># 函数返回一个可以被capture和reuse的socpe</span></span><br></pre></td></tr></table></figure>
 <p>函数注释:     </p>
 <p>一个定义<code>vars</code>或<code>layers</code>生成<code>ops</code>的上下文管理器。</p>
 <p>这一上下文管理器会确认（可选）<code>values</code>是否来自于同一<code>graph</code>，确保<code>graph</code>是默认<code>graph</code>，并且会<code>push</code>名称作用域(<code>name_scpoe</code>)和变量作用域(<code>variable_scope</code>)</p>
@@ -293,8 +303,10 @@
 <p>另外，每个线程的起始<code>scope</code>为空，所以如果想在其它线程中保留主线程<code>scope</code>中变量的名称前缀，需要capture主线程的scope并在其它线程中重新进入这一<code>scope</code>，例：</p>
 <figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">main_thread_scope = variable_scope.get_variable_scope()</span><br><span class="line"></span><br><span class="line"><span class="comment"># Thread's target function:</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">thread_target_fn</span><span class="params">(captured_scope)</span>:</span></span><br><span class="line">  <span class="keyword">with</span> variable_scope.variable_scope(captured_scope):</span><br><span class="line">    <span class="comment"># .... regular code for this thread</span></span><br><span class="line">    </span><br><span class="line">thread = threading.Thread(target=thread_target_fn, args=(main_thread_scope,))</span><br></pre></td></tr></table></figure>
 
-
-
+<h1 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h1><h2 id="variable-scope"><a href="#variable-scope" class="headerlink" title="variable_scope"></a>variable_scope</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">scope1 = <span class="string">"Test1"</span></span><br><span class="line"><span class="keyword">with</span> tf.variable_scope(scope1):</span><br><span class="line">    testA = tf.get_variable(<span class="string">"testA1"</span>, [<span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>])</span><br><span class="line">    testB = tf.get_variable(<span class="string">"testA2"</span>, [<span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>])</span><br><span class="line">    testC = tf.multiply(testA, testB, name = <span class="string">"Mul-testA12"</span>)</span><br><span class="line">    testD = tf.Variable([<span class="number">1</span>],name=<span class="string">"testD"</span>)</span><br><span class="line"><span class="comment"># testA: &lt;tf.Variable 'Test1/testA1:0' shape=(3, 256, 256) dtype=float32_ref&gt;</span></span><br><span class="line"><span class="comment"># testB: &lt;tf.Variable 'Test1/testA2:0' shape=(3, 256, 256) dtype=float32_ref&gt;</span></span><br><span class="line"><span class="comment"># testC: Tensor("Test1/Mul-testA12:0", shape=(3, 256, 256), dtype=float32)</span></span><br><span class="line"><span class="comment"># &lt;tf.Variable 'Test1/testD:0' shape=(1,) dtype=int32_ref&gt;</span></span><br></pre></td></tr></table></figure>
+<p>可以看到<code>variable_scope</code>能够同时影响到<code>tf.get_variable</code>以及<code>op</code>的命名，也就是说，变量域的作用范围内命名的变量，其前缀为变量域名。<br><img src="/2020/07/12/tf_name_scope_variable_scope_new/variablescope.png" alt="Tensorboard"></p>
+<h2 id="name-scope"><a href="#name-scope" class="headerlink" title="name_scope"></a>name_scope</h2><figure class="highlight py"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">with</span> tf.name_scope(scope1):</span><br><span class="line">    testA = tf.get_variable(<span class="string">"testA1"</span>, [<span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>])</span><br><span class="line">    testB = tf.get_variable(<span class="string">"testA2"</span>, [<span class="number">3</span>, <span class="number">256</span>, <span class="number">256</span>])</span><br><span class="line">    testC = tf.multiply(testA, testB, name = <span class="string">"Mul-testA12"</span>)</span><br><span class="line">    testD = tf.Variable([<span class="number">1</span>],name=<span class="string">"testD"</span>)</span><br><span class="line"><span class="comment"># &lt;tf.Variable 'testA1:0' shape=(3, 256, 256) dtype=float32_ref&gt;</span></span><br><span class="line"><span class="comment"># &lt;tf.Variable 'testA2:0' shape=(3, 256, 256) dtype=float32_ref&gt;</span></span><br><span class="line"><span class="comment"># Tensor("Test1/Mul-testAC:0", shape=(3, 256, 256), dtype=float32)</span></span><br><span class="line"><span class="comment"># &lt;tf.Variable 'Test1/testD:0' shape=(1,) dtype=int32_ref&gt;</span></span><br></pre></td></tr></table></figure>
+<p>而在<code>name_scope</code>中，其不会影响到由<code>tf.get_variable</code>得到的变量，只会作用于<code>op</code>运算得到的变量以及由<code>tf.Variable</code>得到的变量。<br><img src="/2020/07/12/tf_name_scope_variable_scope_new/namescope.png" alt="Tensorboard"></p>
 
     </div>
 
@@ -310,7 +322,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope/" title="tensorflow之scope使用(一)">http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope/</a>
+    <a href="http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/" title="tensorflow之scope使用(一)">http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -330,10 +342,13 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/07/12/tf_name_scope_variable_scope_new/" rel="prev" title="tensorflow之scope使用(一)">
-      <i class="fa fa-chevron-left"></i> tensorflow之scope使用(一)
+    <a href="/2020/07/11/styleGAN-network.py1/" rel="prev" title="styleGAN源码解读之network.py(一)">
+      <i class="fa fa-chevron-left"></i> styleGAN源码解读之network.py(一)
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/07/12/tf_name_scope_variable_scope/" rel="next" title="tensorflow之scope使用(一)">
+      tensorflow之scope使用(一) <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -393,7 +408,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tensorflow中名称作用域和变量作用域"><span class="nav-number">1.</span> <span class="nav-text">tensorflow中名称作用域和变量作用域</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#源码"><span class="nav-number">1.1.</span> <span class="nav-text">源码</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#tensorflow中名称作用域和变量作用域"><span class="nav-number">1.</span> <span class="nav-text">tensorflow中名称作用域和变量作用域</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#源码"><span class="nav-number">2.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#实例"><span class="nav-number">3.</span> <span class="nav-text">实例</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#variable-scope"><span class="nav-number">3.1.</span> <span class="nav-text">variable_scope</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#name-scope"><span class="nav-number">3.2.</span> <span class="nav-text">name_scope</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -519,7 +534,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/07/12/tf_name_scope_variable_scope_new/',]
       });
       });
   </script>
