@@ -20,29 +20,33 @@
     var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="GeophyAI">
-<meta property="og:url" content="http://blog.geophyai.com/page/2/index.html">
+  <meta name="description" content="利用卷积实现基于有限差分的正演模拟。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="pyseis--基于conv的声波正演模拟">
+<meta property="og:url" content="http://blog.geophyai.com/2020/08/20/pyseis_fdtd_basedonconv/index.html">
 <meta property="og:site_name" content="GeophyAI">
+<meta property="og:description" content="利用卷积实现基于有限差分的正演模拟。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-08-20T03:15:06.000Z">
+<meta property="article:modified_time" content="2020-08-20T03:15:06.000Z">
 <meta property="article:author" content="shaowinw">
-<meta property="article:tag" content="AI;data-processing">
+<meta property="article:tag" content="fdtd">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://blog.geophyai.com/page/2/">
+<link rel="canonical" href="http://blog.geophyai.com/2020/08/20/pyseis_fdtd_basedonconv/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>GeophyAI</title>
+  <title>pyseis--基于conv的声波正演模拟 | GeophyAI</title>
   
 
 
@@ -184,13 +188,14 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/06/21/python_argparse/">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/08/20/pyseis_fdtd_basedonconv/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -202,10 +207,9 @@
       <meta itemprop="name" content="GeophyAI">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/21/python_argparse/" class="post-title-link" itemprop="url">Python之import argparse</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          pyseis--基于conv的声波正演模拟
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -214,7 +218,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-06-21 01:44:00" itemprop="dateCreated datePublished" datetime="2020-06-21T01:44:00+08:00">2020-06-21</time>
+              <time title="创建时间：2020-08-20 11:15:06" itemprop="dateCreated datePublished" datetime="2020-08-20T11:15:06+08:00">2020-08-20</time>
             </span>
 
 
@@ -225,7 +229,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
+                  <a href="/categories/pyseis/" itemprop="url" rel="index"><span itemprop="name">pyseis</span></a>
                 </span>
             </span>
 
@@ -238,12 +242,13 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/06/21/python_argparse/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/21/python_argparse/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/08/20/pyseis_fdtd_basedonconv/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/08/20/pyseis_fdtd_basedonconv/" itemprop="commentCount"></span>
     </a>
   </span>
   
   
+            <div class="post-description">利用卷积实现基于有限差分的正演模拟。</div>
 
         </div>
       </header>
@@ -254,319 +259,69 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <p>argparse是怎么回事呢？Python相信大家都很熟悉，但是python的argparse是怎么回事呢，下面就让小编带大家一起了解吧！argparse，首先大家要有一台电脑，然后要安装好python，这时候我们打开一个terminal再输入python就进入到python了，大家可能会很惊讶这跟argparse有什么关系呢？小编也很惊讶，然后我们再import argparse就可以了，这就是关于python之import argparse的事情了，大家有什么想法呢，欢迎在评论区告诉小编一起讨论！</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/21/python_argparse/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
+        <h1 id="基于神经网络中卷积操作的标量声波方程正演模拟"><a href="#基于神经网络中卷积操作的标量声波方程正演模拟" class="headerlink" title="基于神经网络中卷积操作的标量声波方程正演模拟"></a>基于神经网络中卷积操作的标量声波方程正演模拟</h1><p>编写一个声波方程的正演模拟程序，是入门地震数据处理中数值模拟这一领域的基础，同时也是后续做<strong>RTM</strong>、<strong>FWI</strong>等方向的基础。个人一般用<strong>C</strong>、<strong>C++</strong> 或者<strong>CUDA</strong>编写<strong>CPU(GPU)</strong> 版本的程序，对于初入这一行业的小白来讲门槛比较高，既要掌握语言语法、还要将偏微分方程“变现”（将其离散化并变为计算机语言），并且后续代码的移植也非常困难；但好处是可操作性强（可以直接对内存、显存进行操作），代码可读性强（不会像python一样过一阵再看自己写的代码就看不懂了）。</p>
+<p>所以… … …</p>
+<p>之前做过一些尝试，把<strong>C</strong>的正演程序直接改成<strong>python</strong>的语法，但是发现效率极其低下，已经找不到当时的代码了，回忆了一下应该是思维定式（菜）惹的祸：波场计算的时候用<strong>for</strong>循环处理了<strong>numpy</strong>数组（大误），现在想想是真的菜。</p>
+<p>下面我们以深度学习中卷积操作的视角重新审视一下基于有限差分的标量声波方程正演模拟。</p>
+<h2 id="标量声波方程"><a href="#标量声波方程" class="headerlink" title="标量声波方程"></a>标量声波方程</h2><p>我们首先来看二维空间中的波动方程，<br><a href="pyseis_fdtd_basedonconv/scalar_o.gif">img</a><br>左侧是<strong>u</strong>对时间的二阶导数，右侧是<strong>u</strong>对空间的二阶偏导数与源<strong>f</strong>之和，为求解 <strong>t</strong>时刻 <strong>(i, j)</strong> 处的波场分量，首先需要将其离散化。我们一般将二维空间中的拉普拉斯算子用Taylor展开的形式来逼近，用<strong>k</strong>、<strong>k-1</strong>、和<strong>k-2</strong>表示相邻的三个时刻，空间步长<strong>dx=dz=dh</strong>,时间步长为<strong>dt</strong>，介质速度为<strong>Vp</strong>，则有<br><a href="pyseis_fdtd_basedonconv/scalar.gif">scalar</a><br>我们会发现它实质上是一个迭代的过程，这里给出的公式只能够计算一个时间切片内的波场，在编程计算时，计算完<strong>k</strong>时刻波场后，需要将<strong>k</strong>和<strong>k-1</strong>时刻分别更新为<strong>k-1</strong>和<strong>k-2</strong>时刻，这样就可以计算下一个”k”时刻的波场(对应实际的k+1)。</p>
+<h2 id="神经网络中的卷积操作"><a href="#神经网络中的卷积操作" class="headerlink" title="神经网络中的卷积操作"></a>神经网络中的卷积操作</h2><p>神经网络中的二维卷积实质上是卷积核与像素矩阵pixel-wise的互相关、求和，它与一维信号中的卷积还不太一样<br><a href="pyseis_fdtd_basedonconv/conv.gif">conv</a><br>图片来自(<a href="https://www.jianshu.com/p/1ea2949c0056" target="_blank" rel="noopener">知乎</a>)<br>动图中可以很明显地看出，单层的网络计算也并不是很复杂，只是拿一个window在已知的输入上滑动，这个window就是神经网络卷积、反卷积中的卷积核kernel，滑动的步长被称为stride，边缘处灰色值被称为padding(用于填充边缘保证输入和输出的大小)，kernel和输入的每一个block相乘相加即可得到输出的一个像素值。</p>
+<h2 id="基于卷积op的有限差分"><a href="#基于卷积op的有限差分" class="headerlink" title="基于卷积op的有限差分"></a>基于卷积op的有限差分</h2><p>很久之前就在想有没有办法能够将正演接入神经网络中，利用python中现成的工具包快速完成一些复杂的计算，这要涉及到数据流问题、输入输出转换问题、数据接口问题等等。前一阵利用<strong>pycuda</strong>完成了几个版本的正演模拟(常规网格标量声波和一阶速度应力交错网格弹性波)计算<strong>package</strong>，能够通过简单的输入速度模型(<strong>numpy</strong>)和参数设置生成数据流并怼到神经网络里面，但是<strong>pycuda</strong>的底层代码还是用<strong>CUDA</strong>写的，只是通过它的<strong>SourceMoudle</strong>来编译运行，所以不能直接接到<strong>TF</strong>的<strong>Graph</strong>中，进行更加高级的运算，比如求导等(<strong>package</strong>中有未公开发表的部分，待发表后将源码放出)。</p>
+<p>要想利用<strong>TF</strong>等框架的自动微分，就必须要使用<strong>TF</strong>原生的函数或者定义 <code>@tf.function</code>来追踪变量，由此有了以下尝试。</p>
+<p>我们观察离散格式的标量声波方程中带有求和符号的一项，可以看到它是每一个点上沿着<strong>x</strong>方向和<strong>z</strong>方向的求和叠加，假设有限差分精度为<strong>2N</strong>，那么求和项中的系数可以通过求解以下方程得到<br><a href="pyseis_fdtd_basedonconv/coes.gif">coes</a></p>
+<p>仔细观察即可发现，每个(i,j)处横向或纵向的求和都可以用以该点为中心，长度和宽度均为<strong>2*N+1</strong>的<strong>block</strong>与一个相同大小的卷积核<strong>f</strong>进行卷积来代替，例如当差分精度为<strong>4</strong>时，卷积核的大小应为<strong>5x5</strong>，以(i,j)为中心的求和(dx=dz=dh)可以用如下卷积操作代替(注：第一个矩阵中的省略号不代表值为0，只是其与卷积核相乘后的值为0，当网格不同方向的大小不同时需要区分水平方向卷积核以及垂直方向卷积核)，那么整个卷积就可以写为<code>tf.nn.depthwise_conv2d(input=x, filter=f, strides=[1, 1, 1, 1], padding=&#39;SAME&#39;)</code><br><a href="pyseis_fdtd_basedonconv/conv1.gif">conv1</a></p>
+<p>基本原理如上所述，这样一来，我们就可以利用TF框架来实现正演模拟了(完整的代码请联系<a href="mailto:shaowinw@geophyai.com">shaowinw@geophyai.com</a>，小站流量不多了，暂不提供下载功能)。</p>
+
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/06/11/install_atk/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/11/install_atk/" class="post-title-link" itemprop="url">CentOS下Anaconda及Tensorflow安装</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-11 03:30:58" itemprop="dateCreated datePublished" datetime="2020-06-11T03:30:58+08:00">2020-06-11</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%A3%85%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">装机</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/06/11/install_atk/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/11/install_atk/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>CentOS深度学习环境配置,包括Anaconda安装、conda环境配置、源地址更换、Tensorflow以及Keras安装等内容，过程比较简单，但在版本选择时需要注意与自己代码所依赖的生产环境相适应。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/11/install_atk/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>shaowinw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.geophyai.com/2020/08/20/pyseis_fdtd_basedonconv/" title="pyseis--基于conv的声波正演模拟">http://blog.geophyai.com/2020/08/20/pyseis_fdtd_basedonconv/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/fdtd/" rel="tag"> <i class="fa fa-tag"></i> fdtd</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/06/10/install_cudacudnn/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/10/install_cudacudnn/" class="post-title-link" itemprop="url">CentOS下CUDA及cuDNN安装</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-10 09:30:58" itemprop="dateCreated datePublished" datetime="2020-06-10T09:30:58+08:00">2020-06-10</time>
-            </span>
-
-
-	
-          <span class="post-updated">
-    	    &nbsp; | &nbsp; 更新于
-    	    <time itemprop="dateUpdated" datetime="2020-06-12T23:09:00+08:00" content="2020-06-12">
-      	2020-06-12
-    	  </time> &nbsp; | &nbsp;
-  	  </span>
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%A3%85%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">装机</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/06/10/install_cudacudnn/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/10/install_cudacudnn/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>CentOS7 + RTX2080Ti的显卡驱动、CUDA-10以及cuDNN的安装过程。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/10/install_cudacudnn/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/06/07/installation/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/06/07/installation/" class="post-title-link" itemprop="url">Dell工作站CentOS-7装机</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-06-07 11:10:46" itemprop="dateCreated datePublished" datetime="2020-06-07T11:10:46+08:00">2020-06-07</time>
-            </span>
 
 
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%A3%85%E6%9C%BA/" itemprop="url" rel="index"><span itemprop="name">装机</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/06/07/installation/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/06/07/installation/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>工作站的CentOS-7安装,笔者的第一篇个人博客，后续将记录一系列装机以及环境配置中出现的问题，供日后参考。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/06/07/installation/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/08/16/pyseis_v0.0.1_normal_coes/" rel="prev" title="pyseis--有限差分系数计算">
+      <i class="fa fa-chevron-left"></i> pyseis--有限差分系数计算
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left" aria-label="上一页"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
-  </nav>
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -613,6 +368,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#基于神经网络中卷积操作的标量声波方程正演模拟"><span class="nav-number">1.</span> <span class="nav-text">基于神经网络中卷积操作的标量声波方程正演模拟</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#标量声波方程"><span class="nav-number">1.1.</span> <span class="nav-text">标量声波方程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#神经网络中的卷积操作"><span class="nav-number">1.2.</span> <span class="nav-text">神经网络中的卷积操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#基于卷积op的有限差分"><span class="nav-number">1.3.</span> <span class="nav-text">基于卷积op的有限差分</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -740,7 +496,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/page/2/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/08/20/pyseis_fdtd_basedonconv/',]
       });
       });
   </script>
