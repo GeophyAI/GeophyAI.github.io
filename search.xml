@@ -227,6 +227,19 @@
       </tags>
   </entry>
   <entry>
+    <title>Centos安装后无法启动Windows问题</title>
+    <url>/2020/08/30/system/</url>
+    <content><![CDATA[<h1 id="CentOS安装后Windows无法启动问题"><a href="#CentOS安装后Windows无法启动问题" class="headerlink" title="CentOS安装后Windows无法启动问题"></a>CentOS安装后Windows无法启动问题</h1><figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br><span class="line">[root]$ yum update</span><br><span class="line">[root]$ yum install ntfs-3g</span><br><span class="line">[root]$ grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></figure>
+
+]]></content>
+      <categories>
+        <category>装机</category>
+      </categories>
+      <tags>
+        <tag>装机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>tensorflow之scope使用</title>
     <url>/2020/07/12/tf_name_scope_variable_scope_new/</url>
     <content><![CDATA[<h1 id="tensorflow中名称作用域和变量作用域"><a href="#tensorflow中名称作用域和变量作用域" class="headerlink" title="tensorflow中名称作用域和变量作用域"></a>tensorflow中名称作用域和变量作用域</h1><p>名称作用域和变量作用域能让我们在<strong>tensorboard</strong>中更清晰得看到各类变量所处的命名空间以及输入、输出的流动方向。当神经网络架构较为复杂时，可以通过为网络不同块的变量和运算创建作用域的形式来使<strong>graph</strong>更整洁。(源码为官方代码，<strong>注释为翻译版</strong>，英文版请查看源码<strong>doc</strong>或者关注<a href="https://tensorflow.google.cn/api_docs/python/tf/compat/v1/variable_scope" target="_blank" rel="noopener">官方网站</a>)</p>
