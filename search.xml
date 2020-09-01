@@ -93,11 +93,11 @@
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">https://keras.io/ <span class="comment"># official website</span></span><br><span class="line">https://github.com/keras-team/keras <span class="comment"># codes</span></span><br><span class="line">https://keras.io/zh/ <span class="comment"># doc</span></span><br></pre></td></tr></table></figure>
 </li>
 <li><p>Pytorch</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">https://pytorch.org/ <span class="comment"># official website</span></span><br><span class="line">https://github.com/pytorch/pytorch <span class="comment"># codes</span></span><br></pre></td></tr></table></figure>
-
-
-
-
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">https://pytorch.org/ <span class="comment"># official website</span></span><br><span class="line">https://github.com/pytorch/pytorch <span class="comment"># codes</span></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><h2 id="其它"><a href="#其它" class="headerlink" title="其它"></a>其它</h2><ol>
+<li>Blog   <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">https://www.tablesgenerator.com/markdown_tables <span class="comment"># Markdown表格生成器</span></span><br></pre></td></tr></table></figure>
 </li>
 </ol>
 </li>
