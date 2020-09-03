@@ -492,386 +492,369 @@
 <p>plot中显示地震事件</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> obspy <span class="keyword">import</span> read</span><br><span class="line">st = read(<span class="string">"./BW.ALTM..EHE__20121207T000000Z__20121208T000000Z.mseed"</span>)</span><br><span class="line"><span class="comment">#st.filter("lowpass", freq=0.1, corners=2)</span></span><br><span class="line">st.plot(type=<span class="string">"dayplot"</span>, interval=<span class="number">60</span>, right_vertical_labels=<span class="literal">False</span>,</span><br><span class="line">        vertical_scaling_range=<span class="number">5e3</span>, one_tick_per_line=<span class="literal">True</span>,</span><br><span class="line">        color=[<span class="string">'k'</span>, <span class="string">'r'</span>, <span class="string">'b'</span>, <span class="string">'g'</span>], show_y_UTC_label=<span class="literal">False</span>,</span><br><span class="line">        events=&#123;<span class="string">'min_magnitude'</span>: <span class="number">6.5</span>&#125;)</span><br></pre></td></tr></table></figure>
 <p><img src="/2020/09/02/obspy/japan20121207.png" alt="tc"></p>
-<h2 id="地震台站Google地图及信息查询"><a href="#地震台站Google地图及信息查询" class="headerlink" title="地震台站Google地图及信息查询"></a><a href="https://www.fdsn.org/networks/detail/II/" target="_blank" rel="noopener">地震台站Google地图</a>及信息查询</h2><table>
+<h2 id="地震台站Google地图及信息查询"><a href="#地震台站Google地图及信息查询" class="headerlink" title="地震台站Google地图及信息查询"></a><a href="https://www.fdsn.org/networks/detail/II/" target="_blank" rel="noopener">地震台站Google地图</a>及信息查询</h2><h3 id="Network-Codes"><a href="#Network-Codes" class="headerlink" title="Network Codes"></a>Network Codes</h3><p>地震网络编码查询：<a href="https://www.fdsn.org/networks/?initial=1" target="_blank" rel="noopener">https://www.fdsn.org/networks/?initial=1</a></p>
+<h3 id="Global-Seismograph-Network-IRIS-IDA"><a href="#Global-Seismograph-Network-IRIS-IDA" class="headerlink" title="Global Seismograph Network - IRIS/IDA"></a>Global Seismograph Network - IRIS/IDA</h3><h4 id="FDSN-Network-Information"><a href="#FDSN-Network-Information" class="headerlink" title="FDSN Network Information"></a>FDSN Network Information</h4><table>
 <thead>
 <tr>
-<th>Station Code</th>
-<th>Station Name</th>
-<th>Latitude</th>
-<th>Longitude</th>
-<th>Data Center(s)</th>
+<th>FDSN code</th>
+<th>II</th>
+<th>Network name</th>
+<th>Global Seismograph Network - IRIS/IDA (GSN)</th>
 </tr>
 </thead>
 <tbody><tr>
+<td>Start year</td>
+<td>1986</td>
+<td>Operated by</td>
+<td>Scripps Institution of Oceanography (SIO)</td>
+</tr>
+<tr>
+<td>End year</td>
+<td>-</td>
+<td>Deployment region</td>
+<td>Global</td>
+</tr>
+<tr>
+<td>Network Website</td>
+<td><a href="http://ida.ucsd.edu/" target="_blank" rel="noopener">http://ida.ucsd.edu/</a></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>#### Stations in this Network</td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Station Code</td>
+<td>Station Name</td>
+<td>Latitude</td>
+<td>Longitude</td>
+</tr>
+<tr>
+<td>————–</td>
+<td>————————————————-</td>
+<td>———–</td>
+<td>————-</td>
+</tr>
+<tr>
 <td>AAK</td>
 <td>Ala Archa, Kyrgyzstan</td>
 <td>42.6375</td>
 <td>74.4942</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>ABKT</td>
 <td>Alibek, Turkmenistan</td>
 <td>37.9304</td>
 <td>58.1189</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>ABPO</td>
 <td>Ambohimpanompo, Madagascar</td>
 <td>-19.018</td>
 <td>47.229</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>ALE</td>
 <td>Alert, NU, Canada</td>
 <td>82.5033</td>
 <td>-62.35</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>ARTI</td>
 <td>Arti, Russia</td>
 <td>56.3879</td>
 <td>58.3849</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>ARU</td>
 <td>Arti, Russia</td>
 <td>56.4302</td>
 <td>58.5625</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>ASCN</td>
 <td>Butt Crater, Ascension Island</td>
 <td>-7.9327</td>
 <td>-14.3601</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>BFO</td>
 <td>Black Forest Observatory, Schiltach, Germany</td>
 <td>48.3301</td>
 <td>8.3296</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>BORG</td>
 <td>Borgarfjordur, Asbjarnarstadir, Iceland</td>
 <td>64.7474</td>
 <td>-21.3268</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>BORK</td>
 <td>Burabay, Kazakhstan</td>
 <td>53.0461</td>
 <td>70.3184</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>BRVK</td>
 <td>Borovoye, Kazakhstan</td>
 <td>53.0581</td>
 <td>70.2828</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>CMLA</td>
 <td>Cha de Macela, Sao Miguel Island, Azores</td>
 <td>37.7637</td>
 <td>-25.5243</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>COCO</td>
 <td>West Island, Cocos (Keeling) Islands</td>
 <td>-12.1901</td>
 <td>96.8349</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>DGAR</td>
 <td>Diego Garcia, Chagos Islands, Indian Ocean</td>
 <td>-7.4121</td>
 <td>72.4525</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>EFI</td>
 <td>Mount Kent, East Falkland Island</td>
 <td>-51.6753</td>
 <td>-58.0637</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>ERM</td>
 <td>Erimo, Hokkaido Island, Japan</td>
 <td>42.015</td>
 <td>143.1572</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>ESK</td>
 <td>Eskdalemuir, Scotland, UK</td>
 <td>55.3167</td>
 <td>-3.205</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>FFC</td>
 <td>Flin Flon, Canada</td>
 <td>54.725</td>
 <td>-101.9783</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>GAR</td>
 <td>Garm, Tajikistan</td>
 <td>39.0052</td>
 <td>70.3328</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>HOPE</td>
 <td>Hope Point, South Georgia Island</td>
 <td>-54.2836</td>
 <td>-36.4879</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>IASL</td>
 <td>Albuquerque Seismological Laboratory, N.Mex.</td>
 <td>34.946201</td>
 <td>-106.456703</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>IBFO</td>
 <td>Black Forest Observatory, Schiltach, Germany</td>
 <td>48.331902</td>
 <td>8.3311</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>JTS</td>
 <td>Las Juntas de Abangares, Costa Rica</td>
 <td>10.2908</td>
 <td>-84.9525</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>KAPI</td>
 <td>Kappang, Sulawesi, Indonesia</td>
 <td>-5.0142</td>
 <td>119.7517</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>KDAK</td>
 <td>Kodiak Island, Alaska, USA</td>
 <td>57.7828</td>
 <td>-152.5835</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>KIV</td>
 <td>Kislovodsk, Russia</td>
 <td>43.9562</td>
 <td>42.6888</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>KURK</td>
 <td>Kurchatov, Kazakhstan</td>
 <td>50.7154</td>
 <td>78.6202</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>KWAJ</td>
 <td>Kwajalein Atoll, Pacific Ocean</td>
 <td>8.8019</td>
 <td>167.613</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>KWJN</td>
 <td>Gagan, Kwajalein Atoll, Marshall Islands</td>
 <td>9.2873</td>
 <td>167.5369</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>LVZ</td>
 <td>Lovozero, Russia</td>
 <td>67.8979</td>
 <td>34.6514</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>MBAR</td>
 <td>Mbarara, Uganda</td>
 <td>-0.6019</td>
 <td>30.7382</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>MSEY</td>
 <td>Mahe, Seychelles</td>
 <td>-4.6737</td>
 <td>55.4792</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>MSVF</td>
 <td>Monasavu, Fiji</td>
 <td>-17.7448</td>
 <td>178.0528</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>NIL</td>
 <td>Nilore, Pakistan</td>
 <td>33.6506</td>
 <td>73.2686</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>NNA</td>
 <td>Nana, Peru</td>
 <td>-11.9875</td>
 <td>-76.8422</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>NRIL</td>
 <td>Norilsk, Russia</td>
 <td>69.5049</td>
 <td>88.4414</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>NVS</td>
 <td>Novosibirsk, Russia</td>
 <td>54.8404</td>
 <td>83.2346</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>OBN</td>
 <td>Obninsk, Russia</td>
 <td>55.1146</td>
 <td>36.5674</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>PALK</td>
 <td>Pallekele, Sri Lanka</td>
 <td>7.2728</td>
 <td>80.7022</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>PFO</td>
 <td>Pinon Flat, California, USA</td>
 <td>33.6092</td>
 <td>-116.4553</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>RAYN</td>
 <td>Ar Rayn, Saudi Arabia</td>
 <td>23.5225</td>
 <td>45.5032</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>RPN</td>
 <td>Rapanui, Easter Island, Chile</td>
 <td>-27.1267</td>
 <td>-109.3344</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>SACV</td>
 <td>Santiago Island, Cape Verde</td>
 <td>14.9702</td>
 <td>-23.6085</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>SHEL</td>
 <td>Horse Pasture, St. Helena Island</td>
 <td>-15.9594</td>
 <td>-5.7455</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>SIMI</td>
 <td>Simiganj, Tajikistan</td>
 <td>38.6585</td>
 <td>69.0083</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>SUR</td>
 <td>Sutherland, South Africa</td>
 <td>-32.3797</td>
 <td>20.8117</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>TAU</td>
 <td>Hobart, Tasmania, Australia</td>
 <td>-42.9099</td>
 <td>147.3204</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>TLY</td>
 <td>Talaya, Russia</td>
 <td>51.6807</td>
 <td>103.6438</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>UOSS</td>
 <td>Univ. of Sharjah, Sharjah, United Arab Emirates</td>
 <td>24.9453</td>
 <td>56.2042</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>WRAB</td>
 <td>Tennant Creek, NT, Australia</td>
 <td>-19.9336</td>
 <td>134.36</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>XBFO</td>
 <td>Black Forest Observatory, Schiltach, Germany</td>
 <td>48.3301</td>
 <td>8.3296</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>XPF</td>
 <td>Pinon Flat, California, USA</td>
 <td>33.6092</td>
 <td>-116.4533</td>
-<td>IRISDMC</td>
 </tr>
 <tr>
 <td>XPFO</td>
 <td>Pinon Flat, California, USA</td>
 <td>33.6107</td>
 <td>-116.4555</td>
-<td>IRISDMC</td>
 </tr>
 </tbody></table>
 ]]></content>
