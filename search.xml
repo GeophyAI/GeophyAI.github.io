@@ -130,13 +130,139 @@
       </tags>
   </entry>
   <entry>
+    <title>OBSpy天然地震III</title>
+    <url>/2020/09/06/obspy3/</url>
+    <content><![CDATA[<h1 id="天然地震"><a href="#天然地震" class="headerlink" title="天然地震"></a>天然地震</h1><h2 id="OBSpy教程之Client"><a href="#OBSpy教程之Client" class="headerlink" title="OBSpy教程之Client"></a>OBSpy教程之Client</h2><h3 id="获取不同Client的url"><a href="#获取不同Client的url" class="headerlink" title="获取不同Client的url"></a>获取不同Client的url</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> obspy.clients.fdsn <span class="keyword">import</span> Client</span><br><span class="line">c=Client(base_url=<span class="string">"IRIS"</span>)</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">base_url: Base URL of FDSN web service compatible server</span></span><br><span class="line"><span class="string">(e.g. "http://service.iris.edu") or key string for recognized</span></span><br><span class="line"><span class="string">server (one of 'BGR', 'EMSC', 'ETH', 'GEONET', 'GFZ', 'ICGC',</span></span><br><span class="line"><span class="string">'INGV', 'IPGP', 'IRIS', 'ISC', 'KNMI', 'KOERI', 'LMU', 'NCEDC',</span></span><br><span class="line"><span class="string">'NIEP', 'NOA', 'ODC', 'ORFEUS', 'RASPISHAKE', 'RESIF', 'SCEDC',</span></span><br><span class="line"><span class="string">'TEXNET', 'UIB-NORSAR', 'USGS', 'USP').</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">   The list below get from 'Client(abbr).base_url', where abbr</span></span><br><span class="line"><span class="string">   is the key string of server.</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>Client_abbr</th>
+<th>base_url</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>BGR</td>
+<td><a href="http://eida.bgr.de" target="_blank" rel="noopener">http://eida.bgr.de</a></td>
+</tr>
+<tr>
+<td>EMSC</td>
+<td><a href="http://www.seismicportal.eu" target="_blank" rel="noopener">http://www.seismicportal.eu</a></td>
+</tr>
+<tr>
+<td>ETH</td>
+<td><a href="http://eida.ethz.ch" target="_blank" rel="noopener">http://eida.ethz.ch</a></td>
+</tr>
+<tr>
+<td>GEONET</td>
+<td><a href="http://service.geonet.org.nz" target="_blank" rel="noopener">http://service.geonet.org.nz</a></td>
+</tr>
+<tr>
+<td>GFZ</td>
+<td><a href="http://geofon.gfz-potsdam.de" target="_blank" rel="noopener">http://geofon.gfz-potsdam.de</a></td>
+</tr>
+<tr>
+<td>ICGC</td>
+<td><a href="http://ws.icgc.cat" target="_blank" rel="noopener">http://ws.icgc.cat</a></td>
+</tr>
+<tr>
+<td>INGV</td>
+<td><a href="http://webservices.ingv.it" target="_blank" rel="noopener">http://webservices.ingv.it</a></td>
+</tr>
+<tr>
+<td>IPGP</td>
+<td><a href="http://ws.ipgp.fr" target="_blank" rel="noopener">http://ws.ipgp.fr</a></td>
+</tr>
+<tr>
+<td>IRIS</td>
+<td><a href="http://service.iris.edu" target="_blank" rel="noopener">http://service.iris.edu</a></td>
+</tr>
+<tr>
+<td>ISC</td>
+<td><a href="http://isc-mirror.iris.washington.edu" target="_blank" rel="noopener">http://isc-mirror.iris.washington.edu</a></td>
+</tr>
+<tr>
+<td>KNMI</td>
+<td><a href="http://rdsa.knmi.nl" target="_blank" rel="noopener">http://rdsa.knmi.nl</a></td>
+</tr>
+<tr>
+<td>KOERI</td>
+<td><a href="http://eida.koeri.boun.edu.tr" target="_blank" rel="noopener">http://eida.koeri.boun.edu.tr</a></td>
+</tr>
+<tr>
+<td>LMU</td>
+<td><a href="http://erde.geophysik.uni-muenchen.de" target="_blank" rel="noopener">http://erde.geophysik.uni-muenchen.de</a></td>
+</tr>
+<tr>
+<td>NCEDC</td>
+<td><a href="http://service.ncedc.org" target="_blank" rel="noopener">http://service.ncedc.org</a></td>
+</tr>
+<tr>
+<td>NIEP</td>
+<td><a href="http://eida-sc3.infp.ro" target="_blank" rel="noopener">http://eida-sc3.infp.ro</a></td>
+</tr>
+<tr>
+<td>NOA</td>
+<td><a href="http://eida.gein.noa.gr" target="_blank" rel="noopener">http://eida.gein.noa.gr</a></td>
+</tr>
+<tr>
+<td>ODC</td>
+<td><a href="http://www.orfeus-eu.org" target="_blank" rel="noopener">http://www.orfeus-eu.org</a></td>
+</tr>
+<tr>
+<td>ORFEUS</td>
+<td><a href="http://www.orfeus-eu.org" target="_blank" rel="noopener">http://www.orfeus-eu.org</a></td>
+</tr>
+<tr>
+<td>RASPISHAKE</td>
+<td><a href="http://fdsnws.raspberryshakedata.com" target="_blank" rel="noopener">http://fdsnws.raspberryshakedata.com</a></td>
+</tr>
+<tr>
+<td>RESIF</td>
+<td><a href="http://ws.resif.fr" target="_blank" rel="noopener">http://ws.resif.fr</a></td>
+</tr>
+<tr>
+<td>SCEDC</td>
+<td><a href="http://service.scedc.caltech.edu" target="_blank" rel="noopener">http://service.scedc.caltech.edu</a></td>
+</tr>
+<tr>
+<td>TEXNET</td>
+<td><a href="http://rtserve.beg.utexas.edu" target="_blank" rel="noopener">http://rtserve.beg.utexas.edu</a></td>
+</tr>
+<tr>
+<td>UIB-NORSAR</td>
+<td><a href="http://eida.geo.uib.no" target="_blank" rel="noopener">http://eida.geo.uib.no</a></td>
+</tr>
+<tr>
+<td>USGS</td>
+<td><a href="http://earthquake.usgs.gov" target="_blank" rel="noopener">http://earthquake.usgs.gov</a></td>
+</tr>
+<tr>
+<td>USP</td>
+<td><a href="http://sismo.iag.usp.br" target="_blank" rel="noopener">http://sismo.iag.usp.br</a></td>
+</tr>
+</tbody></table>
+<h3 id="在地图上显示network中的台站位置"><a href="#在地图上显示network中的台站位置" class="headerlink" title="在地图上显示network中的台站位置"></a>在地图上显示network中的台站位置</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">c = Client(<span class="string">"IRIS"</span>)</span><br><span class="line">cgt = c.get_stations(network=<span class="string">"II"</span>)</span><br><span class="line">cgt.plot()</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/09/06/obspy3/IRIS_II.png" alt="cgt"></p>
+<h3 id="根据日期获取指定台站数据并按天分割"><a href="#根据日期获取指定台站数据并按天分割" class="headerlink" title="根据日期获取指定台站数据并按天分割"></a>根据日期获取指定台站数据并按天分割</h3><p>当需要下载指定台站、指定日期范围内的地震数据时，可以使用以下代码。</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> obspy</span><br><span class="line"><span class="keyword">from</span> obspy.clients.fdsn.mass_downloader <span class="keyword">import</span> RectangularDomain, Restrictions, MassDownloader</span><br><span class="line"><span class="keyword">from</span> obspy <span class="keyword">import</span> UTCDateTime</span><br><span class="line"></span><br><span class="line">domain = RectangularDomain(minlatitude=<span class="number">-90</span>,</span><br><span class="line">                           maxlatitude=<span class="number">90</span>,</span><br><span class="line">                           minlongitude=<span class="number">-180</span>, </span><br><span class="line">                           maxlongitude=<span class="number">180</span>)</span><br><span class="line"></span><br><span class="line">restrictions = Restrictions(starttime=UTCDateTime(<span class="number">2020</span>, <span class="number">7</span>, <span class="number">20</span>),</span><br><span class="line">                            endtime=UTCDateTime(<span class="number">2020</span>, <span class="number">7</span>, <span class="number">22</span>), </span><br><span class="line">                            chunklength_in_sec=<span class="number">86400</span>, </span><br><span class="line">                            network=<span class="string">"II"</span>, </span><br><span class="line">                            station=<span class="string">"KDAK"</span>, </span><br><span class="line">                            location=<span class="string">"*"</span>,</span><br><span class="line">                            channel=<span class="string">"*"</span>, </span><br><span class="line">                            reject_channels_with_gaps=<span class="literal">False</span>, </span><br><span class="line">                            minimum_length=<span class="number">0.0</span>, </span><br><span class="line">                            minimum_interstation_distance_in_m=<span class="number">100.0</span>)</span><br><span class="line">mdl = MassDownloader()<span class="comment"># providers=["IRIS"]</span></span><br><span class="line">mdl.download(domain,</span><br><span class="line">             restrictions, </span><br><span class="line">             mseed_storage=<span class="string">"./data/KDAK/waveforms"</span>, </span><br><span class="line">             stationxml_storage=<span class="string">"./data/KDAK/stations"</span>)</span><br></pre></td></tr></table></figure>
+<p>以上代码中，下载了从<code>starttime</code>到<code>endtime</code>范围内，网络<code>II</code>、台站<code>KDAK</code>的所有通道数据，并将其截取为每个文件86400s长度（即一天）</p>
+]]></content>
+      <categories>
+        <category>obspy</category>
+      </categories>
+      <tags>
+        <tag>天然地震</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>OBSpy installation Q&amp;A</title>
     <url>/2020/09/05/obspy_install/</url>
     <content><![CDATA[<h1 id="Q-amp-A-of-installation-of-obspy"><a href="#Q-amp-A-of-installation-of-obspy" class="headerlink" title="Q&amp;A of installation of obspy"></a>Q&amp;A of installation of obspy</h1><h2 id="Q-ImportError-Neither-Basemap-nor-Cartopy-could-be-imported"><a href="#Q-ImportError-Neither-Basemap-nor-Cartopy-could-be-imported" class="headerlink" title="Q: ImportError: Neither Basemap nor Cartopy could be imported."></a>Q: ImportError: Neither Basemap nor Cartopy could be imported.</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ conda install basemap</span><br></pre></td></tr></table></figure>
 
 <h2 id="Q-ImportError-cannot-import-name-‘is-scalar’"><a href="#Q-ImportError-cannot-import-name-‘is-scalar’" class="headerlink" title="Q: ImportError: cannot import name ‘is scalar’"></a>Q: ImportError: cannot import name ‘is scalar’</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ pip install matplotlib==<span class="number">3.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
 
-<h2 id="Q-AttributeError-‘Axes’-object-has-no-attribute-‘get-axis-bgcolor’"><a href="#Q-AttributeError-‘Axes’-object-has-no-attribute-‘get-axis-bgcolor’" class="headerlink" title="Q: AttributeError: ‘Axes’ object has no attribute ‘get axis bgcolor’"></a>Q: AttributeError: ‘Axes’ object has no attribute ‘get axis bgcolor’</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ vim ~/.conda/envs/seismic/lib/python3<span class="number">.6</span>/site-packages/mpl_toolkits/basemap/__init__.py</span><br><span class="line"><span class="comment"># Change the directory of you own basemap installaion dir.</span></span><br><span class="line">[user]$ <span class="comment"># replace all 'get_axis_bgcolor' with 'get_facecolor()'</span></span><br></pre></td></tr></table></figure>
+<h2 id="Q-AttributeError-‘Axes’-object-has-no-attribute-‘get-axis-bgcolor’"><a href="#Q-AttributeError-‘Axes’-object-has-no-attribute-‘get-axis-bgcolor’" class="headerlink" title="Q: AttributeError: ‘Axes’ object has no attribute ‘get axis bgcolor’"></a>Q: AttributeError: ‘Axes’ object has no attribute ‘get axis bgcolor’</h2><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ vim ~/.conda/envs/seismic/lib/python3<span class="number">.6</span>/site-packages/mpl_toolkits/basemap/__init__.py</span><br><span class="line"><span class="comment"># Change the directory of you own basemap installaion dir.</span></span><br><span class="line">[user]$ <span class="comment"># replace all 'get_axis_bgcolor' with 'get_facecolor()' in file __init__.py</span></span><br></pre></td></tr></table></figure>
 
 ]]></content>
       <categories>
@@ -511,7 +637,7 @@
 <h3 id="本地文件读取-以-mseed为例-及显示"><a href="#本地文件读取-以-mseed为例-及显示" class="headerlink" title="本地文件读取(以.mseed为例)及显示"></a>本地文件读取(以.mseed为例)及显示</h3><p>演示三通道数据读取与显示</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> obspy</span><br><span class="line"><span class="keyword">from</span> obspy.core <span class="keyword">import</span> read</span><br><span class="line">path = <span class="string">r'./waveforms/'</span></span><br><span class="line">tc = read(path+<span class="string">'AG.HHAR.00.HHE__20110311T054232Z__20110311T064732Z.mseed'</span>)</span><br><span class="line">tc += read(path+<span class="string">'AG.HHAR.00.HHN__20110311T054232Z__20110311T064732Z.mseed'</span>)</span><br><span class="line">tc += read(path+<span class="string">'AG.HHAR.00.HHZ__20110311T054232Z__20110311T064732Z.mseed'</span>)</span><br><span class="line">print(tc)</span><br><span class="line"><span class="comment"># Save plot to file</span></span><br><span class="line">tc.plot(outfile=<span class="string">'test.png'</span>)</span><br></pre></td></tr></table></figure>
 <p>输出：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">3 Trace(s) in Stream:</span><br><span class="line">AG.HHAR.00.HHE | 2011-03-11T05:42:32.000000Z - 2011-03-11T06:47:32.000000Z | 100.0 Hz, 390001 samples</span><br><span class="line">AG.HHAR.00.HHN | 2011-03-11T05:42:32.000000Z - 2011-03-11T06:47:32.000000Z | 100.0 Hz, 390001 samples</span><br><span class="line">AG.HHAR.00.HHZ | 2011-03-11T05:42:32.000000Z - 2011-03-11T06:47:32.000000Z | 100.0 Hz, 390001 samples</span><br></pre></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="number">3</span> Trace(s) <span class="keyword">in</span> Stream:</span><br><span class="line">AG.HHAR<span class="number">.00</span>.HHE | <span class="number">2011</span><span class="number">-03</span><span class="number">-11</span>T05:<span class="number">42</span>:<span class="number">32.000000</span>Z - <span class="number">2011</span><span class="number">-03</span><span class="number">-11</span>T06:<span class="number">47</span>:<span class="number">32.000000</span>Z | <span class="number">100.0</span> Hz, <span class="number">390001</span> samples</span><br><span class="line">AG.HHAR<span class="number">.00</span>.HHN | <span class="number">2011</span><span class="number">-03</span><span class="number">-11</span>T05:<span class="number">42</span>:<span class="number">32.000000</span>Z - <span class="number">2011</span><span class="number">-03</span><span class="number">-11</span>T06:<span class="number">47</span>:<span class="number">32.000000</span>Z | <span class="number">100.0</span> Hz, <span class="number">390001</span> samples</span><br><span class="line">AG.HHAR<span class="number">.00</span>.HHZ | <span class="number">2011</span><span class="number">-03</span><span class="number">-11</span>T05:<span class="number">42</span>:<span class="number">32.000000</span>Z - <span class="number">2011</span><span class="number">-03</span><span class="number">-11</span>T06:<span class="number">47</span>:<span class="number">32.000000</span>Z | <span class="number">100.0</span> Hz, <span class="number">390001</span> samples</span><br><span class="line"><span class="string">"""</span></span><br><span class="line"><span class="string">当流中的Traces过多时，print(stream)只会打印部分Trace，此时可通过print(stream.__str__(extended=True))来打印流中的所有Trace。</span></span><br><span class="line"><span class="string">"""</span></span><br></pre></td></tr></table></figure>
 
 <p>基础绘图:</p>
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># Basic plotting</span></span><br><span class="line">tc.plot()</span><br></pre></td></tr></table></figure>
