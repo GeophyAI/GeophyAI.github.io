@@ -20,16 +20,20 @@
     var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="GeophyAI">
-<meta property="og:url" content="http://blog.geophyai.com/tags/copy/index.html">
+  <meta name="description" content="利用Tensorboard记录Loss变化。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Tensorboard记录Loss变化">
+<meta property="og:url" content="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/index.html">
 <meta property="og:site_name" content="GeophyAI">
+<meta property="og:description" content="利用Tensorboard记录Loss变化。">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-14T12:47:06.000Z">
+<meta property="article:modified_time" content="2020-10-14T12:47:06.000Z">
 <meta property="article:author" content="shaowinw">
-<meta property="article:tag" content="AI;data-processing">
+<meta property="article:tag" content="tensorboard">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://blog.geophyai.com/tags/copy/">
+<link rel="canonical" href="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/">
 
 
 <script id="page-configurations">
@@ -37,12 +41,12 @@
   CONFIG.page = {
     sidebar: "",
     isHome : false,
-    isPost : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>标签: copy | GeophyAI</title>
+  <title>Tensorboard记录Loss变化 | GeophyAI</title>
   
 
 
@@ -184,57 +188,137 @@
         <div class="content-wrap">
           
 
-          <div class="content tag">
+          <div class="content post posts-expand">
             
 
+    
   
   
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="shaowinw">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeophyAI">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Tensorboard记录Loss变化
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-10-14 20:47:06" itemprop="dateCreated datePublished" datetime="2020-10-14T20:47:06+08:00">2020-10-14</time>
+            </span>
+
+
+	
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/tensorflow/" itemprop="url" rel="index"><span itemprop="name">tensorflow</span></a>
+                </span>
+            </span>
+
+          
   
-  <div class="post-block">
-    <div class="posts-collapse">
-      <div class="collection-title">
-        <h2 class="collection-header">copy
-          <small>标签</small>
-        </h2>
-      </div>
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2020/10/14/tensorflow1.14.0_loss_summary/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/14/tensorflow1.14.0_loss_summary/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">利用Tensorboard记录Loss变化。</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-    <div class="collection-year">
-      <span class="collection-header">2020</span>
+        <h1 id="利用Tensorboard记录Loss值"><a href="#利用Tensorboard记录Loss值" class="headerlink" title="利用Tensorboard记录Loss值"></a>利用Tensorboard记录Loss值</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">运行环境：</span><br><span class="line">tensorflow==<span class="number">1.14</span><span class="number">.0</span></span><br><span class="line">keras==<span class="number">2.2</span><span class="number">.5</span></span><br></pre></td></tr></table></figure>
+<h1 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CNN = build_cnn()</span><br><span class="line"><span class="comment"># type(CNN) = keras.engine.training.Model</span></span><br></pre></td></tr></table></figure>
+<h1 id="log记录函数"><a href="#log记录函数" class="headerlink" title="log记录函数"></a>log记录函数</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_log</span><span class="params">(callback, names, logs, batch_no)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> name, value <span class="keyword">in</span> zip(names, logs):</span><br><span class="line">        summary = tf.Summary()</span><br><span class="line">        summary_value = summary.value.add()</span><br><span class="line">        summary_value.simple_value = value</span><br><span class="line">        summary_value.tag = name</span><br><span class="line">        callback.writer.add_summary(summary, batch_no)</span><br><span class="line">        callback.writer.flush()</span><br></pre></td></tr></table></figure>
+<h1 id="创建Tensorboard记录"><a href="#创建Tensorboard记录" class="headerlink" title="创建Tensorboard记录"></a>创建Tensorboard记录</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># log_path = './logs'</span></span><br><span class="line">callback = TensorBoard(log_path)</span><br><span class="line">callback.set_model(CNN)</span><br></pre></td></tr></table></figure>
+
+<h1 id="在训练过程中记录Loss"><a href="#在训练过程中记录Loss" class="headerlink" title="在训练过程中记录Loss"></a>在训练过程中记录Loss</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">datasize = X.shape[<span class="number">0</span>]</span><br><span class="line">batches = datasize//batch_size</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epochs):</span><br><span class="line">	<span class="keyword">for</span> batch <span class="keyword">in</span> range(batches):</span><br><span class="line">		loss = CNN.train_on_batch(x, y)</span><br><span class="line">		write_log(callback, </span><br><span class="line">                  CNN.metrics_names,</span><br><span class="line">                  loss,</span><br><span class="line">                  epoch * batches + batch)</span><br></pre></td></tr></table></figure>
+
+
+
     </div>
 
-  <article itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+    
+    
+    
+        
 
-      <div class="post-meta">
-        <time itemprop="dateCreated"
-              datetime="2020-07-13T09:32:00+08:00"
-              content="2020-07-13">
-          07-13
-        </time>
-      </div>
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>shaowinw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/" title="Tensorboard记录Loss变化">http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
 
-      <div class="post-title">
-          <a class="post-title-link" href="/2020/07/13/python_copy/" itemprop="url">
-            <span itemprop="name">Python之深copy与浅copy</span>
-          </a>
-      </div>
 
-    </header>
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/tensorboard/" rel="tag"> <i class="fa fa-tag"></i> tensorboard</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2020/10/05/python_wiggle_trace/" rel="prev" title="地震数据波形变密度绘图">
+      <i class="fa fa-chevron-left"></i> 地震数据波形变密度绘图
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
   </article>
-
-    </div>
-  </div>
   
   
-  
-
   
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -281,6 +365,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#利用Tensorboard记录Loss值"><span class="nav-number">1.</span> <span class="nav-text">利用Tensorboard记录Loss值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#构建模型"><span class="nav-number">2.</span> <span class="nav-text">构建模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#log记录函数"><span class="nav-number">3.</span> <span class="nav-text">log记录函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#创建Tensorboard记录"><span class="nav-number">4.</span> <span class="nav-text">创建Tensorboard记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#在训练过程中记录Loss"><span class="nav-number">5.</span> <span class="nav-text">在训练过程中记录Loss</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -408,7 +493,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/tags/copy/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/',]
       });
       });
   </script>

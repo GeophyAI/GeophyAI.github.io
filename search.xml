@@ -434,6 +434,25 @@
       </tags>
   </entry>
   <entry>
+    <title>Tensorboard记录Loss变化</title>
+    <url>/2020/10/14/tensorflow1.14.0_loss_summary/</url>
+    <content><![CDATA[<h1 id="利用Tensorboard记录Loss值"><a href="#利用Tensorboard记录Loss值" class="headerlink" title="利用Tensorboard记录Loss值"></a>利用Tensorboard记录Loss值</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">运行环境：</span><br><span class="line">tensorflow==<span class="number">1.14</span><span class="number">.0</span></span><br><span class="line">keras==<span class="number">2.2</span><span class="number">.5</span></span><br></pre></td></tr></table></figure>
+<h1 id="构建模型"><a href="#构建模型" class="headerlink" title="构建模型"></a>构建模型</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">CNN = build_cnn()</span><br><span class="line"><span class="comment"># type(CNN) = keras.engine.training.Model</span></span><br></pre></td></tr></table></figure>
+<h1 id="log记录函数"><a href="#log记录函数" class="headerlink" title="log记录函数"></a>log记录函数</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_log</span><span class="params">(callback, names, logs, batch_no)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> name, value <span class="keyword">in</span> zip(names, logs):</span><br><span class="line">        summary = tf.Summary()</span><br><span class="line">        summary_value = summary.value.add()</span><br><span class="line">        summary_value.simple_value = value</span><br><span class="line">        summary_value.tag = name</span><br><span class="line">        callback.writer.add_summary(summary, batch_no)</span><br><span class="line">        callback.writer.flush()</span><br></pre></td></tr></table></figure>
+<h1 id="创建Tensorboard记录"><a href="#创建Tensorboard记录" class="headerlink" title="创建Tensorboard记录"></a>创建Tensorboard记录</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># log_path = './logs'</span></span><br><span class="line">callback = TensorBoard(log_path)</span><br><span class="line">callback.set_model(CNN)</span><br></pre></td></tr></table></figure>
+
+<h1 id="在训练过程中记录Loss"><a href="#在训练过程中记录Loss" class="headerlink" title="在训练过程中记录Loss"></a>在训练过程中记录Loss</h1><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">datasize = X.shape[<span class="number">0</span>]</span><br><span class="line">batches = datasize//batch_size</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epochs):</span><br><span class="line">	<span class="keyword">for</span> batch <span class="keyword">in</span> range(batches):</span><br><span class="line">		loss = CNN.train_on_batch(x, y)</span><br><span class="line">		write_log(callback, </span><br><span class="line">                  CNN.metrics_names,</span><br><span class="line">                  loss,</span><br><span class="line">                  epoch * batches + batch)</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>tensorflow</category>
+      </categories>
+      <tags>
+        <tag>tensorboard</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>tensorflow之scope使用</title>
     <url>/2020/07/12/tf_name_scope_variable_scope_new/</url>
     <content><![CDATA[<h1 id="tensorflow中名称作用域和变量作用域"><a href="#tensorflow中名称作用域和变量作用域" class="headerlink" title="tensorflow中名称作用域和变量作用域"></a>tensorflow中名称作用域和变量作用域</h1><p>名称作用域和变量作用域能让我们在<strong>tensorboard</strong>中更清晰得看到各类变量所处的命名空间以及输入、输出的流动方向。当神经网络架构较为复杂时，可以通过为网络不同块的变量和运算创建作用域的形式来使<strong>graph</strong>更整洁。(源码为官方代码，<strong>注释为翻译版</strong>，英文版请查看源码<strong>doc</strong>或者关注<a href="https://tensorflow.google.cn/api_docs/python/tf/compat/v1/variable_scope" target="_blank" rel="noopener">官方网站</a>)</p>
