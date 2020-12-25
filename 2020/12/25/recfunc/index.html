@@ -23,24 +23,26 @@
   <meta name="description" content="rf包计算接收函数。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="OBSpy+rf接收函数计算">
-<meta property="og:url" content="http://blog.geophyai.com/2020/09/06/recfunc/index.html">
+<meta property="og:url" content="http://blog.geophyai.com/2020/12/25/recfunc/index.html">
 <meta property="og:site_name" content="GeophyAI">
 <meta property="og:description" content="rf包计算接收函数。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://blog.geophyai.com/2020/09/06/recfunc/88events.png">
-<meta property="og:image" content="http://blog.geophyai.com/2020/09/06/recfunc/PB01BHL.png">
-<meta property="og:image" content="http://blog.geophyai.com/2020/09/06/recfunc/PB01BHQ.png">
-<meta property="og:image" content="http://blog.geophyai.com/2020/09/06/recfunc/PB04BHQ.png">
-<meta property="og:image" content="http://blog.geophyai.com/2020/09/06/recfunc/5.png">
-<meta property="og:image" content="http://blog.geophyai.com/2020/09/06/recfunc/6.png">
-<meta property="article:published_time" content="2020-09-06T01:39:58.000Z">
-<meta property="article:modified_time" content="2020-09-06T01:39:58.000Z">
+<meta property="og:image" content="http://blog.geophyai.com/2020/12/25/recfunc/download.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/12/25/recfunc/2.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/12/25/recfunc/88events.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/12/25/recfunc/PB01BHL.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/12/25/recfunc/PB01BHQ.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/12/25/recfunc/PB04BHQ.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/12/25/recfunc/5.png">
+<meta property="og:image" content="http://blog.geophyai.com/2020/12/25/recfunc/6.png">
+<meta property="article:published_time" content="2020-12-24T23:30:58.000Z">
+<meta property="article:modified_time" content="2020-12-24T23:30:58.000Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="天然地震">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://blog.geophyai.com/2020/09/06/recfunc/88events.png">
+<meta name="twitter:image" content="http://blog.geophyai.com/2020/12/25/recfunc/download.png">
 
-<link rel="canonical" href="http://blog.geophyai.com/2020/09/06/recfunc/">
+<link rel="canonical" href="http://blog.geophyai.com/2020/12/25/recfunc/">
 
 
 <script id="page-configurations">
@@ -202,7 +204,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/09/06/recfunc/">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/12/25/recfunc/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -225,7 +227,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-09-06 09:39:58" itemprop="dateCreated datePublished" datetime="2020-09-06T09:39:58+08:00">2020-09-06</time>
+              <time title="创建时间：2020-12-25 07:30:58" itemprop="dateCreated datePublished" datetime="2020-12-25T07:30:58+08:00">2020-12-25</time>
             </span>
 
 
@@ -249,8 +251,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/09/06/recfunc/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/06/recfunc/" itemprop="commentCount"></span>
+    <a title="valine" href="/2020/12/25/recfunc/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/25/recfunc/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -271,22 +273,22 @@
 <p>如有必要，可以下载震级5.5和6.5之间的2010年库存数据和事件并作图。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(invfile):</span><br><span class="line">    client = Client(<span class="string">'GFZ'</span>)</span><br><span class="line">    inventory = client.get_stations(network=<span class="string">'CX'</span>, channel=<span class="string">'BH?'</span>, level=<span class="string">'channel'</span>,</span><br><span class="line">                                    minlatitude=<span class="number">-24</span>, maxlatitude=<span class="number">-19</span>)</span><br><span class="line">    inventory.write(invfile, <span class="string">'STATIONXML'</span>)</span><br><span class="line">inventory = read_inventory(invfile)</span><br><span class="line">inventory.plot(label=<span class="literal">False</span>)</span><br><span class="line">fig = inventory.plot(<span class="string">'local'</span>, color_per_network=<span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
 
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">coords = inventory.get_coordinates(<span class="string">'CX.PB01..BHZ'</span>)</span><br><span class="line">lonlat = (coords[<span class="string">'longitude'</span>], coords[<span class="string">'latitude'</span>])</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(catfile):</span><br><span class="line">    client = Client()</span><br><span class="line">    kwargs = &#123;<span class="string">'starttime'</span>: UTC(<span class="string">'2010-01-01'</span>), <span class="string">'endtime'</span>: UTC(<span class="string">'2011-01-01'</span>), </span><br><span class="line">              <span class="string">'latitude'</span>: lonlat[<span class="number">1</span>], <span class="string">'longitude'</span>: lonlat[<span class="number">0</span>],</span><br><span class="line">              <span class="string">'minradius'</span>: <span class="number">30</span>, <span class="string">'maxradius'</span>: <span class="number">90</span>,</span><br><span class="line">              <span class="string">'minmagnitude'</span>: <span class="number">5.5</span>, <span class="string">'maxmagnitude'</span>: <span class="number">6.5</span>&#125;</span><br><span class="line">    catalog = client.get_events(**kwargs)</span><br><span class="line">    catalog.write(catfile, <span class="string">'QUAKEML'</span>)</span><br><span class="line">catalog = read_events(catfile)</span><br><span class="line">fig = catalog.plot(label=<span class="literal">None</span>) </span><br><span class="line">![inventory](recfunc/download.png)</span><br><span class="line">![stations](recfunc/<span class="number">2.</span>png)</span><br></pre></td></tr></table></figure>
-<p>然后，我们使用<code>iter_event_data</code>迭代器下载波形数据，并将其保存到<code>HDF5</code>文件中。 迭代器通过应用<code>rfstats</code>函数自动将必要的标头插入流中。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">coords = inventory.get_coordinates(<span class="string">'CX.PB01..BHZ'</span>)</span><br><span class="line">lonlat = (coords[<span class="string">'longitude'</span>], coords[<span class="string">'latitude'</span>])</span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(catfile):</span><br><span class="line">    client = Client()</span><br><span class="line">    kwargs = &#123;<span class="string">'starttime'</span>: UTC(<span class="string">'2010-01-01'</span>), <span class="string">'endtime'</span>: UTC(<span class="string">'2011-01-01'</span>), </span><br><span class="line">              <span class="string">'latitude'</span>: lonlat[<span class="number">1</span>], <span class="string">'longitude'</span>: lonlat[<span class="number">0</span>],</span><br><span class="line">              <span class="string">'minradius'</span>: <span class="number">30</span>, <span class="string">'maxradius'</span>: <span class="number">90</span>,</span><br><span class="line">              <span class="string">'minmagnitude'</span>: <span class="number">5.5</span>, <span class="string">'maxmagnitude'</span>: <span class="number">6.5</span>&#125;</span><br><span class="line">    catalog = client.get_events(**kwargs)</span><br><span class="line">    catalog.write(catfile, <span class="string">'QUAKEML'</span>)</span><br><span class="line">catalog = read_events(catfile)</span><br><span class="line">fig = catalog.plot(label=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+<p><img src="/2020/12/25/recfunc/download.png" alt="inventory"><br><img src="/2020/12/25/recfunc/2.png" alt="stations"><br>然后，我们使用<code>iter_event_data</code>迭代器下载波形数据，并将其保存到<code>HDF5</code>文件中。 迭代器通过应用<code>rfstats</code>函数自动将必要的标头插入流中。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(datafile):</span><br><span class="line">    client = Client(<span class="string">'GFZ'</span>)</span><br><span class="line">    stream = RFStream()</span><br><span class="line">    <span class="keyword">with</span> tqdm() <span class="keyword">as</span> pbar:</span><br><span class="line">        <span class="keyword">for</span> s <span class="keyword">in</span> iter_event_data(catalog, inventory, client.get_waveforms, pbar=pbar):</span><br><span class="line">            stream.extend(s)</span><br><span class="line">    stream.write(datafile, <span class="string">'H5'</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/09/06/recfunc/88events.png" alt="events"><br>我们再次读取数据，并使用<code>IterMultipleComponents</code>对其进行遍历。 该迭代器为每个事件和台站返回一个三分量流。 我们过滤数据，相对于P波起始点进行修剪，计算接收函数并应用<code>Ps</code>偏移校正。 此后，绘制一个站的L分量和某些站的Q分量。 接收函数的L分量在0s处显示预期的峰值。</p>
+<p><img src="/2020/12/25/recfunc/88events.png" alt="events"><br>我们再次读取数据，并使用<code>IterMultipleComponents</code>对其进行遍历。 该迭代器为每个事件和台站返回一个三分量流。 我们过滤数据，相对于P波起始点进行修剪，计算接收函数并应用<code>Ps</code>偏移校正。 此后，绘制一个站的L分量和某些站的Q分量。 接收函数的L分量在0s处显示预期的峰值。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">data = read_rf(datafile, <span class="string">'H5'</span>)</span><br><span class="line">stream = RFStream()</span><br><span class="line"><span class="keyword">for</span> stream3c <span class="keyword">in</span> tqdm(IterMultipleComponents(data, <span class="string">'onset'</span>, <span class="number">3</span>)):</span><br><span class="line">    stream3c.filter(<span class="string">'bandpass'</span>, freqmin=<span class="number">0.5</span>, freqmax=<span class="number">2</span>)</span><br><span class="line">    stream3c.trim2(<span class="number">-25</span>, <span class="number">75</span>, <span class="string">'onset'</span>)</span><br><span class="line">    <span class="keyword">if</span> len(stream3c) != <span class="number">3</span>:</span><br><span class="line">        <span class="keyword">continue</span></span><br><span class="line">    stream3c.rf()</span><br><span class="line">    stream3c.moveout()</span><br><span class="line">    stream.extend(stream3c)</span><br><span class="line">stream.write(rffile, <span class="string">'H5'</span>)</span><br><span class="line">print(stream)</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">3273 Trace(s) in Stream:</span><br><span class="line"></span><br><span class="line">Prf CX.HMBCX..BHT | -25.0s - 75.0s onset:2010-01-27T17:52:02.949998Z | 20.0 Hz, 2001 samples | mag:5.8 dist:53.1 baz:92.8 slow:6.40 (Ps moveout)</span><br><span class="line">...</span><br><span class="line">(3271 other traces)</span><br><span class="line">...</span><br><span class="line">Prf CX.PSGCX..BHL | -25.0s - 75.0s onset:2010-12-31T16:39:31.150000Z | 20.0 Hz, 2001 samples | mag:5.5 dist:47.7 baz:70.2 slow:6.40 (Ps moveout)</span><br><span class="line"></span><br><span class="line">[Use &quot;print(Stream.__str__(extended&#x3D;True))&quot; to print all Traces]</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">stream = read_rf(rffile, <span class="string">'H5'</span>)</span><br><span class="line">kw = &#123;<span class="string">'trim'</span>: (<span class="number">-5</span>, <span class="number">20</span>), <span class="string">'fillcolors'</span>: (<span class="string">'black'</span>, <span class="string">'gray'</span>), <span class="string">'trace_height'</span>: <span class="number">0.1</span>&#125;</span><br><span class="line">stream.select(component=<span class="string">'L'</span>, station=<span class="string">'PB01'</span>).sort([<span class="string">'back_azimuth'</span>]).plot_rf(**kw)</span><br><span class="line"><span class="keyword">for</span> sta <span class="keyword">in</span> (<span class="string">'PB01'</span>, <span class="string">'PB04'</span>):</span><br><span class="line">    stream.select(component=<span class="string">'Q'</span>, station=sta).sort([<span class="string">'back_azimuth'</span>]).plot_rf(**kw)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/09/06/recfunc/PB01BHL.png" alt="PB01BHL"><br><img src="/2020/09/06/recfunc/PB01BHQ.png" alt="PB01BHQ"><br><img src="/2020/09/06/recfunc/PB04BHQ.png" alt="PB04BHQ"><br>最后，我们通过在70 km的深度中穿入点经度来堆叠接收函数，并绘制剖面。 <code>get_profile_boxes</code>函数用于定义要叠加的区域。 方位角为90度，以定义东西走向。 使用<code>plot_profile_map</code>绘制域。 该剖面由配置剖面函数生成。 使用剖面函数而不是<code>RFStream.profile</code>方法可以显示进度条（对于大型数据集，也可以直接从光盘中feedRF数据）。</p>
+<p><img src="/2020/12/25/recfunc/PB01BHL.png" alt="PB01BHL"><br><img src="/2020/12/25/recfunc/PB01BHQ.png" alt="PB01BHQ"><br><img src="/2020/12/25/recfunc/PB04BHQ.png" alt="PB04BHQ"><br>最后，我们通过在70 km的深度中穿入点经度来堆叠接收函数，并绘制剖面。 <code>get_profile_boxes</code>函数用于定义要叠加的区域。 方位角为90度，以定义东西走向。 使用<code>plot_profile_map</code>绘制域。 该剖面由配置剖面函数生成。 使用剖面函数而不是<code>RFStream.profile</code>方法可以显示进度条（对于大型数据集，也可以直接从光盘中feedRF数据）。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">stream = read_rf(rffile, <span class="string">'H5'</span>)</span><br><span class="line">ppoints = stream.ppoints(<span class="number">70</span>)</span><br><span class="line">boxes = get_profile_boxes((<span class="number">-21.3</span>, <span class="number">-70.7</span>), <span class="number">90</span>, np.linspace(<span class="number">0</span>, <span class="number">180</span>, <span class="number">73</span>), width=<span class="number">530</span>)</span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>, <span class="number">10</span>))</span><br><span class="line">plot_profile_map(boxes, inventory=inventory, ppoints=ppoints)</span><br><span class="line">pstream = profile(tqdm(stream), boxes)</span><br><span class="line">pstream.write(profilefile, <span class="string">'H5'</span>)</span><br><span class="line">plt.show()</span><br><span class="line">print(pstream)</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/09/06/recfunc/5.png" alt="pstream"></p>
+<p><img src="/2020/12/25/recfunc/5.png" alt="pstream"></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">213 Trace(s) in Stream:</span><br><span class="line"></span><br><span class="line">Prf profile (L) | -25.0s - 75.0s | 20.0 Hz, 2001 samples | pos:1.25km slow:6.40 (Ps moveout)</span><br><span class="line">...</span><br><span class="line">(211 other traces)</span><br><span class="line">...</span><br><span class="line">Prf profile (T) | -25.0s - 75.0s | 20.0 Hz, 2001 samples | pos:178.75km slow:6.40 (Ps moveout)</span><br><span class="line"></span><br><span class="line">[Use &quot;print(Stream.__str__(extended&#x3D;True))&quot; to print all Traces]</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">pstream = read_rf(profilefile)</span><br><span class="line">pstream.trim2(<span class="number">-5</span>, <span class="number">20</span>, <span class="string">'onset'</span>)</span><br><span class="line">pstream.select(channel=<span class="string">'??Q'</span>).normalize().plot_profile(scale=<span class="number">1.5</span>, top=<span class="string">'hist'</span>)</span><br><span class="line">plt.gcf().set_size_inches(<span class="number">15</span>, <span class="number">10</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/09/06/recfunc/6.png" alt="pstream"></p>
+<p><img src="/2020/12/25/recfunc/6.png" alt="pstream"></p>
 
     </div>
 
@@ -302,7 +304,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.geophyai.com/2020/09/06/recfunc/" title="OBSpy+rf接收函数计算">http://blog.geophyai.com/2020/09/06/recfunc/</a>
+    <a href="http://blog.geophyai.com/2020/12/25/recfunc/" title="OBSpy+rf接收函数计算">http://blog.geophyai.com/2020/12/25/recfunc/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -322,13 +324,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/09/05/obspy_install/" rel="prev" title="OBSpy installation Q&A">
-      <i class="fa fa-chevron-left"></i> OBSpy installation Q&A
+    <a href="/2020/10/14/tensorflow1.14.0_loss_summary/" rel="prev" title="Tensorboard记录Loss变化">
+      <i class="fa fa-chevron-left"></i> Tensorboard记录Loss变化
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/09/06/obspy3/" rel="next" title="OBSpy天然地震III">
-      OBSpy天然地震III <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -516,7 +515,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/09/06/recfunc/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/12/25/recfunc/',]
       });
       });
   </script>
