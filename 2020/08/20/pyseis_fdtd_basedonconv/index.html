@@ -265,7 +265,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="基于神经网络中卷积操作的标量声波方程正演模拟"><a href="#基于神经网络中卷积操作的标量声波方程正演模拟" class="headerlink" title="基于神经网络中卷积操作的标量声波方程正演模拟"></a>基于神经网络中卷积操作的标量声波方程正演模拟</h1><p>编写一个声波方程的正演模拟程序，是入门地震数据处理中数值模拟这一领域的基础，同时也是后续做<strong>RTM</strong>、<strong>FWI</strong>等方向的基础。个人一般用<strong>C</strong>、<strong>C++</strong> 或者<strong>CUDA</strong>编写<strong>CPU(GPU)</strong> 版本的程序，对于初入这一行业的小白来讲门槛比较高，既要掌握语言语法、还要将偏微分方程“变现”（将其离散化并变为计算机语言），并且后续代码的移植也非常困难；但好处是可操作性强（可以直接对内存、显存进行操作），代码可读性强（不会像python一样过一阵再看自己写的代码就看不懂了）。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="基于神经网络中卷积操作的标量声波方程正演模拟"><a href="#基于神经网络中卷积操作的标量声波方程正演模拟" class="headerlink" title="基于神经网络中卷积操作的标量声波方程正演模拟"></a>基于神经网络中卷积操作的标量声波方程正演模拟</h1><p>编写一个声波方程的正演模拟程序，是入门地震数据处理中数值模拟这一领域的基础，同时也是后续做<strong>RTM</strong>、<strong>FWI</strong>等方向的基础。个人一般用<strong>C</strong>、<strong>C++</strong> 或者<strong>CUDA</strong>编写<strong>CPU(GPU)</strong> 版本的程序，对于初入这一行业的小白来讲门槛比较高，既要掌握语言语法、还要将偏微分方程“变现”（将其离散化并变为计算机语言），并且后续代码的移植也非常困难；但好处是可操作性强（可以直接对内存、显存进行操作），代码可读性强（不会像python一样过一阵再看自己写的代码就看不懂了）。</p>
 <p>所以… … …</p>
 <p>之前做过一些尝试，把<strong>C</strong>的正演程序直接改成<strong>python</strong>的语法，但是发现效率极其低下，已经找不到当时的代码了，回忆了一下应该是思维定式（菜）惹的祸：波场计算的时候用<strong>for</strong>循环处理了<strong>numpy</strong>数组（大误），现在想想是真的菜。</p>
 <p>下面我们以深度学习中卷积操作的视角重新审视一下基于有限差分的标量声波方程正演模拟。</p>
