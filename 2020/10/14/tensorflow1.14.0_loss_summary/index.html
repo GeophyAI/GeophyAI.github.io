@@ -269,7 +269,7 @@
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># log_path = './logs'</span></span><br><span class="line">callback = TensorBoard(log_path)</span><br><span class="line">callback.set_model(CNN)</span><br></pre></td></tr></table></figure>
 <h1>在训练过程中记录Loss</h1>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">datasize = X.shape[<span class="number">0</span>]</span><br><span class="line">batches = datasize//batch_size</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epochs):</span><br><span class="line">	<span class="keyword">for</span> batch <span class="keyword">in</span> range(batches):</span><br><span class="line">		loss = CNN.train_on_batch(x, y)</span><br><span class="line">		write_log(callback, </span><br><span class="line">                  CNN.metrics_names,</span><br><span class="line">                  loss,</span><br><span class="line">                  epoch * batches + batch)</span><br></pre></td></tr></table></figure>
-
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
     

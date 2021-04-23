@@ -289,7 +289,7 @@
 <p>仔细观察即可发现，每个(i,j)处横向或纵向的求和都可以用以该点为中心，长度和宽度均为<strong>2*N+1</strong>的<strong>block</strong>与一个相同大小的卷积核<strong>f</strong>进行卷积来代替，例如当差分精度为<strong>4</strong>时，卷积核的大小应为<strong>5x5</strong>，以(i,j)为中心的求和(dx=dz=dh)可以用如下卷积操作代替(注：第一个矩阵中的省略号不代表值为0，只是其与卷积核相乘后的值为0，当网格不同方向的大小不同时需要区分水平方向卷积核以及垂直方向卷积核)，那么整个卷积就可以写为<code>tf.nn.depthwise_conv2d(input=x, filter=f, strides=[1, 1, 1, 1], padding='SAME')</code><br>
 <img src="/2020/08/20/pyseis_fdtd_basedonconv/conv1.gif" alt="conv1"></p>
 <p>基本原理如上所述，这样一来，我们就可以利用TF框架来实现正演模拟了(完整的代码请联系shaowinw@geophyai.com，小站流量不多了，暂不提供下载功能)。</p>
-
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
     
