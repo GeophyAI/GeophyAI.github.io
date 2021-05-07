@@ -1574,8 +1574,7 @@ $$\boldsymbol y_t = (\boldsymbol P^{o}·\boldsymbol h_t)^{2}\tag{6}$$<br>
   <entry>
     <title>Physics-informed neural networks:Translation Part I</title>
     <url>/2021/05/07/10.1016j.jcp.2018.10.045_a/</url>
-    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>PINN</h1>
-<p>原文地址：<a href="https://www.sciencedirect.com/science/article/pii/S0021999118307125" target="_blank" rel="noopener">PINN：深度学习框架下求解含有非线性偏微分方程的正问题、反问题</a><br>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>原文地址：<a href="https://www.sciencedirect.com/science/article/pii/S0021999118307125" target="_blank" rel="noopener">PINN：深度学习框架下求解含有非线性偏微分方程的正问题、反问题</a><br>
 doi:<a href="http://sci-hub.ren/10.1016/j.jcp.2018.10.045" target="_blank" rel="noopener">10.1016/j.jcp.2018.10.045</a></p>
 <h1>ABSTRACT</h1>
 <p>本文介绍了PINN（Physics-informed neural networks，物理信息神经网络），其能够在解决监督学习任务的同时遵守由一般的非线性偏微分方程描述的物理约束。在这项工作中，我们主要从数据驱动解和偏微分方程的数据驱动解两方面探讨。根据可用数据的性质和排列（nature and arrangement），我们设计了两种不同类型的算法，即连续时间模型和离散时间模型。第一类模型形成了一族数据高效(data-efficient)的时空函数逼近器（spatio-temporal function approximators），而后一类模型能以任意精度的隐式Runge-Kutta时间递推格式（with unlimited number of stages）。通过流体、量子力学、反应扩散系统和非线性浅水波的传播等一系列经典问题，证明了该框架的有效性。</p>
@@ -1684,14 +1683,14 @@ $$MSE_f = \frac{1}{N_f}\sum_{i=1}^{N_f}\mid f(t_f^{i}, x^i_f)\mid^2$$<br>
 <img src="/2021/05/07/10.1016j.jcp.2018.10.045_a/fig01.png" alt="fig01"></p>
 <h2 id="3-2-离散时间模型">3.2 离散时间模型</h2>
 <p>对方程$2$应用$q$阶Runge-Kutta方法得到以下公式：<br>
-$$u^{n+c_i}=u^n-\Delta t\sum_{j=1}^{q} a_ijN[u^{n+c_j}], i=1,…,q,  \<br>
-u^{n+1}=u^n-\Delta t \sum_{j=1}^{q} b_j N[u^{n+c_j}]. \tag 7$$<br>
+$$u^{n+c_i}=u^n-\Delta t\sum_{j=1}^{q} a_ij\mathcal{N}[u^{n+c_j}], i=1,…,q,  \<br>
+u^{n+1}=u^n-\Delta t \sum_{j=1}^{q} b_j \mathcal{N}[u^{n+c_j}]. \tag 7$$<br>
 其中，$u^{n+c_j}(x)=u(t^n+c_j\Delta t, x)$（$j=1,…,q$）。这一通用格式封装了显式和隐式时间递推格式，该格式取决于参数${a_ij, b_j, c_j}$。公式$7$可以被等价地表示为：<br>
 $$u^n=u^n_i, i=1,…,q,\<br>
 u^n=u^n_{q+1} \tag{8}$$<br>
 其中:<br>
-$$u^n_j:=u^{n+c_i}+\Delta t\sum^{q}<em>{j=1}a_ijN[u^{n+c_j}], i=1,…,q \<br>
-u^n</em>{q+1}:=u^{n+1}+\Delta t \sum^{q}_{j=1}b_jN[u^{n+c_j}] \tag{9}$$<br>
+$$u^n_j:=u^{n+c_i}+\Delta t\sum^{q}<em>{j=1}a_ij \mathcal{N}[u^{n+c_j}], i=1,…,q \<br>
+u^n</em>{q+1}:=u^{n+1}+\Delta t \sum^{q}_{j=1}b_j \mathcal{N}[u^{n+c_j}] \tag{9}$$<br>
 我们将多输出神经网络置于以下公式之前<br>
 $$[u^{n+c_1}(x),…,u^{n+c_q}(x), u^{n+1}(x)] \tag{10}$$<br>
 上述先验信息以及公式$9$共同构成了以$x$为输入、以公式$11$为输出的PINN：<br>
@@ -1705,7 +1704,7 @@ u(t, -1)=u(t, 1),\  \tag{12}<br>
 u_x(t, -1)=u_x(t,1)<br>
 $$<br>
 Allen-Cahn方程是反散-扩散系统的著名方程。它描述了多组分合金体系的相分离过程，包括有序-无序转变。对于Allen-Cahn方程，公式$9$中的非线性算子为<br>
-$$N[u^{n+c_j}]=-0.0001u^{n+c_j}<em>{xx}+5(u^{n+c_j})^3-5u^{n+c_j}$$<br>
+$$\mathcal{N}[u^{n+c_j}]=-0.0001u^{n+c_j}<em>{xx}+5(u^{n+c_j})^3-5u^{n+c_j}$$<br>
 公式$10$和$11$中的共享参数可通过最小化平方误差（公式$13$）学习来得到<br>
 $$SSE=SSE_n+SSE_b,$$<br>
 其中，<br>
