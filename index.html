@@ -302,10 +302,8 @@ $$u_t+\mathcal{N}[u]=0,x\in\Omega,t\in[0,T] \tag{2}$$<br>
 $$f:=u_t+\mathcal{N}[u] \tag{3}$$<br>
 然后用神经网络逼近$u(t, x)$。这个假设和方程$3$共同构成了一个PINN $f(t, x)$。该网络可通过链式求导法则[12]，并且与网络表示$u(t, x)$具有相同的参数，尽管由于微分算子$N$的作用而具有不同的激活函数。神经网络$u(t, x)$和$f(t, x)$之间的共享参数可通过最小化均方误差（MSE）函数来学习。<br>
 $$MSE = MSE_u+MSE_f\tag{4}$$<br>
-其中<br>
-$$MSE_u=\frac{1}{N_u}\sum_{i=1}^{N_u}\mid{u(t_{u}^{i}, x^{u}<em>{i})-u^i}\mid^2$$<br>
-$$MSE_f=\frac{1}{N_f}\sum</em>{i=1}^{N_u}\mid{f(t_{f}^{i}, x^{f}<em>{i})}\mid^2$$<br>
-$\lbrace t</em>{u}^{i}, x_{u}^{i}, u^{i} \rbrace$表示$u(t, x)$的初始和边界训练数据，$\lbrace t_{f}^{i}, x_{f}^{i}\rbrace$表示$f(t, x)$的collocations points。损失函数$MSE_u$对应初始和边界数据，$MSE_f$在配置点的有限集合上加强了方程$2$所施加的结构（？？？？）。尽管在以前的研究<sup id="fnref:15"><a href="#fn:15" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="I.E. Lagaris, A. Likas, D.I. Fotiadis, Artifificial neural networks for solving ordinary and partial differential equations, IEEE Trans. Neural Netw. 9 (1998) 987–1000.
+其中</p>
+<p>$\lbrace t_{u}^{i}, x_{u}^{i}, u^{i} \rbrace$表示$u(t, x)$的初始和边界训练数据，$\lbrace t_{f}^{i}, x_{f}^{i}\rbrace$表示$f(t, x)$的collocations points。损失函数$MSE_u$对应初始和边界数据，$MSE_f$在配置点的有限集合上加强了方程$2$所施加的结构（？？？？）。尽管在以前的研究<sup id="fnref:15"><a href="#fn:15" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="I.E. Lagaris, A. Likas, D.I. Fotiadis, Artifificial neural networks for solving ordinary and partial differential equations, IEEE Trans. Neural Netw. 9 (1998) 987–1000.
 ">[15]</span></a></sup><sup id="fnref:16"><a href="#fn:16" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="D.C. Psichogios, L.H. Ungar, A hybrid neural network-fifirst principles approach to process modeling, AIChE J. 38 (1992) 1499–1511.
 ">[16]</span></a></sup>中已经探讨了使用物理定律约束神经网络的类似想法，但在这里我们使用现代计算工具重新讨论了它们，并将它们应用于与时间相关的非线性偏微分方程描述等更具挑战性的动力学问题中。<br>
 在这里，我们强调这一工作与文献中现有的机器学习在计算物理中的应用之间的重要区别。Wang等人<sup id="fnref:17"><a href="#fn:17" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="J.-X. Wang, J. Wu, J. Ling, G. Iaccarino, H. Xiao, A comprehensive physics-informed machine learning framework for predictive turbulence modeling, 2017, arXiv:1701.07102.

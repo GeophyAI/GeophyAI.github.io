@@ -306,59 +306,6 @@ U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_bla
       </tags>
   </entry>
   <entry>
-    <title>pyseis--基于conv的声波正演模拟</title>
-    <url>/2020/08/20/pyseis_fdtd_basedonconv/</url>
-    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>基于神经网络中卷积操作的标量声波方程正演模拟</h1>
-<p>编写一个声波方程的正演模拟程序，是入门地震数据处理中数值模拟这一领域的基础，同时也是后续做<strong>RTM</strong>、<strong>FWI</strong>等方向的基础。个人一般用<strong>C</strong>、<strong>C++</strong> 或者<strong>CUDA</strong>编写<strong>CPU(GPU)</strong> 版本的程序，对于初入这一行业的小白来讲门槛比较高，既要掌握语言语法、还要将偏微分方程“变现”（将其离散化并变为计算机语言），并且后续代码的移植也非常困难；但好处是可操作性强（可以直接对内存、显存进行操作），代码可读性强（不会像python一样过一阵再看自己写的代码就看不懂了）。</p>
-<p>所以… … …</p>
-<p>之前做过一些尝试，把<strong>C</strong>的正演程序直接改成<strong>python</strong>的语法，但是发现效率极其低下，已经找不到当时的代码了，回忆了一下应该是思维定式（菜）惹的祸：波场计算的时候用<strong>for</strong>循环处理了<strong>numpy</strong>数组（大误），现在想想是真的菜。</p>
-<p>下面我们以深度学习中卷积操作的视角重新审视一下基于有限差分的标量声波方程正演模拟。</p>
-<h2 id="标量声波方程">标量声波方程</h2>
-<p>我们首先来看二维空间中的波动方程，<br>
-<img src="/2020/08/20/pyseis_fdtd_basedonconv/scalar_o.gif" alt="img"><br>
-左侧是<strong>u</strong>对时间的二阶导数，右侧是<strong>u</strong>对空间的二阶偏导数与源<strong>f</strong>之和，为求解 <strong>t</strong>时刻 <strong>(i, j)</strong> 处的波场分量，首先需要将其离散化。我们一般将二维空间中的拉普拉斯算子用Taylor展开的形式来逼近，用<strong>k</strong>、<strong>k-1</strong>、和<strong>k-2</strong>表示相邻的三个时刻，空间步长<strong>dx=dz=dh</strong>,时间步长为<strong>dt</strong>，介质速度为<strong>Vp</strong>，则有<br>
-<img src="/2020/08/20/pyseis_fdtd_basedonconv/scalar.gif" alt="scalar"><br>
-我们会发现它实质上是一个迭代的过程，这里给出的公式只能够计算一个时间切片内的波场，在编程计算时，计算完<strong>k</strong>时刻波场后，需要将<strong>k</strong>和<strong>k-1</strong>时刻分别更新为<strong>k-1</strong>和<strong>k-2</strong>时刻，这样就可以计算下一个&quot;k&quot;时刻的波场(对应实际的k+1)。</p>
-<h2 id="神经网络中的卷积操作">神经网络中的卷积操作</h2>
-<p>神经网络中的二维卷积实质上是卷积核与像素矩阵pixel-wise的互相关、求和，它与一维信号中的卷积还不太一样<br>
-<img src="/2020/08/20/pyseis_fdtd_basedonconv/conv.gif" alt="conv"><br>
-图片来自(<a href="https://www.jianshu.com/p/1ea2949c0056" target="_blank" rel="noopener">简书</a>)<br>
-动图中可以很明显地看出，单层的卷积计算也并不是很复杂，只是拿一个window在已知的输入上滑动，这个window就是神经网络卷积、反卷积中的卷积核kernel，滑动的步长被称为stride，边缘处灰色值被称为padding(用于填充边缘保证输入和输出的大小)，kernel和输入的每一个block相乘相加即可得到输出的一个像素值。</p>
-<h2 id="基于卷积op的有限差分">基于卷积op的有限差分</h2>
-<p>很久之前就在想有没有办法能够将正演接入神经网络中，利用python中现成的工具包快速完成一些复杂的计算，这要涉及到数据流问题、输入输出转换问题、数据接口问题等等。前一阵利用<strong>pycuda</strong>完成了几个版本的正演模拟(常规网格标量声波和一阶速度应力交错网格弹性波)计算<strong>package</strong>，能够通过简单的输入速度模型(<strong>numpy</strong>)和参数设置生成数据流并怼到神经网络里面，但是<strong>pycuda</strong>的底层代码还是用<strong>CUDA</strong>写的，只是通过它的<strong>SourceMoudle</strong>来编译运行，所以不能直接接到<strong>TF</strong>的<strong>Graph</strong>中，进行更加高级的运算，比如求导等(<strong>package</strong>中有未公开发表的部分，待发表后将源码放出)。</p>
-<p>要想利用<strong>TF</strong>等框架的自动微分，就必须要使用<strong>TF</strong>原生的函数或者定义 <code>@tf.function</code>来追踪变量，由此有了以下尝试。</p>
-<p>我们观察离散格式的标量声波方程中带有求和符号的一项，可以看到它是每一个点上沿着<strong>x</strong>方向和<strong>z</strong>方向的求和叠加，假设有限差分精度为<strong>2N</strong>，那么求和项中的系数可以通过求解以下方程得到<br>
-<img src="/2020/08/20/pyseis_fdtd_basedonconv/coes.gif" alt="coes"></p>
-<p>仔细观察即可发现，每个(i,j)处横向或纵向的求和都可以用以该点为中心，长度和宽度均为<strong>2*N+1</strong>的<strong>block</strong>与一个相同大小的卷积核<strong>f</strong>进行卷积来代替，例如当差分精度为<strong>4</strong>时，卷积核的大小应为<strong>5x5</strong>，以(i,j)为中心的求和(dx=dz=dh)可以用如下卷积操作代替(注：第一个矩阵中的省略号不代表值为0，只是其与卷积核相乘后的值为0，当网格不同方向的大小不同时需要区分水平方向卷积核以及垂直方向卷积核)，那么整个卷积就可以写为<code>tf.nn.depthwise_conv2d(input=x, filter=f, strides=[1, 1, 1, 1], padding='SAME')</code><br>
-<img src="/2020/08/20/pyseis_fdtd_basedonconv/conv1.gif" alt="conv1"></p>
-<p>基本原理如上所述，这样一来，我们就可以利用TF框架来实现正演模拟了(完整的代码请联系shaowinw@geophyai.com，小站流量不多了，暂不提供下载功能)。</p>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <categories>
-        <category>pyseis</category>
-      </categories>
-      <tags>
-        <tag>fdtd</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>OBSpy installation Q&amp;A</title>
-    <url>/2020/09/05/obspy_install/</url>
-    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>Q&amp;A of installation of obspy</h1>
-<h2 id="Q-ImportError-Neither-Basemap-nor-Cartopy-could-be-imported">Q: ImportError: Neither Basemap nor Cartopy could be imported.</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ conda install basemap</span><br></pre></td></tr></table></figure>
-<h2 id="Q-ImportError-cannot-import-name-‘is-scalar’">Q: ImportError: cannot import name ‘is scalar’</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ pip install matplotlib==<span class="number">3.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
-<h2 id="Q-AttributeError-‘Axes’-object-has-no-attribute-‘get-axis-bgcolor’">Q: AttributeError: ‘Axes’ object has no attribute ‘get axis bgcolor’</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ vim ~/.conda/envs/seismic/lib/python3<span class="number">.6</span>/site-packages/mpl_toolkits/basemap/__init__.py</span><br><span class="line"><span class="comment"># Change the directory of you own basemap installaion dir.</span></span><br><span class="line">[user]$ <span class="comment"># replace all 'get_axis_bgcolor' with 'get_facecolor()' in file __init__.py</span></span><br></pre></td></tr></table></figure>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <categories>
-        <category>obspy</category>
-      </categories>
-      <tags>
-        <tag>天然地震</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>OBSpy天然地震IV</title>
     <url>/2020/09/08/obspy4/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>天然地震</h1>
@@ -371,6 +318,24 @@ U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_bla
 <p>台网：<a href="https://www.fdsn.org/networks/detail/IC/" target="_blank" rel="noopener">IC</a>，共获取了25道记录，以位于北京白家疃的BJT台站数据为例，计算地震波到达此站的UTC时并将P波到时绘制在图上。</p>
 <figure class="highlight py"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> obspy.taup <span class="keyword">import</span> TauPyModel</span><br><span class="line"><span class="keyword">from</span> obspy.geodetics <span class="keyword">import</span> locations2degrees</span><br><span class="line">m = TauPyModel(model=<span class="string">"ak135"</span>, verbose=<span class="literal">True</span>)</span><br><span class="line"></span><br><span class="line">st = st.select(station=<span class="string">"BJT"</span>)</span><br><span class="line">Trace = <span class="number">0</span></span><br><span class="line">qd_event_latitude = <span class="number">35.96</span></span><br><span class="line">qd_event_longitude = <span class="number">120.82</span></span><br><span class="line">qd_event_depth = <span class="number">13</span> <span class="comment">#km</span></span><br><span class="line"><span class="comment">#coords = inv.get_coordinates(st[0].get_id())</span></span><br><span class="line"><span class="comment"># coords = &#123;"longitude":121.445,</span></span><br><span class="line"><span class="comment">#           "latitude": 31.213&#125;</span></span><br><span class="line">coords = &#123;<span class="string">"longitude"</span>:<span class="number">116.1679</span>,</span><br><span class="line">          <span class="string">"latitude"</span>: <span class="number">40.0183</span>&#125;</span><br><span class="line">distance = locations2degrees(qd_event_latitude, </span><br><span class="line">                             qd_event_longitude,</span><br><span class="line">                             coords[<span class="string">"latitude"</span>],</span><br><span class="line">                             coords[<span class="string">"longitude"</span>])</span><br><span class="line">arrivals = m.get_ray_paths(distance_in_degree=distance,</span><br><span class="line">                           source_depth_in_km=qd_event_depth)</span><br><span class="line">first_arrival = event_time + arrivals[<span class="number">0</span>].time</span><br><span class="line">delta = first_arrival - st[Trace].stats.starttime</span><br><span class="line">time = np.arange(<span class="number">0</span>, st[Trace].stats.npts/ st[Trace].stats.sampling_rate, st[Trace].stats.delta)</span><br><span class="line">fig, axes = plt.subplots(nrows = <span class="number">1</span>, ncols = <span class="number">1</span> , figsize = (<span class="number">16</span>,<span class="number">4</span>))</span><br><span class="line">axes.plot(time, st[Trace].data, color = <span class="string">'black'</span>)</span><br><span class="line">axes.axvline(delta, color = <span class="string">'red'</span>)</span><br><span class="line">axes.set_xlabel(<span class="string">"Time [s]"</span>+st[Trace].stats.channel)</span><br></pre></td></tr></table></figure>
 <p><img src="/2020/09/08/obspy4/traveltime.png" alt="traveltime"></p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>obspy</category>
+      </categories>
+      <tags>
+        <tag>天然地震</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>OBSpy installation Q&amp;A</title>
+    <url>/2020/09/05/obspy_install/</url>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>Q&amp;A of installation of obspy</h1>
+<h2 id="Q-ImportError-Neither-Basemap-nor-Cartopy-could-be-imported">Q: ImportError: Neither Basemap nor Cartopy could be imported.</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ conda install basemap</span><br></pre></td></tr></table></figure>
+<h2 id="Q-ImportError-cannot-import-name-‘is-scalar’">Q: ImportError: cannot import name ‘is scalar’</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ pip install matplotlib==<span class="number">3.0</span><span class="number">.0</span></span><br></pre></td></tr></table></figure>
+<h2 id="Q-AttributeError-‘Axes’-object-has-no-attribute-‘get-axis-bgcolor’">Q: AttributeError: ‘Axes’ object has no attribute ‘get axis bgcolor’</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">[user]$ vim ~/.conda/envs/seismic/lib/python3<span class="number">.6</span>/site-packages/mpl_toolkits/basemap/__init__.py</span><br><span class="line"><span class="comment"># Change the directory of you own basemap installaion dir.</span></span><br><span class="line">[user]$ <span class="comment"># replace all 'get_axis_bgcolor' with 'get_facecolor()' in file __init__.py</span></span><br></pre></td></tr></table></figure>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
         <category>obspy</category>
@@ -407,6 +372,57 @@ U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_bla
       </tags>
   </entry>
   <entry>
+    <title>pyseis--基于conv的声波正演模拟</title>
+    <url>/2020/08/20/pyseis_fdtd_basedonconv/</url>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>基于神经网络中卷积操作的标量声波方程正演模拟</h1>
+<p>编写一个声波方程的正演模拟程序，是入门地震数据处理中数值模拟这一领域的基础，同时也是后续做<strong>RTM</strong>、<strong>FWI</strong>等方向的基础。个人一般用<strong>C</strong>、<strong>C++</strong> 或者<strong>CUDA</strong>编写<strong>CPU(GPU)</strong> 版本的程序，对于初入这一行业的小白来讲门槛比较高，既要掌握语言语法、还要将偏微分方程“变现”（将其离散化并变为计算机语言），并且后续代码的移植也非常困难；但好处是可操作性强（可以直接对内存、显存进行操作），代码可读性强（不会像python一样过一阵再看自己写的代码就看不懂了）。</p>
+<p>所以… … …</p>
+<p>之前做过一些尝试，把<strong>C</strong>的正演程序直接改成<strong>python</strong>的语法，但是发现效率极其低下，已经找不到当时的代码了，回忆了一下应该是思维定式（菜）惹的祸：波场计算的时候用<strong>for</strong>循环处理了<strong>numpy</strong>数组（大误），现在想想是真的菜。</p>
+<p>下面我们以深度学习中卷积操作的视角重新审视一下基于有限差分的标量声波方程正演模拟。</p>
+<h2 id="标量声波方程">标量声波方程</h2>
+<p>我们首先来看二维空间中的波动方程，<br>
+<img src="/2020/08/20/pyseis_fdtd_basedonconv/scalar_o.gif" alt="img"><br>
+左侧是<strong>u</strong>对时间的二阶导数，右侧是<strong>u</strong>对空间的二阶偏导数与源<strong>f</strong>之和，为求解 <strong>t</strong>时刻 <strong>(i, j)</strong> 处的波场分量，首先需要将其离散化。我们一般将二维空间中的拉普拉斯算子用Taylor展开的形式来逼近，用<strong>k</strong>、<strong>k-1</strong>、和<strong>k-2</strong>表示相邻的三个时刻，空间步长<strong>dx=dz=dh</strong>,时间步长为<strong>dt</strong>，介质速度为<strong>Vp</strong>，则有<br>
+<img src="/2020/08/20/pyseis_fdtd_basedonconv/scalar.gif" alt="scalar"><br>
+我们会发现它实质上是一个迭代的过程，这里给出的公式只能够计算一个时间切片内的波场，在编程计算时，计算完<strong>k</strong>时刻波场后，需要将<strong>k</strong>和<strong>k-1</strong>时刻分别更新为<strong>k-1</strong>和<strong>k-2</strong>时刻，这样就可以计算下一个&quot;k&quot;时刻的波场(对应实际的k+1)。</p>
+<h2 id="神经网络中的卷积操作">神经网络中的卷积操作</h2>
+<p>神经网络中的二维卷积实质上是卷积核与像素矩阵pixel-wise的互相关、求和，它与一维信号中的卷积还不太一样<br>
+<img src="/2020/08/20/pyseis_fdtd_basedonconv/conv.gif" alt="conv"><br>
+图片来自(<a href="https://www.jianshu.com/p/1ea2949c0056" target="_blank" rel="noopener">简书</a>)<br>
+动图中可以很明显地看出，单层的卷积计算也并不是很复杂，只是拿一个window在已知的输入上滑动，这个window就是神经网络卷积、反卷积中的卷积核kernel，滑动的步长被称为stride，边缘处灰色值被称为padding(用于填充边缘保证输入和输出的大小)，kernel和输入的每一个block相乘相加即可得到输出的一个像素值。</p>
+<h2 id="基于卷积op的有限差分">基于卷积op的有限差分</h2>
+<p>很久之前就在想有没有办法能够将正演接入神经网络中，利用python中现成的工具包快速完成一些复杂的计算，这要涉及到数据流问题、输入输出转换问题、数据接口问题等等。前一阵利用<strong>pycuda</strong>完成了几个版本的正演模拟(常规网格标量声波和一阶速度应力交错网格弹性波)计算<strong>package</strong>，能够通过简单的输入速度模型(<strong>numpy</strong>)和参数设置生成数据流并怼到神经网络里面，但是<strong>pycuda</strong>的底层代码还是用<strong>CUDA</strong>写的，只是通过它的<strong>SourceMoudle</strong>来编译运行，所以不能直接接到<strong>TF</strong>的<strong>Graph</strong>中，进行更加高级的运算，比如求导等(<strong>package</strong>中有未公开发表的部分，待发表后将源码放出)。</p>
+<p>要想利用<strong>TF</strong>等框架的自动微分，就必须要使用<strong>TF</strong>原生的函数或者定义 <code>@tf.function</code>来追踪变量，由此有了以下尝试。</p>
+<p>我们观察离散格式的标量声波方程中带有求和符号的一项，可以看到它是每一个点上沿着<strong>x</strong>方向和<strong>z</strong>方向的求和叠加，假设有限差分精度为<strong>2N</strong>，那么求和项中的系数可以通过求解以下方程得到<br>
+<img src="/2020/08/20/pyseis_fdtd_basedonconv/coes.gif" alt="coes"></p>
+<p>仔细观察即可发现，每个(i,j)处横向或纵向的求和都可以用以该点为中心，长度和宽度均为<strong>2*N+1</strong>的<strong>block</strong>与一个相同大小的卷积核<strong>f</strong>进行卷积来代替，例如当差分精度为<strong>4</strong>时，卷积核的大小应为<strong>5x5</strong>，以(i,j)为中心的求和(dx=dz=dh)可以用如下卷积操作代替(注：第一个矩阵中的省略号不代表值为0，只是其与卷积核相乘后的值为0，当网格不同方向的大小不同时需要区分水平方向卷积核以及垂直方向卷积核)，那么整个卷积就可以写为<code>tf.nn.depthwise_conv2d(input=x, filter=f, strides=[1, 1, 1, 1], padding='SAME')</code><br>
+<img src="/2020/08/20/pyseis_fdtd_basedonconv/conv1.gif" alt="conv1"></p>
+<p>基本原理如上所述，这样一来，我们就可以利用TF框架来实现正演模拟了(完整的代码请联系shaowinw@geophyai.com，小站流量不多了，暂不提供下载功能)。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>pyseis</category>
+      </categories>
+      <tags>
+        <tag>fdtd</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>pyseis--有限差分系数计算</title>
+    <url>/2020/08/16/pyseis_v0.0.1_normal_coes/</url>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>正演模拟中二阶导数差分系数计算</h1>
+<h2 id="整数网格点二阶导数的任意偶数阶精度有限差分系数计算">整数网格点二阶导数的任意偶数阶精度有限差分系数计算</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy.linalg <span class="keyword">import</span> solve</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Normal_Grid_Coefficients</span><span class="params">(N, diff_order = <span class="number">2</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        Coefficients of arbitrary even order Taylor</span></span><br><span class="line"><span class="string">        expansion when the discrete values are at </span></span><br><span class="line"><span class="string">        integral grid point. Such as for normal grid</span></span><br><span class="line"><span class="string">        second-order acoustic forward modeling.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Parameters:</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        N : Half-order of Taylor expansion or the</span></span><br><span class="line"><span class="string">            length of unilateral operator.</span></span><br><span class="line"><span class="string">        diff_order : Not used in this method. Just</span></span><br><span class="line"><span class="string">            for notice.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        out : 1-D ndarray.</span></span><br><span class="line"><span class="string">        The length of output is (2*N+1) with the </span></span><br><span class="line"><span class="string">        first coefficient is C0.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    holder = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        matrix = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):</span><br><span class="line">            matrix.append(np.power((i+<span class="number">1</span>)**j, <span class="number">2</span>))</span><br><span class="line">        holder.append(matrix)</span><br><span class="line">    holder = np.array(holder).T</span><br><span class="line">    constant = np.zeros(N)</span><br><span class="line">    constant[<span class="number">0</span>] = <span class="number">1.0</span></span><br><span class="line">    x = solve(holder, constant)</span><br><span class="line">    </span><br><span class="line">    t1 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        x[i] = x[i]/np.power(i+<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        t1+=x[i]</span><br><span class="line">    </span><br><span class="line">    coes = np.zeros(N+<span class="number">1</span>)</span><br><span class="line">    coes[<span class="number">0</span>] = <span class="number">-2</span>*t1</span><br><span class="line">    coes[<span class="number">1</span>:len(coes)] = x</span><br><span class="line">    <span class="keyword">return</span> coes</span><br></pre></td></tr></table></figure>
+<h2 id="半网格点一阶导数的任意偶数阶精度有限差分系数计算">半网格点一阶导数的任意偶数阶精度有限差分系数计算</h2>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Staggered_Grid_Coefficients</span><span class="params">(N, diff_order = <span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        Coefficients of arbitrary even order Taylor</span></span><br><span class="line"><span class="string">        expansion when the discrete values are at </span></span><br><span class="line"><span class="string">        half grid point. Such as for staggered grid</span></span><br><span class="line"><span class="string">        first-order velocity-stress elastic forward</span></span><br><span class="line"><span class="string">        modeling.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Parameters:</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        N : Half-order of Taylor expansion or the</span></span><br><span class="line"><span class="string">            length of unilateral operator.</span></span><br><span class="line"><span class="string">        diff_order : Differential order of discretization,</span></span><br><span class="line"><span class="string">            not used in this method. Just for notice.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        out : 1-D ndarray.</span></span><br><span class="line"><span class="string">        The length of output is (2*N).</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    holder = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        matrix = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):</span><br><span class="line">            matrix.append(np.power(<span class="number">2</span>*j+<span class="number">1</span>, <span class="number">2</span> * (i + <span class="number">1</span>) - <span class="number">1</span>))</span><br><span class="line">        holder.append(matrix)</span><br><span class="line">    holder = np.array(holder)</span><br><span class="line">    constant = np.zeros(N)</span><br><span class="line"></span><br><span class="line">    constant[<span class="number">0</span>] = <span class="number">1.0</span><span class="comment">#*f</span></span><br><span class="line">    x = solve(holder, constant)</span><br><span class="line">    </span><br><span class="line">    coes = np.zeros(N)</span><br><span class="line">    coes[<span class="number">0</span>:len(coes)] = x</span><br><span class="line">    <span class="keyword">return</span> coes</span><br></pre></td></tr></table></figure>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>pyseis</category>
+      </categories>
+      <tags>
+        <tag>差分系数</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Python之import argparse</title>
     <url>/2020/06/21/python_argparse/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>Python之命令行解析–argparse</h1>
@@ -422,21 +438,6 @@ U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_bla
       </categories>
       <tags>
         <tag>argparse</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Python之更换matplotlib字体</title>
-    <url>/2020/06/24/python_fontofmatplotlib.pyplot/</url>
-    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>更换plt字体</h1>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Windows环境为Win10，系统自带字体为ttf格式</span></span><br><span class="line">[Windows10]<span class="comment"># C:\Windows\Fonts</span></span><br><span class="line">[Linux]<span class="comment"># cd /../../Fonts #找个地方建个文件夹，把win的字体copy进去</span></span><br><span class="line"><span class="comment">##------.py Start------##</span></span><br><span class="line"><span class="comment">#以win10中New Times字体为例</span></span><br><span class="line"><span class="built_in">times</span> = matplotlib.font_manager.FontProperties(fname=<span class="string">'/Fonts/TIMES.TTF'</span>)</span><br><span class="line">fontname = <span class="built_in">times</span></span><br><span class="line">plt.xticks(fontproperties=fontname, fontsize=12)<span class="comment">#x轴标签</span></span><br><span class="line">plt.yticks(fontproperties=fontname, fontsize=12)<span class="comment">#y轴标签</span></span><br><span class="line">plt.xlabel(<span class="string">'x'</span>, fontproperties=fontname, fontsize=14)<span class="comment">#x坐标轴</span></span><br><span class="line">plt.ylabel(<span class="string">'y'</span>, fontproperties=fontname, fontsize=14)<span class="comment">#y坐标轴</span></span><br><span class="line">plt.legend(prop=fontname,fontsize=12)<span class="comment">#图例</span></span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">##------.py End------##</span></span><br></pre></td></tr></table></figure>
-<p>全局字体设置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#plt.colorbar字体更换</span></span><br><span class="line">[linux]<span class="comment"># cd /home/usrname/.cache/matplotlib</span></span><br><span class="line">[linux]<span class="comment"># vim fontlist-v310.json fontlist-v310.json</span></span><br><span class="line"><span class="comment"># 在ttflist中添加你想要的字体</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="string">"fname"</span>: <span class="string">"字体路径"</span>,</span><br><span class="line">   <span class="string">"name"</span>: <span class="string">"Times New Roman"</span>, <span class="comment">#调用时的字体名称</span></span><br><span class="line">   <span class="string">"style"</span>: <span class="string">"normal"</span>,</span><br><span class="line">   <span class="string">"variant"</span>: <span class="string">"normal"</span>,</span><br><span class="line">   <span class="string">"weight"</span>: 700,</span><br><span class="line">   <span class="string">"stretch"</span>: <span class="string">"normal"</span>,</span><br><span class="line">   <span class="string">"size"</span>: <span class="string">"scalable"</span>,</span><br><span class="line">   <span class="string">"__class__"</span>: <span class="string">"FontEntry"</span></span><br><span class="line"> &#125;,</span><br><span class="line">[linux]<span class="comment"># 在程序中设置plt的全局字体</span></span><br><span class="line"><span class="comment">##------.py Start------##</span></span><br><span class="line">plt.rcParams[<span class="string">'font.family'</span>] = <span class="string">'Times New Roman'</span></span><br><span class="line"><span class="comment">##------.py End------##</span></span><br></pre></td></tr></table></figure>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <categories>
-        <category>Python</category>
-      </categories>
-      <tags>
-        <tag>font</tag>
       </tags>
   </entry>
   <entry>
@@ -468,19 +469,18 @@ U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_bla
       </tags>
   </entry>
   <entry>
-    <title>pyseis--有限差分系数计算</title>
-    <url>/2020/08/16/pyseis_v0.0.1_normal_coes/</url>
-    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>正演模拟中二阶导数差分系数计算</h1>
-<h2 id="整数网格点二阶导数的任意偶数阶精度有限差分系数计算">整数网格点二阶导数的任意偶数阶精度有限差分系数计算</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="keyword">from</span> numpy.linalg <span class="keyword">import</span> solve</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Normal_Grid_Coefficients</span><span class="params">(N, diff_order = <span class="number">2</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        Coefficients of arbitrary even order Taylor</span></span><br><span class="line"><span class="string">        expansion when the discrete values are at </span></span><br><span class="line"><span class="string">        integral grid point. Such as for normal grid</span></span><br><span class="line"><span class="string">        second-order acoustic forward modeling.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Parameters:</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        N : Half-order of Taylor expansion or the</span></span><br><span class="line"><span class="string">            length of unilateral operator.</span></span><br><span class="line"><span class="string">        diff_order : Not used in this method. Just</span></span><br><span class="line"><span class="string">            for notice.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        out : 1-D ndarray.</span></span><br><span class="line"><span class="string">        The length of output is (2*N+1) with the </span></span><br><span class="line"><span class="string">        first coefficient is C0.</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    holder = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        matrix = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):</span><br><span class="line">            matrix.append(np.power((i+<span class="number">1</span>)**j, <span class="number">2</span>))</span><br><span class="line">        holder.append(matrix)</span><br><span class="line">    holder = np.array(holder).T</span><br><span class="line">    constant = np.zeros(N)</span><br><span class="line">    constant[<span class="number">0</span>] = <span class="number">1.0</span></span><br><span class="line">    x = solve(holder, constant)</span><br><span class="line">    </span><br><span class="line">    t1 = <span class="number">0</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        x[i] = x[i]/np.power(i+<span class="number">1</span>, <span class="number">2</span>)</span><br><span class="line">        t1+=x[i]</span><br><span class="line">    </span><br><span class="line">    coes = np.zeros(N+<span class="number">1</span>)</span><br><span class="line">    coes[<span class="number">0</span>] = <span class="number">-2</span>*t1</span><br><span class="line">    coes[<span class="number">1</span>:len(coes)] = x</span><br><span class="line">    <span class="keyword">return</span> coes</span><br></pre></td></tr></table></figure>
-<h2 id="半网格点一阶导数的任意偶数阶精度有限差分系数计算">半网格点一阶导数的任意偶数阶精度有限差分系数计算</h2>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">Staggered_Grid_Coefficients</span><span class="params">(N, diff_order = <span class="number">1</span>)</span>:</span></span><br><span class="line">    <span class="string">"""</span></span><br><span class="line"><span class="string">        Coefficients of arbitrary even order Taylor</span></span><br><span class="line"><span class="string">        expansion when the discrete values are at </span></span><br><span class="line"><span class="string">        half grid point. Such as for staggered grid</span></span><br><span class="line"><span class="string">        first-order velocity-stress elastic forward</span></span><br><span class="line"><span class="string">        modeling.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Parameters:</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        N : Half-order of Taylor expansion or the</span></span><br><span class="line"><span class="string">            length of unilateral operator.</span></span><br><span class="line"><span class="string">        diff_order : Differential order of discretization,</span></span><br><span class="line"><span class="string">            not used in this method. Just for notice.</span></span><br><span class="line"><span class="string">        </span></span><br><span class="line"><span class="string">        Returns:</span></span><br><span class="line"><span class="string">        ----------</span></span><br><span class="line"><span class="string">        out : 1-D ndarray.</span></span><br><span class="line"><span class="string">        The length of output is (2*N).</span></span><br><span class="line"><span class="string">    """</span></span><br><span class="line">    </span><br><span class="line">    holder = []</span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(N):</span><br><span class="line">        matrix = []</span><br><span class="line">        <span class="keyword">for</span> j <span class="keyword">in</span> range(N):</span><br><span class="line">            matrix.append(np.power(<span class="number">2</span>*j+<span class="number">1</span>, <span class="number">2</span> * (i + <span class="number">1</span>) - <span class="number">1</span>))</span><br><span class="line">        holder.append(matrix)</span><br><span class="line">    holder = np.array(holder)</span><br><span class="line">    constant = np.zeros(N)</span><br><span class="line"></span><br><span class="line">    constant[<span class="number">0</span>] = <span class="number">1.0</span><span class="comment">#*f</span></span><br><span class="line">    x = solve(holder, constant)</span><br><span class="line">    </span><br><span class="line">    coes = np.zeros(N)</span><br><span class="line">    coes[<span class="number">0</span>:len(coes)] = x</span><br><span class="line">    <span class="keyword">return</span> coes</span><br></pre></td></tr></table></figure>
+    <title>Python之更换matplotlib字体</title>
+    <url>/2020/06/24/python_fontofmatplotlib.pyplot/</url>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>更换plt字体</h1>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#Windows环境为Win10，系统自带字体为ttf格式</span></span><br><span class="line">[Windows10]<span class="comment"># C:\Windows\Fonts</span></span><br><span class="line">[Linux]<span class="comment"># cd /../../Fonts #找个地方建个文件夹，把win的字体copy进去</span></span><br><span class="line"><span class="comment">##------.py Start------##</span></span><br><span class="line"><span class="comment">#以win10中New Times字体为例</span></span><br><span class="line"><span class="built_in">times</span> = matplotlib.font_manager.FontProperties(fname=<span class="string">'/Fonts/TIMES.TTF'</span>)</span><br><span class="line">fontname = <span class="built_in">times</span></span><br><span class="line">plt.xticks(fontproperties=fontname, fontsize=12)<span class="comment">#x轴标签</span></span><br><span class="line">plt.yticks(fontproperties=fontname, fontsize=12)<span class="comment">#y轴标签</span></span><br><span class="line">plt.xlabel(<span class="string">'x'</span>, fontproperties=fontname, fontsize=14)<span class="comment">#x坐标轴</span></span><br><span class="line">plt.ylabel(<span class="string">'y'</span>, fontproperties=fontname, fontsize=14)<span class="comment">#y坐标轴</span></span><br><span class="line">plt.legend(prop=fontname,fontsize=12)<span class="comment">#图例</span></span><br><span class="line">plt.show()</span><br><span class="line"><span class="comment">##------.py End------##</span></span><br></pre></td></tr></table></figure>
+<p>全局字体设置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#plt.colorbar字体更换</span></span><br><span class="line">[linux]<span class="comment"># cd /home/usrname/.cache/matplotlib</span></span><br><span class="line">[linux]<span class="comment"># vim fontlist-v310.json fontlist-v310.json</span></span><br><span class="line"><span class="comment"># 在ttflist中添加你想要的字体</span></span><br><span class="line">&#123;</span><br><span class="line">   <span class="string">"fname"</span>: <span class="string">"字体路径"</span>,</span><br><span class="line">   <span class="string">"name"</span>: <span class="string">"Times New Roman"</span>, <span class="comment">#调用时的字体名称</span></span><br><span class="line">   <span class="string">"style"</span>: <span class="string">"normal"</span>,</span><br><span class="line">   <span class="string">"variant"</span>: <span class="string">"normal"</span>,</span><br><span class="line">   <span class="string">"weight"</span>: 700,</span><br><span class="line">   <span class="string">"stretch"</span>: <span class="string">"normal"</span>,</span><br><span class="line">   <span class="string">"size"</span>: <span class="string">"scalable"</span>,</span><br><span class="line">   <span class="string">"__class__"</span>: <span class="string">"FontEntry"</span></span><br><span class="line"> &#125;,</span><br><span class="line">[linux]<span class="comment"># 在程序中设置plt的全局字体</span></span><br><span class="line"><span class="comment">##------.py Start------##</span></span><br><span class="line">plt.rcParams[<span class="string">'font.family'</span>] = <span class="string">'Times New Roman'</span></span><br><span class="line"><span class="comment">##------.py End------##</span></span><br></pre></td></tr></table></figure>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
-        <category>pyseis</category>
+        <category>Python</category>
       </categories>
       <tags>
-        <tag>差分系数</tag>
+        <tag>font</tag>
       </tags>
   </entry>
   <entry>
@@ -534,6 +534,19 @@ U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_bla
       </tags>
   </entry>
   <entry>
+    <title>Centos安装后无法启动Windows问题</title>
+    <url>/2020/08/30/system/</url>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>CentOS安装后Windows无法启动问题</h1>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br><span class="line">[root]$ yum update</span><br><span class="line">[root]$ yum install ntfs-3g</span><br><span class="line">[root]$ grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></figure>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>装机</category>
+      </categories>
+      <tags>
+        <tag>装机</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Tensorboard记录Loss变化</title>
     <url>/2020/10/14/tensorflow1.14.0_loss_summary/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>利用Tensorboard记录Loss值</h1>
@@ -552,19 +565,6 @@ U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html" target="_bla
       </categories>
       <tags>
         <tag>tensorboard</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Centos安装后无法启动Windows问题</title>
-    <url>/2020/08/30/system/</url>
-    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>CentOS安装后Windows无法启动问题</h1>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ wget -O /etc/yum.repos.d/epel.repo http://mirrors.aliyun.com/repo/epel-7.repo</span><br><span class="line">[root]$ yum update</span><br><span class="line">[root]$ yum install ntfs-3g</span><br><span class="line">[root]$ grub2-mkconfig -o /boot/grub2/grub.cfg</span><br></pre></td></tr></table></figure>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <categories>
-        <category>装机</category>
-      </categories>
-      <tags>
-        <tag>装机</tag>
       </tags>
   </entry>
   <entry>
@@ -783,6 +783,106 @@ $$\boldsymbol y_t = (\boldsymbol P^{o}·\boldsymbol h_t)^{2}\tag{6}$$<br>
       </categories>
       <tags>
         <tag>深度学习环境配置</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>CentOS下CUDA及cuDNN安装</title>
+    <url>/2020/06/10/install_cudacudnn/</url>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>工作站CentOS-7下CUDA驱动及cuDNN安装</h1>
+<h2 id="安装包选择及下载">安装包选择及下载</h2>
+<ul>
+<li><strong>Nvidia驱动下载：</strong> 一般不使用 <strong>CUDA</strong> 安装包中的驱动程序，而是到<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">官方网站</a>根据 GPU 型号下载对应驱动，这里我们选择与 <strong>RTX2080Ti</strong> 对应的<a href="http://cn.download.nvidia.com/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run" target="_blank" rel="noopener">440.82-Linux 64-bit</a>版本，笔者首先安装的驱动，然后才装的 <strong>CUDA-10.0</strong> ，理论上二者先后顺序没有强制性。若先装 <strong>CUDA</strong> 的话记住<strong>不要不要不要不要安装自带的驱动程序</strong>，否则<strong>可能会出现重启后黑屏无法进入系统等问题</strong>。<strong>Ubuntu</strong> 中一般能够通过命令行操作删除驱动和 <strong>CUDA</strong>，但在 <strong>CentOS</strong> 系统中可能会导致无法进入终端命令行字符界面，完全黑屏时最粗暴的处理办法就是重装系统，<strong>grub</strong> 中的操作方式笔者没有研究过。当然了，如果先装驱动程序后装 <strong>CUDA</strong> ，自带的驱动自然也是不需要安装的。</li>
+<li><strong>CUDA Toolkit</strong> 下载：版本根据实际需要进行选择，笔者最开始接触的GPU并行编程语言的时候就已经是 <strong>v10.0</strong> 了(现在最新版本为 <strong><a href="https://developer.nvidia.com/cuda-downloads?target_os=Linux" target="_blank" rel="noopener">CUDA11</a></strong>)，本机器上安装的 <strong><a href="https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/cuda-repo-rhel7-10-0-local-10.0.130-410.48-1.0-1.x86_64" target="_blank" rel="noopener">CUDA_10.0.130</a></strong>（<a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">历史版本 <strong>CUDA</strong> 下载地址</a>）</li>
+<li><strong>cuDNN下载</strong>：下载 <strong>cuDNN</strong> 前要先注册一个 <strong>Nvidia</strong> 账户，忘记密码的话通过官方渠道申请修改密码可能会遇到无法收到邮件的问题，这一问题暂时没有好的解决办法；如果没有账户的话直接注册一个即可，（注册账户的邮件能收到，修改密码的经常收不到，同时我们注意到官方开通了微信或者QQ登陆方式，但是我打不开。。。），<strong>cuDNN</strong> 版本与 <strong>CUDA</strong> 版本要对应上，这里笔者使用的是与 <strong>CUDA10.0</strong>对应的 <strong>cuDNN7</strong> (cudnn-10.0-linux-x64-v7.6.5.32，没有链接，刚改了密码又忘了登不上去了= =)。</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>CUDA Toolkit</th>
+<th>Linuxx86_64驱动版本</th>
+<th>Windowsx86_64驱动版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>CUDA 10.2.89</td>
+<td>&gt;= 440.33</td>
+<td>&gt;= 441.22</td>
+</tr>
+<tr>
+<td>CUDA 10.1 (10.1.105 general release, and updates)</td>
+<td>&gt;= 418.39</td>
+<td>&gt;= 418.96</td>
+</tr>
+<tr>
+<td>CUDA 10.0.130</td>
+<td>&gt;= 410.48</td>
+<td>&gt;= 411.31</td>
+</tr>
+<tr>
+<td>CUDA 9.2 (9.2.148 Update 1)</td>
+<td>&gt;= 396.37</td>
+<td>&gt;= 398.26</td>
+</tr>
+<tr>
+<td>CUDA 9.2 (9.2.88)</td>
+<td>&gt;= 396.26</td>
+<td>&gt;= 397.44</td>
+</tr>
+<tr>
+<td>CUDA 9.1 (9.1.85)</td>
+<td>&gt;= 390.46</td>
+<td>&gt;= 391.29</td>
+</tr>
+<tr>
+<td>CUDA 9.0 (9.0.76)</td>
+<td>&gt;= 384.81</td>
+<td>&gt;= 385.54</td>
+</tr>
+<tr>
+<td>CUDA 8.0 (8.0.61 GA2)</td>
+<td>&gt;= 375.26</td>
+<td>&gt;= 376.51</td>
+</tr>
+<tr>
+<td>CUDA 8.0 (8.0.44)</td>
+<td>&gt;= 367.48</td>
+<td>&gt;= 369.30</td>
+</tr>
+</tbody>
+</table>
+<h2 id="安装过程">安装过程</h2>
+<p>在准备好以下三个文件后就可以开始安装了（最好先把它们都下载下来放到U盘里，做好多次重装系统的准备）</p>
+ <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cuda_10.0.130_410.48_linux.run <span class="comment">#CUDA Toolkit</span></span><br><span class="line">$ cudnn-10.0-linux-x64-v7.6.5.32.tgz <span class="comment">#cuDNN for CUDA10</span></span><br><span class="line">$ NVIDIA-Linux-x86_64-440.82.run <span class="comment">#Nvidia-driver for RTX2080Ti</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>Nvidia 驱动及CUDA安装</strong></li>
+</ul>
+<p>首先查看是否开启了默认的 <strong>nouveau</strong> 驱动，如果输入<code>lsmod | grep nouveau</code> 没有任何提示的话则已经关闭了该驱动，若有提示，则需要首先禁用该驱动:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ cp /etc/modprobe.d/blacklist.conf /etc/modprobe.d/blacklist.conf.back <span class="comment">#备份原有黑名单(如果提示没有此文件的话可以在该目录下创建一个新的同名文件，然后再进行后续操作)</span></span><br><span class="line">[root]$ <span class="built_in">echo</span> -e <span class="string">"blacklist nouveau\noptions nouveau modeset=0"</span> &gt; /etc/modprobe.d/blacklist.conf <span class="comment">#禁用nouveau驱动</span></span><br><span class="line">[root]$ mv /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.back <span class="comment">#备份initramfs</span></span><br><span class="line">[root]$ dracut /boot/initramfs-$(uname -r).img $(uname -r) --force <span class="comment">#重建initramfs</span></span><br><span class="line">[root]$ init 6 <span class="comment">#重启</span></span><br><span class="line">[root]$ <span class="built_in">cd</span> /../../ <span class="comment">#切换到驱动所在目录</span></span><br><span class="line">[root]$ sh ./NVIDIA-Linux-x86_64-440.82.run <span class="comment">#执行安装过程(安装如果卡在Verifying archive integrity... Error in check sums 00000000 000000,重新到官网上选择自己显卡型号的驱动下载再次安装即可)</span></span><br><span class="line">[root]$ nvidia-smi <span class="comment">#查看驱动是否安装成功，若顺利输出GPU信息则成功，或者切换到Toolkit的Samples中编译并运行带着的例子，显示Result=PASS则能够顺利运行CUDA程序。</span></span><br><span class="line">[root]$ sh ./cuda_10.0.130_410.48_linux.run <span class="comment">#安装CUDA Toolkit，记住不要安装里面带着的驱动</span></span><br><span class="line">[root]$ reboot <span class="comment">#安装完成重启，顺利进入图形界面～</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li><strong>cuDNN</strong>安装</li>
+</ul>
+<p>话不多说直接上代码</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ <span class="built_in">cd</span> /../../ <span class="comment">#切换到cuDNN安装包所在目录</span></span><br><span class="line">[root]$ tar -xzvf cudnn-10.0-linux-x64-v7.6.5.32.tgz <span class="comment">#解压cudnn到当前文件夹</span></span><br><span class="line">[root]$ cp cuda/include/cudnn.h /usr/<span class="built_in">local</span>/cuda-10.0/include/</span><br><span class="line">[root]$ cp cuda/lib64/libcudnn* /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line">[root]$ chmod a+r /usr/<span class="built_in">local</span>/cuda-10.0/include/cudnn.h /usr/<span class="built_in">local</span>/cuda/lib64/libcudnn*</span><br><span class="line"><span class="comment"># 系统环境下解决：以下两步为解决tensorflow运行中找不到链接文件的问题，如果CUDA版本不同请自主更改系统路径</span></span><br><span class="line">[root]$ cp /usr/<span class="built_in">local</span>/cuda-10.0/lib64/libcublas.so.10.0 /usr/<span class="built_in">local</span>/lib/libcublas.so.10.0 &amp;&amp; sudo ldconfig</span><br><span class="line">[root]$ cp /usr/<span class="built_in">local</span>/cuda-10.0/lib64/libcufft.so.10.0 /usr/<span class="built_in">local</span>/lib/libcufft.so.10.0 &amp;&amp; sudo ldconfig</span><br><span class="line"><span class="comment"># Conda环境下解决：</span></span><br><span class="line">[root]$ conda install cudatoolkit=10.0 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/linux-64/ <span class="comment"># 解决思路：在conda环境中重新安装cudatoolkit和cudnn</span></span><br><span class="line">[root]$ conda install cudnn==7.6.5 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/linux-64/ <span class="comment"># </span></span><br><span class="line">[username]$ vim ~/.bashrc <span class="comment">#个人账户下CUDA相关环境变量的配置</span></span><br><span class="line"><span class="comment">#--------------------------------------------------#</span></span><br><span class="line">CUDA_HOME=/usr/<span class="built_in">local</span>/cuda-10.0</span><br><span class="line">PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/cuda-10.0/bin</span><br><span class="line">LD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/cuda-10.0/lib64</span><br><span class="line"><span class="built_in">export</span> CUDA_HOME PATH LD_LIBRARY_PATH</span><br><span class="line"><span class="comment">#--------------------------------------------------#</span></span><br><span class="line">[username]$ <span class="built_in">source</span> ~/.bashrc <span class="comment">#配置完成后立即更新环境变量</span></span><br></pre></td></tr></table></figure>
+<ul>
+<li>查看是否安装成功</li>
+</ul>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ nvcc --version <span class="comment">#查看编译器及CUDA版本</span></span><br><span class="line">[root]$ nvidia-smi <span class="comment">#查看GPU信息、驱动版本</span></span><br><span class="line">[root]$ cat /usr/<span class="built_in">local</span>/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2 <span class="comment">#查看cuDNN版本</span></span><br></pre></td></tr></table></figure>
+<h2 id="进阶设置">进阶设置</h2>
+<h3 id="1-安装温度监控器">1.  安装温度监控器</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ yum install lm_sensors <span class="comment">#下载安装lm_sensors插件</span></span><br><span class="line">[root]$ /usr/sbin/sensors-detect <span class="comment">#运行sensors-detect配置程序</span></span><br><span class="line">[notroot]$ sensors <span class="comment">#查看已允许检测设备的当前状态</span></span><br></pre></td></tr></table></figure>
+<h3 id="2-手动控制-GPU-风扇转速">2. 手动控制 <strong>GPU</strong> 风扇转速</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ cp /etc/X11/xorg.conf /etc/X11/xorg.conf.back <span class="comment">#备份原有xorg配置文件</span></span><br><span class="line">[root]$ vim xorg.conf</span><br><span class="line"><span class="comment">#-----------File Start--------------#</span></span><br><span class="line">Section <span class="string">"Device"</span></span><br><span class="line">       Identifier  <span class="string">"Videocard0"</span></span><br><span class="line">       Driver      <span class="string">"nvidia"</span></span><br><span class="line">       Option <span class="string">"Coolbits"</span> <span class="string">"4"</span> <span class="comment">#增加该行内容后重启，可在Applications-other-Nvidia X Server Settings-GPU-Thermal Settings</span></span><br><span class="line">EndSection</span><br><span class="line"><span class="comment">#-----------File End--------------#</span></span><br><span class="line">[root]$ nvidia-settings -a <span class="string">"[gpu:0]/GPUFanControlState=0"</span> <span class="comment">#恢复GPU转速随温度控制</span></span><br></pre></td></tr></table></figure>
+<h3 id="3-常用-GPU-相关命令">3. 常用 GPU 相关命令</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ nvidia-smi -L <span class="comment">#列出所有可使用的GPU设备</span></span><br><span class="line">$ nvidia-smi -l <span class="comment">#与nvidia-smi功能相同但带有自动刷新功能（不清空输出缓存区）</span></span><br><span class="line">$ nvidia-smi -q <span class="comment">#查看所有GPU设备信息</span></span><br><span class="line">$ nvidia-smi –pm 0/1 <span class="comment">#设置持久模式：0/DISABLED,1/ENABLED</span></span><br><span class="line">$ nvidia-smi –e 0/1 <span class="comment">#切换ECC支持：0/DISABLED, 1/ENABLED</span></span><br><span class="line">$ nvidia-smi –p 0/1 <span class="comment">#重置ECC错误计数：0/VOLATILE, 1/AGGREGATE</span></span><br><span class="line">$ nvidia-smi –c <span class="comment">#设置计算应用模式：0/DEFAULT,1/EXCLUSIVE_PROCESS,2/PROHIBITED</span></span><br><span class="line">$ nvidia-smi –r <span class="comment">#GPU复位</span></span><br><span class="line">$ nvidia-smi –vm <span class="comment">#设置GPU虚拟化模式</span></span><br><span class="line">$ nvidia-smi –ac xxx,xxx <span class="comment">#设置GPU运行的工作频率。e.g. nvidia-smi –ac2000,800</span></span><br><span class="line">$ nvidia-smi –rac <span class="comment">#0/1 将时钟频率重置为默认值</span></span><br><span class="line">$ nvidia-smi –acp <span class="comment">#切换-ac和-rac的权限要求，0/UNRESTRICTED, 1/RESTRICTED</span></span><br><span class="line">$ nvidia-smi –pl <span class="comment">#指定最大电源管理限制（瓦特）</span></span><br><span class="line">$ nvidia-smi –am 0/1 <span class="comment">#启用或禁用计数模式，0/DISABLED,1/ENABLED</span></span><br><span class="line">$ nvidia-smi –caa <span class="comment">#清除缓冲区中的所有已记录PID，0/DISABLED,1/ENABLED</span></span><br></pre></td></tr></table></figure>
+<h3 id="4-动态监控">4. 动态监控</h3>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#实际上，可以使用watch命令实现动态监控(不需要root权限)</span></span><br><span class="line">$ watch -n 1 sensors <span class="comment"># 1表示每隔一秒刷新sensors</span></span><br><span class="line">$ watch -n 1 nvidia-smi <span class="comment">#同理可动态监控GPU运行状态，以判断Tensorfow是否正确使用了GPU运行</span></span><br></pre></td></tr></table></figure>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>装机</category>
+      </categories>
+      <tags>
+        <tag>CUDA及cuDNN下载与安装</tag>
       </tags>
   </entry>
   <entry>
@@ -1301,106 +1401,6 @@ $$\boldsymbol y_t = (\boldsymbol P^{o}·\boldsymbol h_t)^{2}\tag{6}$$<br>
       </tags>
   </entry>
   <entry>
-    <title>CentOS下CUDA及cuDNN安装</title>
-    <url>/2020/06/10/install_cudacudnn/</url>
-    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>工作站CentOS-7下CUDA驱动及cuDNN安装</h1>
-<h2 id="安装包选择及下载">安装包选择及下载</h2>
-<ul>
-<li><strong>Nvidia驱动下载：</strong> 一般不使用 <strong>CUDA</strong> 安装包中的驱动程序，而是到<a href="https://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="noopener">官方网站</a>根据 GPU 型号下载对应驱动，这里我们选择与 <strong>RTX2080Ti</strong> 对应的<a href="http://cn.download.nvidia.com/XFree86/Linux-x86_64/440.82/NVIDIA-Linux-x86_64-440.82.run" target="_blank" rel="noopener">440.82-Linux 64-bit</a>版本，笔者首先安装的驱动，然后才装的 <strong>CUDA-10.0</strong> ，理论上二者先后顺序没有强制性。若先装 <strong>CUDA</strong> 的话记住<strong>不要不要不要不要安装自带的驱动程序</strong>，否则<strong>可能会出现重启后黑屏无法进入系统等问题</strong>。<strong>Ubuntu</strong> 中一般能够通过命令行操作删除驱动和 <strong>CUDA</strong>，但在 <strong>CentOS</strong> 系统中可能会导致无法进入终端命令行字符界面，完全黑屏时最粗暴的处理办法就是重装系统，<strong>grub</strong> 中的操作方式笔者没有研究过。当然了，如果先装驱动程序后装 <strong>CUDA</strong> ，自带的驱动自然也是不需要安装的。</li>
-<li><strong>CUDA Toolkit</strong> 下载：版本根据实际需要进行选择，笔者最开始接触的GPU并行编程语言的时候就已经是 <strong>v10.0</strong> 了(现在最新版本为 <strong><a href="https://developer.nvidia.com/cuda-downloads?target_os=Linux" target="_blank" rel="noopener">CUDA11</a></strong>)，本机器上安装的 <strong><a href="https://developer.nvidia.com/compute/cuda/10.0/Prod/local_installers/cuda-repo-rhel7-10-0-local-10.0.130-410.48-1.0-1.x86_64" target="_blank" rel="noopener">CUDA_10.0.130</a></strong>（<a href="https://developer.nvidia.com/cuda-toolkit-archive" target="_blank" rel="noopener">历史版本 <strong>CUDA</strong> 下载地址</a>）</li>
-<li><strong>cuDNN下载</strong>：下载 <strong>cuDNN</strong> 前要先注册一个 <strong>Nvidia</strong> 账户，忘记密码的话通过官方渠道申请修改密码可能会遇到无法收到邮件的问题，这一问题暂时没有好的解决办法；如果没有账户的话直接注册一个即可，（注册账户的邮件能收到，修改密码的经常收不到，同时我们注意到官方开通了微信或者QQ登陆方式，但是我打不开。。。），<strong>cuDNN</strong> 版本与 <strong>CUDA</strong> 版本要对应上，这里笔者使用的是与 <strong>CUDA10.0</strong>对应的 <strong>cuDNN7</strong> (cudnn-10.0-linux-x64-v7.6.5.32，没有链接，刚改了密码又忘了登不上去了= =)。</li>
-</ul>
-<table>
-<thead>
-<tr>
-<th>CUDA Toolkit</th>
-<th>Linuxx86_64驱动版本</th>
-<th>Windowsx86_64驱动版本</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>CUDA 10.2.89</td>
-<td>&gt;= 440.33</td>
-<td>&gt;= 441.22</td>
-</tr>
-<tr>
-<td>CUDA 10.1 (10.1.105 general release, and updates)</td>
-<td>&gt;= 418.39</td>
-<td>&gt;= 418.96</td>
-</tr>
-<tr>
-<td>CUDA 10.0.130</td>
-<td>&gt;= 410.48</td>
-<td>&gt;= 411.31</td>
-</tr>
-<tr>
-<td>CUDA 9.2 (9.2.148 Update 1)</td>
-<td>&gt;= 396.37</td>
-<td>&gt;= 398.26</td>
-</tr>
-<tr>
-<td>CUDA 9.2 (9.2.88)</td>
-<td>&gt;= 396.26</td>
-<td>&gt;= 397.44</td>
-</tr>
-<tr>
-<td>CUDA 9.1 (9.1.85)</td>
-<td>&gt;= 390.46</td>
-<td>&gt;= 391.29</td>
-</tr>
-<tr>
-<td>CUDA 9.0 (9.0.76)</td>
-<td>&gt;= 384.81</td>
-<td>&gt;= 385.54</td>
-</tr>
-<tr>
-<td>CUDA 8.0 (8.0.61 GA2)</td>
-<td>&gt;= 375.26</td>
-<td>&gt;= 376.51</td>
-</tr>
-<tr>
-<td>CUDA 8.0 (8.0.44)</td>
-<td>&gt;= 367.48</td>
-<td>&gt;= 369.30</td>
-</tr>
-</tbody>
-</table>
-<h2 id="安装过程">安装过程</h2>
-<p>在准备好以下三个文件后就可以开始安装了（最好先把它们都下载下来放到U盘里，做好多次重装系统的准备）</p>
- <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ cuda_10.0.130_410.48_linux.run <span class="comment">#CUDA Toolkit</span></span><br><span class="line">$ cudnn-10.0-linux-x64-v7.6.5.32.tgz <span class="comment">#cuDNN for CUDA10</span></span><br><span class="line">$ NVIDIA-Linux-x86_64-440.82.run <span class="comment">#Nvidia-driver for RTX2080Ti</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>Nvidia 驱动及CUDA安装</strong></li>
-</ul>
-<p>首先查看是否开启了默认的 <strong>nouveau</strong> 驱动，如果输入<code>lsmod | grep nouveau</code> 没有任何提示的话则已经关闭了该驱动，若有提示，则需要首先禁用该驱动:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ cp /etc/modprobe.d/blacklist.conf /etc/modprobe.d/blacklist.conf.back <span class="comment">#备份原有黑名单(如果提示没有此文件的话可以在该目录下创建一个新的同名文件，然后再进行后续操作)</span></span><br><span class="line">[root]$ <span class="built_in">echo</span> -e <span class="string">"blacklist nouveau\noptions nouveau modeset=0"</span> &gt; /etc/modprobe.d/blacklist.conf <span class="comment">#禁用nouveau驱动</span></span><br><span class="line">[root]$ mv /boot/initramfs-$(uname -r).img /boot/initramfs-$(uname -r).img.back <span class="comment">#备份initramfs</span></span><br><span class="line">[root]$ dracut /boot/initramfs-$(uname -r).img $(uname -r) --force <span class="comment">#重建initramfs</span></span><br><span class="line">[root]$ init 6 <span class="comment">#重启</span></span><br><span class="line">[root]$ <span class="built_in">cd</span> /../../ <span class="comment">#切换到驱动所在目录</span></span><br><span class="line">[root]$ sh ./NVIDIA-Linux-x86_64-440.82.run <span class="comment">#执行安装过程(安装如果卡在Verifying archive integrity... Error in check sums 00000000 000000,重新到官网上选择自己显卡型号的驱动下载再次安装即可)</span></span><br><span class="line">[root]$ nvidia-smi <span class="comment">#查看驱动是否安装成功，若顺利输出GPU信息则成功，或者切换到Toolkit的Samples中编译并运行带着的例子，显示Result=PASS则能够顺利运行CUDA程序。</span></span><br><span class="line">[root]$ sh ./cuda_10.0.130_410.48_linux.run <span class="comment">#安装CUDA Toolkit，记住不要安装里面带着的驱动</span></span><br><span class="line">[root]$ reboot <span class="comment">#安装完成重启，顺利进入图形界面～</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li><strong>cuDNN</strong>安装</li>
-</ul>
-<p>话不多说直接上代码</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ <span class="built_in">cd</span> /../../ <span class="comment">#切换到cuDNN安装包所在目录</span></span><br><span class="line">[root]$ tar -xzvf cudnn-10.0-linux-x64-v7.6.5.32.tgz <span class="comment">#解压cudnn到当前文件夹</span></span><br><span class="line">[root]$ cp cuda/include/cudnn.h /usr/<span class="built_in">local</span>/cuda-10.0/include/</span><br><span class="line">[root]$ cp cuda/lib64/libcudnn* /usr/<span class="built_in">local</span>/cuda/lib64/</span><br><span class="line">[root]$ chmod a+r /usr/<span class="built_in">local</span>/cuda-10.0/include/cudnn.h /usr/<span class="built_in">local</span>/cuda/lib64/libcudnn*</span><br><span class="line"><span class="comment"># 系统环境下解决：以下两步为解决tensorflow运行中找不到链接文件的问题，如果CUDA版本不同请自主更改系统路径</span></span><br><span class="line">[root]$ cp /usr/<span class="built_in">local</span>/cuda-10.0/lib64/libcublas.so.10.0 /usr/<span class="built_in">local</span>/lib/libcublas.so.10.0 &amp;&amp; sudo ldconfig</span><br><span class="line">[root]$ cp /usr/<span class="built_in">local</span>/cuda-10.0/lib64/libcufft.so.10.0 /usr/<span class="built_in">local</span>/lib/libcufft.so.10.0 &amp;&amp; sudo ldconfig</span><br><span class="line"><span class="comment"># Conda环境下解决：</span></span><br><span class="line">[root]$ conda install cudatoolkit=10.0 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/linux-64/ <span class="comment"># 解决思路：在conda环境中重新安装cudatoolkit和cudnn</span></span><br><span class="line">[root]$ conda install cudnn==7.6.5 -c https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/linux-64/ <span class="comment"># </span></span><br><span class="line">[username]$ vim ~/.bashrc <span class="comment">#个人账户下CUDA相关环境变量的配置</span></span><br><span class="line"><span class="comment">#--------------------------------------------------#</span></span><br><span class="line">CUDA_HOME=/usr/<span class="built_in">local</span>/cuda-10.0</span><br><span class="line">PATH=<span class="variable">$PATH</span>:/usr/<span class="built_in">local</span>/cuda-10.0/bin</span><br><span class="line">LD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/cuda-10.0/lib64</span><br><span class="line"><span class="built_in">export</span> CUDA_HOME PATH LD_LIBRARY_PATH</span><br><span class="line"><span class="comment">#--------------------------------------------------#</span></span><br><span class="line">[username]$ <span class="built_in">source</span> ~/.bashrc <span class="comment">#配置完成后立即更新环境变量</span></span><br></pre></td></tr></table></figure>
-<ul>
-<li>查看是否安装成功</li>
-</ul>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ nvcc --version <span class="comment">#查看编译器及CUDA版本</span></span><br><span class="line">[root]$ nvidia-smi <span class="comment">#查看GPU信息、驱动版本</span></span><br><span class="line">[root]$ cat /usr/<span class="built_in">local</span>/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2 <span class="comment">#查看cuDNN版本</span></span><br></pre></td></tr></table></figure>
-<h2 id="进阶设置">进阶设置</h2>
-<h3 id="1-安装温度监控器">1.  安装温度监控器</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ yum install lm_sensors <span class="comment">#下载安装lm_sensors插件</span></span><br><span class="line">[root]$ /usr/sbin/sensors-detect <span class="comment">#运行sensors-detect配置程序</span></span><br><span class="line">[notroot]$ sensors <span class="comment">#查看已允许检测设备的当前状态</span></span><br></pre></td></tr></table></figure>
-<h3 id="2-手动控制-GPU-风扇转速">2. 手动控制 <strong>GPU</strong> 风扇转速</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">[root]$ cp /etc/X11/xorg.conf /etc/X11/xorg.conf.back <span class="comment">#备份原有xorg配置文件</span></span><br><span class="line">[root]$ vim xorg.conf</span><br><span class="line"><span class="comment">#-----------File Start--------------#</span></span><br><span class="line">Section <span class="string">"Device"</span></span><br><span class="line">       Identifier  <span class="string">"Videocard0"</span></span><br><span class="line">       Driver      <span class="string">"nvidia"</span></span><br><span class="line">       Option <span class="string">"Coolbits"</span> <span class="string">"4"</span> <span class="comment">#增加该行内容后重启，可在Applications-other-Nvidia X Server Settings-GPU-Thermal Settings</span></span><br><span class="line">EndSection</span><br><span class="line"><span class="comment">#-----------File End--------------#</span></span><br><span class="line">[root]$ nvidia-settings -a <span class="string">"[gpu:0]/GPUFanControlState=0"</span> <span class="comment">#恢复GPU转速随温度控制</span></span><br></pre></td></tr></table></figure>
-<h3 id="3-常用-GPU-相关命令">3. 常用 GPU 相关命令</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">$ nvidia-smi -L <span class="comment">#列出所有可使用的GPU设备</span></span><br><span class="line">$ nvidia-smi -l <span class="comment">#与nvidia-smi功能相同但带有自动刷新功能（不清空输出缓存区）</span></span><br><span class="line">$ nvidia-smi -q <span class="comment">#查看所有GPU设备信息</span></span><br><span class="line">$ nvidia-smi –pm 0/1 <span class="comment">#设置持久模式：0/DISABLED,1/ENABLED</span></span><br><span class="line">$ nvidia-smi –e 0/1 <span class="comment">#切换ECC支持：0/DISABLED, 1/ENABLED</span></span><br><span class="line">$ nvidia-smi –p 0/1 <span class="comment">#重置ECC错误计数：0/VOLATILE, 1/AGGREGATE</span></span><br><span class="line">$ nvidia-smi –c <span class="comment">#设置计算应用模式：0/DEFAULT,1/EXCLUSIVE_PROCESS,2/PROHIBITED</span></span><br><span class="line">$ nvidia-smi –r <span class="comment">#GPU复位</span></span><br><span class="line">$ nvidia-smi –vm <span class="comment">#设置GPU虚拟化模式</span></span><br><span class="line">$ nvidia-smi –ac xxx,xxx <span class="comment">#设置GPU运行的工作频率。e.g. nvidia-smi –ac2000,800</span></span><br><span class="line">$ nvidia-smi –rac <span class="comment">#0/1 将时钟频率重置为默认值</span></span><br><span class="line">$ nvidia-smi –acp <span class="comment">#切换-ac和-rac的权限要求，0/UNRESTRICTED, 1/RESTRICTED</span></span><br><span class="line">$ nvidia-smi –pl <span class="comment">#指定最大电源管理限制（瓦特）</span></span><br><span class="line">$ nvidia-smi –am 0/1 <span class="comment">#启用或禁用计数模式，0/DISABLED,1/ENABLED</span></span><br><span class="line">$ nvidia-smi –caa <span class="comment">#清除缓冲区中的所有已记录PID，0/DISABLED,1/ENABLED</span></span><br></pre></td></tr></table></figure>
-<h3 id="4-动态监控">4. 动态监控</h3>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="comment">#实际上，可以使用watch命令实现动态监控(不需要root权限)</span></span><br><span class="line">$ watch -n 1 sensors <span class="comment"># 1表示每隔一秒刷新sensors</span></span><br><span class="line">$ watch -n 1 nvidia-smi <span class="comment">#同理可动态监控GPU运行状态，以判断Tensorfow是否正确使用了GPU运行</span></span><br></pre></td></tr></table></figure>
-<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
-      <categories>
-        <category>装机</category>
-      </categories>
-      <tags>
-        <tag>CUDA及cuDNN下载与安装</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>styleGAN源码解读之network.py(二)</title>
     <url>/2020/07/13/styleGAN-network2/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>styleGAN—<a href="http://network.py" target="_blank" rel="noopener">network.py</a></h1>
@@ -1622,10 +1622,8 @@ $$u_t+\mathcal{N}[u]=0,x\in\Omega,t\in[0,T] \tag{2}$$<br>
 $$f:=u_t+\mathcal{N}[u] \tag{3}$$<br>
 然后用神经网络逼近$u(t, x)$。这个假设和方程$3$共同构成了一个PINN $f(t, x)$。该网络可通过链式求导法则[12]，并且与网络表示$u(t, x)$具有相同的参数，尽管由于微分算子$N$的作用而具有不同的激活函数。神经网络$u(t, x)$和$f(t, x)$之间的共享参数可通过最小化均方误差（MSE）函数来学习。<br>
 $$MSE = MSE_u+MSE_f\tag{4}$$<br>
-其中<br>
-$$MSE_u=\frac{1}{N_u}\sum_{i=1}^{N_u}\mid{u(t_{u}^{i}, x^{u}<em>{i})-u^i}\mid^2$$<br>
-$$MSE_f=\frac{1}{N_f}\sum</em>{i=1}^{N_u}\mid{f(t_{f}^{i}, x^{f}<em>{i})}\mid^2$$<br>
-$\lbrace t</em>{u}^{i}, x_{u}^{i}, u^{i} \rbrace$表示$u(t, x)$的初始和边界训练数据，$\lbrace t_{f}^{i}, x_{f}^{i}\rbrace$表示$f(t, x)$的collocations points。损失函数$MSE_u$对应初始和边界数据，$MSE_f$在配置点的有限集合上加强了方程$2$所施加的结构（？？？？）。尽管在以前的研究<sup id="fnref:15"><a href="#fn:15" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="I.E. Lagaris, A. Likas, D.I. Fotiadis, Artifificial neural networks for solving ordinary and partial differential equations, IEEE Trans. Neural Netw. 9 (1998) 987–1000.
+其中</p>
+<p>$\lbrace t_{u}^{i}, x_{u}^{i}, u^{i} \rbrace$表示$u(t, x)$的初始和边界训练数据，$\lbrace t_{f}^{i}, x_{f}^{i}\rbrace$表示$f(t, x)$的collocations points。损失函数$MSE_u$对应初始和边界数据，$MSE_f$在配置点的有限集合上加强了方程$2$所施加的结构（？？？？）。尽管在以前的研究<sup id="fnref:15"><a href="#fn:15" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="I.E. Lagaris, A. Likas, D.I. Fotiadis, Artifificial neural networks for solving ordinary and partial differential equations, IEEE Trans. Neural Netw. 9 (1998) 987–1000.
 ">[15]</span></a></sup><sup id="fnref:16"><a href="#fn:16" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="D.C. Psichogios, L.H. Ungar, A hybrid neural network-fifirst principles approach to process modeling, AIChE J. 38 (1992) 1499–1511.
 ">[16]</span></a></sup>中已经探讨了使用物理定律约束神经网络的类似想法，但在这里我们使用现代计算工具重新讨论了它们，并将它们应用于与时间相关的非线性偏微分方程描述等更具挑战性的动力学问题中。<br>
 在这里，我们强调这一工作与文献中现有的机器学习在计算物理中的应用之间的重要区别。Wang等人<sup id="fnref:17"><a href="#fn:17" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="J.-X. Wang, J. Wu, J. Ling, G. Iaccarino, H. Xiao, A comprehensive physics-informed machine learning framework for predictive turbulence modeling, 2017, arXiv:1701.07102.
