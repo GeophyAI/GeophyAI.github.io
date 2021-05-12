@@ -668,7 +668,7 @@ $$f:=u_t+\mathcal{N}[u] \tag{3}$$<br>
 $$MSE = MSE_u+MSE_f\tag{4}$$<br>
 其中<br>
 $$MSE_u=\frac{1}{N_u}\sum_{i=1}^{N_u}\mid{u(t^{i}<em>{u}, x^{u}</em>{i})-u^i}\mid^2$$<br>
-$\lbrace t_{u}^{i}, x_{u}^{i}, u^{i} \rbrace$表示$u(t, x)$的初始和边界训练数据，$\lbrace t_{f}^{i}, x_{f}^{i}\rbrace$表示$f(t, x)$的collocations points。损失函数$MSE_u$对应初始和边界数据，$MSE_f$在配置点的有限集合上加强了方程$2$所施加的结构（？？？？）。尽管在以前的研究<sup id="fnref:15"><a href="#fn:15" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="I.E. Lagaris, A. Likas, D.I. Fotiadis, Artifificial neural networks for solving ordinary and partial differential equations, IEEE Trans. Neural Netw. 9 (1998) 987–1000.
+这里，$\lbrace t_{u}^{i}, x_{u}^{i}, u^{i} \rbrace$表示$u(t, x)$的初始和边界训练数据，$\lbrace t_{f}^{i}, x_{f}^{i}\rbrace$表示$f(t, x)$的collocations points。损失函数$MSE_u$对应初始和边界数据，$MSE_f$在配置点的有限集合上加强了方程$2$所施加的结构（？？？？）。尽管在以前的研究<sup id="fnref:15"><a href="#fn:15" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="I.E. Lagaris, A. Likas, D.I. Fotiadis, Artifificial neural networks for solving ordinary and partial differential equations, IEEE Trans. Neural Netw. 9 (1998) 987–1000.
 ">[15]</span></a></sup><sup id="fnref:16"><a href="#fn:16" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="D.C. Psichogios, L.H. Ungar, A hybrid neural network-fifirst principles approach to process modeling, AIChE J. 38 (1992) 1499–1511.
 ">[16]</span></a></sup>中已经探讨了使用物理定律约束神经网络的类似想法，但在这里我们使用现代计算工具重新讨论了它们，并将它们应用于与时间相关的非线性偏微分方程描述等更具挑战性的动力学问题中。</p>
 <details><summary>参考文献</summary>
