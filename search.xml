@@ -1671,7 +1671,7 @@ $$MSE_b=\frac{1}{N_b}\sum_{i=1}^{N_b}(\mid h^i( t_b^{i}, -5)-h^i(t_b^i, 5)\mid^2
 $$MSE_f = \frac{1}{N_f}\sum_{i=1}^{N_f}\mid f(t_f^{i}, x^i_f)\mid^2$$<br>
 这里，$\lbrace x^i_0, h^i_0\rbrace_{i=1}^{N_0}$表示初始值，$\lbrace t_b^i \rbrace_{i=1}^{N_b}$表示边界上的collocation points，$\lbrace t_f^i, x_f^i \rbrace_{i=1}^{N_f}$表示$f(t, x)$上的collocation points。因此，$MSE_0$表示初始数据上的$loss$，$MSE_b$表示周期性边界条件，$MSE_f$为惩罚项，在collocation points上不满足薛定谔方程。<br>
 为了评估我们的方法的准确性，我们用传统的光谱方法模拟了方程$5$以创建高分辨率数据集。特别地，设初始状态$h(0,x)=2sech(x)$且假设周期性边界条件$h(t -5)=h(t, 5)$，$h_x(t, -5)=h_x(t, 5)$。使用Chebfun package<sup id="fnref:40"><a href="#fn:40" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T.A. Driscoll, N. Hale, L.N. Trefethen, Chebfun Guide, 2014.
-">[40]</span></a></sup>的pectral Fourier discretization with 256 modes和显式Runge– Kutta时间积分器以时间间隔$\Delta t=\pi/2·10^-6$对公式$5$积分到时间$t=\pi/2$。通过以上数据驱动设置，我们记录latent function $h(t,x)$在$t=0$时的测量值$\lbrace x^i_0, h^i_0 \rbrace_{i=1}^{N_0}$。特别地，训练集包含从高分辨率数据集中随机选取的$N_0=50$个数据点，以及$N_b=50$ 个配置点$\lbrace t^i_b \rbrace^{N_b}_{i=1}$以确保满足周期边界条件。此外，我们还假设$N_f=20,000$个随机采样配置点以确保方程$5$在解空间内。所有随机采样点的空间位置均通过空间填充Latin Hypercude 采样策略获得<sup id="fnref:41"><a href="#fn:41" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="M. Stein, Large sample properties of simulations using Latin hypercube sampling, Technometrics 29 (1987) 143–151.
+">[40]</span></a></sup>的pectral Fourier discretization with 256 modes和显式$Runge–Kutta$时间积分器以时间间隔$\Delta t=\pi/2·10^-6$对公式$5$积分到时间$t=\pi/2$。通过以上数据驱动设置，我们记录latent function $h(t,x)$在$t=0$时的测量值$\lbrace x^i_0, h^i_0 \rbrace_{i=1}^{N_0}$。特别地，训练集包含从高分辨率数据集中随机选取的$N_0=50$个数据点，以及$N_b=50$ 个配置点$\lbrace t^i_b \rbrace^{N_b}_{i=1}$以确保满足周期边界条件。此外，我们还假设$N_f=20,000$个随机采样配置点以确保方程$5$在解空间内。所有随机采样点的空间位置均通过空间填充Latin Hypercude 采样策略获得<sup id="fnref:41"><a href="#fn:41" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="M. Stein, Large sample properties of simulations using Latin hypercube sampling, Technometrics 29 (1987) 143–151.
 ">[41]</span></a></sup>。<br>
 我们的最终目标是推断薛定谔方程$5$在整个时空域的解$h(t, x)$。我们选择使用深度为5、每层包含100个神经元以及激活函数为双曲正切的神经网络来表示latent function$h(t, x) = [u(t, x) v(t,x)]$。一般来说，神经网络应该具有足够的近似能力以满足$u(t, x)$的复杂性。尽管可以采用更系统的处理流程，如贝叶斯优化<sup id="fnref:42"><a href="#fn:42" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="J. Snoek, H. Larochelle, R.P. Adams, Practical bayesian optimization of machine learning algorithms, in: Advances in Neural Information Processing Systems, 2012, pp. 2951–2959.
 ">[42]</span></a></sup>，以微调神经网络的设计，但在缺乏理论误差/收敛估计的情况下，神经结构/训练过程和基本微分方程的复杂性之间的相互作用仍然不清楚。评估预测解的准确性的一个可行途径是采用贝叶斯方法并监测预测后验分布的方差，但这超出了目前工作的范围，这是今后的研究方向。<br>
@@ -1683,8 +1683,8 @@ $$MSE_f = \frac{1}{N_f}\sum_{i=1}^{N_f}\mid f(t_f^{i}, x^i_f)\mid^2$$<br>
 <img src="/2021/05/07/10.1016j.jcp.2018.10.045_a/fig01.png" alt="fig01"></p>
 <h2 id="3-2-离散时间模型">3.2 离散时间模型</h2>
 <p>对方程$2$应用$q$阶Runge-Kutta方法得到以下公式：<br>
-$$u^{n+c_i}=u^n-\Delta t\sum_{j=1}^{q} a_ij\mathcal{N}[u^{n+c_j}], i=1,…,q,  \<br>
-u^{n+1}=u^n-\Delta t \sum_{j=1}^{q} b_j \mathcal{N}[u^{n+c_j}]. \tag 7$$<br>
+$$u^{n+c_i}=u^n-\Delta t\sum_{j=1}^q a_ij\mathcal{N}[u^{n+c_j}], i=1,…,q,  \<br>
+u^{n+1}=u^n-\Delta t \sum_{j=1}^q b_j \mathcal{N}[u^{n+c_j}]. \tag 7$$<br>
 其中，$u^{n+c_j}(x)=u(t^n+c_j\Delta t, x)$（$j=1,…,q$）。这一通用格式封装了显式和隐式时间递推格式，该格式取决于参数${a_ij, b_j, c_j}$。公式$7$可以被等价地表示为：<br>
 $$u^n=u^n_i, i=1,…,q,\<br>
 u^n=u^n_{q+1} \tag{8}$$<br>
