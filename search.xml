@@ -1706,9 +1706,11 @@ $$\mathcal{N}[u^{n+c_j}]=-0.0001u_{xx}^{n+c_j}+5(u^{n+c_j})^3-5u^{n+c_j}$$<br>
 公式$10$和$11$中的共享参数可通过最小化平方误差（公式$13$）学习来得到<br>
 $$SSE=SSE_n+SSE_b$$<br>
 其中，<br>
-$$SSE_n=\sum_{j=1}^{q+1}\sum^{N_n}<em>{i=1} \mid u^n_j(x^{n,i}-u^{n, i}) \mid ^2$$<br>
-$$SSE_b=\sum</em>{i=1}^q\mid u^{n+c_i}(-1)-u^{n+c_i}(1)\mid ^2+<br>
-$$<br>
+$$SSE_n=\sum_{j=1}^{q+1}\sum_{i=1}^{N_n} \mid u^n_j(x^{n,i}-u^{n, i}) \mid ^2$$<br>
+$$SSE_b=\sum_{i=1}^q\mid u^{n+c_i}(-1)-u^{n+c_i}(1)\mid ^2+<br>
+\mid u^{n+1}(-1)-u^{n+1}(1) \mid ^2+ \<br>
+\sum_{i=1}^q \mid u^{n+c_i}_x(-1)-u^{n+c_i}_x(1) \mid ^2 +<br>
+\mid u_x^{n+1}(-1)-u^{n+1}_x(1)\mid ^2.$$<br>
 $\lbrace x^{n, i}, u^{n, i}\rbrace _{i=1}^{N_n}$表示$t^n$时刻的数据。<br>
 在经典的数值分析中，受显式格式的稳定性约束或隐式公式的计算复杂性约束，时间步长通常被限制为较小值。随着Runge–Kutta阶阶数$q$增加，这些限制变得更加严格，并且对于大多数实际问题，需要进行数千到数百万个时间步长以达到最终时间。与经典方法形成鲜明对比的是，这里我们可以使用隐式Runge–Kutta格式，其中包含任意阶数，需要额外付出的成本非常小。这使得我们能够在保证稳定性和高预测精度的同时采取非常大的时间步长，所以允许我们仅通过一次递推就完成整个时空域求解。<br>
 在这个例子中，我们使用传统光谱法模拟$Allen-Cahn$方程得到了训练数据和测试数据。具体来讲，设初始条件为$u(0, x)=x^2cos(\pi x)$，周期性边界条件$u(t, -1)=u(t, 1)$和$u_x(t, -1)=u_x(t, 1)$，使用Chebfun包<sup id="fnref:40"><a href="#fn:40" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T.A. Driscoll, N. Hale, L.N. Trefethen, Chebfun Guide, 2014.
