@@ -1706,7 +1706,7 @@ $$\mathcal{N}[u^{n+c_j}]=-0.0001u_{xx}^{n+c_j}+5(u^{n+c_j})^3-5u^{n+c_j}$$<br>
 公式$10$和$11$中的共享参数可通过最小化平方误差（公式$13$）学习来得到<br>
 $$SSE=SSE_n+SSE_b$$<br>
 其中，<br>
-$$SSE_n=\sum_{j=1}^{q+1}\sum_{i=1}^{N_n} \mid u^n_j(x^{n,i}-u^{n, i}) \mid ^2$$<br>
+$$SSE_n=\sum_{j=1}^{q+1} \sum_{i=1}^{N_n} \mid u_j^n(x^{n,i}-u^{n, i}) \mid ^2$$<br>
 $$SSE_b=\sum_{i=1}^q\mid u^{n+c_i}(-1)-u^{n+c_i}(1)\mid ^2+<br>
 \mid u^{n+1}(-1)-u^{n+1}(1) \mid ^2+ \<br>
 \sum_{i=1}^q \mid u^{n+c_i}_x(-1)-u^{n+c_i}_x(1) \mid ^2 +<br>
