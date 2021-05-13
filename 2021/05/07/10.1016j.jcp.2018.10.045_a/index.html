@@ -391,19 +391,19 @@ $$u_x(t, -1)=u_x(t,1)$$<br>
 Allen-Cahn方程是反散-扩散系统的著名方程。它描述了多组分合金体系的相分离过程，包括有序-无序转变。对于Allen-Cahn方程，公式$9$中的非线性算子为<br>
 $$\mathcal{N}[u^{n+c_j}]=-0.0001u^{n+c_j}<em>{xx}+5(u^{n+c_j})^3-5u^{n+c_j}$$<br>
 公式$10$和$11$中的共享参数可通过最小化平方误差（公式$13$）学习来得到<br>
-$$SSE=SSE_n+SSE_b,$$<br>
+$$SSE=SSE_n+SSE_b$$<br>
 其中，<br>
-$$SSE_n=\sum^{q+1}</em>{j=1}\sum^{N_n}<em>{i=1} \mid u^n_j(x^{n,i}-u^{n, i})\mid ^2$$<br>
+$$SSE_n=\sum^{q+1}</em>{j=1}\sum^{N_n}<em>{i=1} \mid u^n_j(x^{n,i}-u^{n, i}) \mid ^2$$<br>
 $$SSE_b=\sum^{q}</em>{i=1}\mid u^{n+c_i}(-1)-u^{n+c_i}(1)\mid ^2+<br>
 \mid u^{n+1}(-1)-u^{n+1}(1) \mid ^2+ \<br>
 \sum^{q}_{i=1} \mid u^{n+c_i}_x(-1)-u^{n+c_i}_x(1) \mid ^2 +<br>
 \mid u^{n+1}_x(-1)-u^{n+1}<em>x(1)\mid ^2.$$<br>
 $\lbrace x^{n, i}, u^{n, i}\rbrace ^{N_n}</em>{i=1}$表示$t^n$时刻的数据。<br>
 在经典的数值分析中，受显式格式的稳定性约束或隐式公式的计算复杂性约束，时间步长通常被限制为较小值。随着Runge–Kutta阶阶数$q$增加，这些限制变得更加严格，并且对于大多数实际问题，需要进行数千到数百万个时间步长以达到最终时间。与经典方法形成鲜明对比的是，这里我们可以使用隐式Runge–Kutta格式，其中包含任意阶数，需要额外付出的成本非常小。这使得我们能够在保证稳定性和高预测精度的同时采取非常大的时间步长，所以允许我们仅通过一次递推就完成整个时空域求解。<br>
-在这个例子中，我们使用传统光谱法模拟Allen-Cahn方程得到了训练数据和测试数据。具体来讲，设初始条件为$u(0, x)=x^2cos(\pi x)$，周期性边界条件$u(t, -1)=u(t, 1)$和$u_x(t, -1)=u_x(t, 1)$，使用Chebfun包<sup id="fnref:40"><a href="#fn:40" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T.A. Driscoll, N. Hale, L.N. Trefethen, Chebfun Guide, 2014.
-">[40]</span></a></sup>以512modes的傅里叶光谱离散和四阶显式Runge-Kutta时间积分器（$\Delta t=10^{-5}$）对公式$12$积分到$t=1.0$。<br>
+在这个例子中，我们使用传统光谱法模拟$Allen-Cahn$方程得到了训练数据和测试数据。具体来讲，设初始条件为$u(0, x)=x^2cos(\pi x)$，周期性边界条件$u(t, -1)=u(t, 1)$和$u_x(t, -1)=u_x(t, 1)$，使用Chebfun包<sup id="fnref:40"><a href="#fn:40" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T.A. Driscoll, N. Hale, L.N. Trefethen, Chebfun Guide, 2014.
+">[40]</span></a></sup>以512modes的傅里叶光谱离散和四阶显式$Runge-Kutta$时间积分器（$\Delta t=10^{-5}$）对公式$12$积分到$t=1.0$。<br>
 训练集包含$N_n=200$个从精确解中随机抽取的初始数据点，我们的目标是使用$\Delta t =0.8$的一次递推来预测$t=0.9$的解。为此，我们设计了一个包含4个隐藏层和每层200个神经元的PINN，输出则预测了101个感兴趣的数据，其中包含$q=100$的Runge-Kutta阶数$u^{n+c_i}(x), i=1,…,q$以及最终时刻的解$u^{n+1}_x$。该方案的理论误差估计预测了$O(\Delta t^{2q})$<sup id="fnref:45"><a href="#fn:45" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="A. Iserles, A First Course in the Numerical Analysis of Differential Equations, vol. 44, Cambridge University Press, 2009.
-">[45]</span></a></sup>的时间误差累积，在我们的例子中，其转化为低于机器精度的误差，即，$\Delta ^{2q}=0.8200≈ 10^{−20}$。据我们所知，这是第一次使用这种高阶隐式Runge-Kutta格式。值得注意的是，从$t=0.1$的光滑初始数据出发，我们可以在一个时间步长内预测t=0.9的近似不连续解，其相对$L_2$误差为$6.99·10−3$，如图2所示。这种误差完全归因于神经网络逼近$u(t, x)$的能力，以及误差平方和允许对训练数据进行插值的程度。<br>
+">[45]</span></a></sup>的时间误差累积，在我们的例子中，其转化为低于机器精度的误差，即，$\Delta ^{2q}=0.8200≈ 10^{−20}$。据我们所知，这是第一次使用这种高阶隐式$Runge-Kutta$格式。值得注意的是，从$t=0.1$的光滑初始数据出发，我们可以在一个时间步长内预测t=0.9的近似不连续解，其相对$L_2$误差为$6.99·10−3$，如图2所示。这种误差完全归因于神经网络逼近$u(t, x)$的能力，以及误差平方和允许对训练数据进行插值的程度。<br>
 控制离散时间算法性能的关键参数是龙格库塔算法的阶数$q$和时间步长$\Delta t$。正如我们在附录A和附录B中提供的系统研究中所证明的，低阶方法，例如对应于经典梯形规则的情况$q=1$，以及对应于四阶Gauss–Legendre方法的情况$q=2$，不能保留它们对大时间步长的预测精度，因此，需要将其拆分成多个小时间步长。另一方面，将Runge–Kutta阶数设置为32个甚至更高，允许我们采取非常大的时间步长，并在不牺牲预测准确性的情况下使用一次地推有效地解决问题。此外，该方法能够充分保证数值稳定性，因为隐式Gauss–Legendre是唯一一类无论阶数如何都保持A-stable的时间递推格式，因此非常适合于刚性问题<sup id="fnref:45"><a href="#fn:45" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="A. Iserles, A First Course in the Numerical Analysis of Differential Equations, vol. 44, Cambridge University Press, 2009.
 ">[45]</span></a></sup>。这些特性对于实现如此简单的算法来说是前所未有的，并且说明了我们离散时间方法的一个关键亮点。</p>
 <details><summary>参考文献</summary>
