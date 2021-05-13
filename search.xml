@@ -1689,8 +1689,8 @@ u^{n+1}=u^n-\Delta t \sum_{j=1}^q b_j \mathcal{N}[u^{n+c_j}]. \tag 7$$<br>
 $$u^n=u^n_i, i=1,…,q,\<br>
 u^n=u^n_{q+1} \tag{8}$$<br>
 其中:<br>
-$$u^n_j:=u^{n+c_i}+\Delta t \sum^{q}<em>{j=1}a_ij \mathcal{N}[u^{n+c_j}], i=1,…,q \<br>
-u^n</em>{q+1}:=u^{n+1}+\Delta t \sum^{q}_{j=1}b_j \mathcal{N}[u^{n+c_j}] \tag{9}$$<br>
+$$u^n_j:=u^{n+c_i}+\Delta t \sum^q_{j=1}a_ij \mathcal{N}[u^{n+c_j}], i=1,…,q \<br>
+u^n_{q+1}:=u^{n+1}+\Delta t \sum^q_{j=1}b_j \mathcal{N}[u^{n+c_j}] \tag{9}$$<br>
 我们将多输出神经网络置于以下公式之前<br>
 $$[u^{n+c_1}(x),…,u^{n+c_q}(x), u^{n+1}(x)] \tag{10}$$<br>
 上述先验信息以及公式$9$共同构成了以$x$为输入、以公式$11$为输出的PINN：<br>
