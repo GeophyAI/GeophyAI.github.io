@@ -306,13 +306,12 @@ $$MSE:=\frac{1}{N} \sum_{i=1}^{N}(\mid u(t^i, x^i, y^i)-u^i \mid^2+\mid v(t^i, x
 $$u^{n+c_i}=u^n-\Delta t \sum_{j=1}^qa_ij \mathcal{N}[u^{n+c_j}; \lambda], i=1,…,q,$$<br>
 $$u^{n+1}=u^{n}-\Delta t \sum_{j=1}^{q}b_j \mathcal{N}[u^{n+c_j};\lambda] \tag{20}$$<br>
 其中，$u^{n+c_j}(x)=u(t^n+c_j\Delta t, x)$是系统在$t^n+c_j$($j=1,…,q$)时刻的隐藏状态。该通用形式包含了显式和隐式的时间递推格式，该格式取决于参数$\lbrace {a_ij, b_j, c_j}\rbrace$的选取。公式$20$可等价为：<br>
-$$u^n=u^n_i, i=1…,q,\<br>
-u^{n+1}=u^{n+1}<em>i,i=1,…,q \tag{21}<br>
+$$u^n=u_i^n, i=1…,q,\<br>
+u^{n+1}=u_i^{n+1},i=1,…,q \tag{21}<br>
 $$<br>
 其中<br>
-$$u^n_i:=u^{n+c_i}+\Delta t \sum^{q}</em>{j=1}a_{ig}\mathcal{N}[c^{n+c_j};\lambda],i=1,…,q,\<br>
-u^{n+1}<em>i:=u^{n+c_i}+\Delta t \sum^{q}</em>{j=1}(a_ij-b_j) \mathcal{N}[u^{n+c_j};\lambda], i=1,…,q \tag{22}<br>
-$$<br>
+$$u_i^n:=u^{n+c_i}+\Delta t \sum_{j=1}^{q}a_{ij}\mathcal{N}[c^{n+c_j};\lambda],i=1,…,q,$$<br>
+$$u_i^{n+1}:=u^{n+c_i}+\Delta t \sum_{j=1}^{q}(a_ij-b_j) \mathcal{N}[u^{n+c_j};\lambda], i=1,…,q \tag{22}$$<br>
 先验假设以及公式$22$形成了两个PINN：<br>
 $$[u^{n+c_1}(x),…,u^{n+c_q}(x)] \tag{24}$$<br>
 以及<br>
