@@ -325,13 +325,13 @@ $$SSE_n:=\sum_{j=1}^q \sum_{i=1}^{N_n}  \mid u_j^n(x^{n, i})-u^{n, i}\mid^2$$<br
 $$SSE_{n+1}:=\sum_{j=1}^n \sum_{i=1}^{N_{n+1}} \mid u_j^{n+1}(x^{n+1,i}-u^{n+1,i})\mid ^2$$<br>
 $$x^n=\lbrace x^{n,i} \rbrace _{i=1}^{N_n}, u^n=\lbrace u^{n, i} \rbrace _{i=1}^{N_n}$$</p>
 <h3 id="4-2-1-例子">4.2.1 例子</h3>
-<p>我们的最后一个例子旨在强调所提出的框架在处理涉及高阶导数的偏微分方程的能力。这里，我们考虑浅水表面上波浪的数学模型；Korteweg–de Vries（KdV）方程。这个方程也可以看作是带有dispersive项的Burgers方程。KdV方程与物理问题有几方面联系：它描述了长一维波在许多物理环境中的演化。这种物理环境包括具有弱非线性恢复力的浅水波、密度分层海洋中的长内波（long internal waves）、等离子体中的离子声波和晶格上的声波。此外，KdV方程是连续极限下Fermi-Pasta-Ulam问题<sup id="fnref:48"><a href="#fn:48" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T. Dauxois, Fermi, Pasta, Ulam and a mysterious lady, 2008, arXiv:0801.1590.
-">[48]</span></a></sup>中弦的控制方程。KdV公式如下:<br>
+<p>我们的最后一个例子旨在强调所提出的框架在处理涉及高阶导数的偏微分方程的能力。这里，我们考虑浅水表面上波浪的数学模型；$Korteweg–de Vries(KdV)$方程。这个方程也可以看作是带有dispersive项的Burgers方程。KdV方程与物理问题有几方面联系：它描述了长一维波在许多物理环境中的演化。这种物理环境包括具有弱非线性恢复力的浅水波、密度分层海洋中的长内波（long internal waves）、等离子体中的离子声波和晶格上的声波。此外，$KdV$方程是连续极限下$Fermi-Pasta-Ulam$问题<sup id="fnref:48"><a href="#fn:48" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T. Dauxois, Fermi, Pasta, Ulam and a mysterious lady, 2008, arXiv:0801.1590.
+">[48]</span></a></sup>中弦的控制方程。$KdV$公式如下:<br>
 $$u_t+\lambda_1uu_x+\lambda_2u_{xxx} = 0 \tag{27}$$<br>
 $(\lambda_1, \lambda_2)$为未知参数。对于KdV方程，公式$22$中的非线性算子由以下公式给定：<br>
 $$\mathcal{N}[u^{n+c_j}]=\lambda_1u^{n+c_j}u^{n+c_j}<em>x-\lambda_2u^{n+c_j}</em>{xxx}$$<br>
 公式$23$、$24$、$25$的共享参数以及KdV方程的参数$\lambda=(\lambda_1, \lambda_2)可以ton过最小化平方误差公式$26$得到。<br>
-我们通过使用传统谱方法模拟公式$27$来得到训练数据和测试数据。具体来讲，初始边界条件为$u(0, x)=cos(\pi x)$以及周期性边界条件，使用Chebfun包以512个modes的谱傅里叶离散以及四阶显式Runge-Kutta时间积分器（$\Delta t=10^{-6}$）对公式$27$积分到$t=1.0$。利用该数据集，我们提取$t^n=0.2$和$t^{n+1}=0.8$的两个解的切片，并使用$N_n=199$和$N_{n+1}=201$对其进行随机降采样来生成训练集。然后我们利用这些数据来训练离散时间PINN，loss函数平方误差为$26$，优化器为L-BFGS<sup id="fnref:35"><a href="#fn:35" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="D.C. Liu, J. Nocedal, On the limited memory BFGS method for large scale optimization, Math. Program. 45 (1989) 503–528.
+我们通过使用传统谱方法模拟公式$27$来得到训练数据和测试数据。具体来讲，初始边界条件为$u(0, x)=cos(\pi x)$以及周期性边界条件，使用$Chebfun$包以512个modes的谱傅里叶离散以及四阶显式$Runge-Kutta$时间积分器（$\Delta t=10^{-6}$）对公式$27$积分到$t=1.0$。利用该数据集，我们提取$t^n=0.2$和$t^{n+1}=0.8$的两个解的切片，并使用$N_n=199$和$N_{n+1}=201$对其进行随机降采样来生成训练集。然后我们利用这些数据来训练离散时间PINN，loss函数平方误差为$26$，优化器为L-BFGS<sup id="fnref:35"><a href="#fn:35" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="D.C. Liu, J. Nocedal, On the limited memory BFGS method for large scale optimization, Math. Program. 45 (1989) 503–528.
 ">[35]</span></a></sup>。网络架构包括4个隐藏层，每层有50个神经元，以及一个用于预测q阶Runge-Kutta解（即$u^{n+c_j}(x)$）的输出层（$j=1,…,q$）其中，q是生成及其精度阶时间误差累积的经验值，其由以下公式决定：<br>
 $$q=0.5log\epsilon /log(\Delta t)$$<br>
 该例子的时间步长为$\Delta t = 0.6$。<br>
