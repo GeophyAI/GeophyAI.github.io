@@ -1510,7 +1510,9 @@ $$[u_1^{n+1}(x),…,u_q^{n+1}(x),u_{q+1}^{n+1}(x)] \tag{25}$$<br>
 $$SSE=SSE_n+SSE_n+1 \tag{26}$$<br>
 其中<br>
 $$SSE_n:=\sum_{j=1}^q \sum_{i=1}^{N_n}  \mid u_j^n(x^{n, i})-u^{n, i}\mid^2$$<br>
-$$SSE_{n+1}:=\sum_{j=1}^n \sum_{i=1}^{N_{n+1}} \mid u_j^{n+1}(x^{n+1,i}-u^{n+1,i})\mid ^2$$</p>
+$$SSE_{n+1}:=\sum_{j=1}^n \sum_{i=1}^{N_{n+1}} \mid u_j^{n+1}(x^{n+1,i}-u^{n+1,i})\mid ^2$$<br>
+$$\bold x^n=\lbrace x^{n,i} \rbrace <em>{i=1}^{N_n}, \bold u^n=\lbrace u^{n, i} \rbrace <em>{i=1}^{N_n}\<br>
+\bold x^{n+1}=\lbrace x^{n+1, i}\rbrace</em>{i=1}^{N</em>{n+1}} \bold u^{n+1}=\lbrace u^{n+1, i}\rbrace  <em>{i=1}^{N</em>{n+1}}$$</p>
 <h3 id="4-2-1-例子">4.2.1 例子</h3>
 <p>我们的最后一个例子旨在强调所提出的框架在处理涉及高阶导数的偏微分方程的能力。这里，我们考虑浅水表面上波浪的数学模型；Korteweg–de Vries（KdV）方程。这个方程也可以看作是带有dispersive项的Burgers方程。KdV方程与物理问题有几方面联系：它描述了长一维波在许多物理环境中的演化。这种物理环境包括具有弱非线性恢复力的浅水波、密度分层海洋中的长内波（long internal waves）、等离子体中的离子声波和晶格上的声波。此外，KdV方程是连续极限下Fermi-Pasta-Ulam问题<sup id="fnref:48"><a href="#fn:48" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T. Dauxois, Fermi, Pasta, Ulam and a mysterious lady, 2008, arXiv:0801.1590.
 ">[48]</span></a></sup>中弦的控制方程。KdV公式如下:<br>
