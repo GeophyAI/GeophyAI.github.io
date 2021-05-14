@@ -289,10 +289,10 @@ $$f:=u_t+\lambda_1(uu_x+vu_y)+p_x-\lambda_2(u_{xx}+u_{yy})\<br>
 g:=v_t+\lambda_1(uv_x+vv_y)+p_y-\lambda_2(v_{xx}+v_{yy})<br>
 $$<br>
 然后使用有两个输出的神经网络近似$[\psi(t, x, y) p(t, x, y)]$。此先验假设以及公式$17$、$18$构成了PINN网络$[f(t, x, y) g(t, x, y)]$。Navier-Stokes算子的参数$\lambda$以及神经网络$[\psi(t, x, y) p(t, x, y)]$和$[f(t, x, y) g(t, x, y)]$的参数可以通过最小化均方误差函数$19$来训练得到。<br>
-$$MSE:=\frac{1}{N} \sum^{N}<em>{i=1}(\mid u(t^i, x^i, y^i)-u^i \mid^2+\mid v(t^i, x^i, y^i)-v^i\mid^2)\<br>
-+\frac{1}{N} \sum^{N}</em>{i=1}(\mid f(t^i, x^i, y^i)\mid^2+\mid g(t^i, x^i, y^i)\mid ^2)<br>
+$$MSE:=\frac{1}{N} \sum_{i=1}^{N}(\mid u(t^i, x^i, y^i)-u^i \mid^2+\mid v(t^i, x^i, y^i)-v^i\mid^2)\<br>
++\frac{1}{N} \sum^<em>{i=1}{N}(\mid f(t^i, x^i, y^i)\mid^2+\mid g(t^i, x^i, y^i)\mid ^2)<br>
 \tag{19}$$<br>
-这里我们讨论不可压缩流体通过圆柱体的问题，aproblem known to exhibit rich dynamic behavior and transitions for different regimes of theReynolds number$Re=u_\infty D/v$。假设一个无量纲自由流体速度为$u_\infty=1$,圆柱直径$D=1$，运动黏度$v=0.01$，该系统呈现周期性稳态行为，其特征是圆柱wake中的不对称涡旋脱落模式，即Karman vortex street<sup id="fnref:46"><a href="#fn:46" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T. Von Kármán, Aerodynamics, vol. 9, McGraw-Hill, New York, 1963.
+这里我们讨论不可压缩流体通过圆柱体的问题，aproblem known to exhibit rich dynamic behavior and transitions for different regimes of theReynolds number$Re=u</em>\infty D/v$。假设一个无量纲自由流体速度为$u_\infty=1$,圆柱直径$D=1$，运动黏度$v=0.01$，该系统呈现周期性稳态行为，其特征是圆柱wake中的不对称涡旋脱落模式，即$Karman vortex street$<sup id="fnref:46"><a href="#fn:46" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T. Von Kármán, Aerodynamics, vol. 9, McGraw-Hill, New York, 1963.
 ">[46]</span></a></sup>。<br>
 为生成针对该问题的高分辨率数据集，我们采用了光谱/hp元素求解器NekTar<sup id="fnref:47"><a href="#fn:47" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="G. Karniadakis, S. Sherwin, Spectral/hp Element Methods for Computational Fluid Dynamics, Oxford University Press, 2013.
 ">[47]</span></a></sup>。具体来说，将解空间在空间域离散为包含412个三角形元素的曲面细分，在每个元素中，解都被近似为十阶分层半正交Jacobi多项式展开式的线性组合。我们假设左边界有均匀的自由流体速度剖面，在圆柱体下游25直径处的右边界施加零压力流出条件，并在上下边界$[-15, 25]\times[-8, 8]$的区域添加周期边界条件。我们是用三阶刚性稳定方法对公式$15$进行积分，直到该系统达到周期稳定状态，如图3(a)所示。在接下来的内容中，与这个稳态解相对应的数据集的一小部分将被用于模型训练，而剩余数据则用于模型预测。为简单起见，我们选择将采样限制在圆柱体下游的矩形区域，如图3(a)所示。<br>
@@ -303,15 +303,14 @@ $$MSE:=\frac{1}{N} \sum^{N}<em>{i=1}(\mid u(t^i, x^i, y^i)-u^i \mid^2+\mid v(t^i
 到目前为止，我们均假设数据点在整个时空域中可用。在许多实际情况下，人们可能只能在不同的时刻观察系统。在下一节中，我们将介绍一种不同的方法，该方法仅使用两个数据快照来解决数据驱动的发现问题。我们将看到，通过利用经典的Runge-Kutta时间递推方案，人们可以构建离散时间的PINN，即使数据快照之间的时间间隔非常大，其也可以保持较高的预测精度。</p>
 <h1>4.2 离散时间模型</h1>
 <p>对公式$1$应用$q$阶Runge-Kutta方法得到以下公式<br>
-$$u^{n+c_i}=u^n-\Delta t \sum^q_{j=1}a_ij \mathcal{N}[u^{n+c_j}; \lambda], i=1,…,q,\<br>
-u^{n+1}=u^{n}-\Delta t \sum^{q}<em>{j=1}b_j \mathcal{N}[u^{n+c_j};\lambda] \tag{20}<br>
-$$<br>
+$$u^{n+c_i}=u^n-\Delta t \sum_{j=1}^qa_ij \mathcal{N}[u^{n+c_j}; \lambda], i=1,…,q,$$<br>
+$$u^{n+1}=u^{n}-\Delta t \sum_{j=1}^{q}b_j \mathcal{N}[u^{n+c_j};\lambda] \tag{20}$$<br>
 其中，$u^{n+c_j}(x)=u(t^n+c_j\Delta t, x)$是系统在$t^n+c_j$($j=1,…,q$)时刻的隐藏状态。该通用形式包含了显式和隐式的时间递推格式，该格式取决于参数$\lbrace {a_ij, b_j, c_j}\rbrace$的选取。公式$20$可等价为：<br>
 $$u^n=u^n_i, i=1…,q,\<br>
 u^{n+1}=u^{n+1}<em>i,i=1,…,q \tag{21}<br>
 $$<br>
 其中<br>
-$$u^n_i:=u^{n+c_i}+\Delta t \sum^{q}</em>{j=1}a</em>{ig}\mathcal{N}[c^{n+c_j};\lambda],i=1,…,q,\<br>
+$$u^n_i:=u^{n+c_i}+\Delta t \sum^{q}</em>{j=1}a_{ig}\mathcal{N}[c^{n+c_j};\lambda],i=1,…,q,\<br>
 u^{n+1}<em>i:=u^{n+c_i}+\Delta t \sum^{q}</em>{j=1}(a_ij-b_j) \mathcal{N}[u^{n+c_j};\lambda], i=1,…,q \tag{22}<br>
 $$<br>
 先验假设以及公式$22$形成了两个PINN：<br>
