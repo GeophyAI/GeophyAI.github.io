@@ -20,29 +20,35 @@
     var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta property="og:type" content="website">
-<meta property="og:title" content="GeophyAI">
-<meta property="og:url" content="http://blog.geophyai.com/index.html">
+  <meta name="description" content="原文地址：PINN：深度学习框架下求解含有非线性偏微分方程的正问题、反问题 doi:10.1016&#x2F;j.jcp.2018.10.045 Data-driven discovery of partial differential equations 在我们研究的当前部分，我们将注意力转移到数据驱动的偏微分方程发现问题上[5][9][14]。在第$4.1$节和第$4.2$节中，我们提出了两种不同类型的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Physics-informed neural networks:Translation Part II">
+<meta property="og:url" content="http://blog.geophyai.com/2021/05/14/10.1016j.jcp.2018.10.045_b/index.html">
 <meta property="og:site_name" content="GeophyAI">
+<meta property="og:description" content="原文地址：PINN：深度学习框架下求解含有非线性偏微分方程的正问题、反问题 doi:10.1016&#x2F;j.jcp.2018.10.045 Data-driven discovery of partial differential equations 在我们研究的当前部分，我们将注意力转移到数据驱动的偏微分方程发现问题上[5][9][14]。在第$4.1$节和第$4.2$节中，我们提出了两种不同类型的">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.geophyai.com/2021/05/14/10.1016j.jcp.2018.10.045_b/fig03.png">
+<meta property="article:published_time" content="2021-05-14T03:10:46.000Z">
+<meta property="article:modified_time" content="2021-05-14T03:10:46.000Z">
 <meta property="article:author" content="shaowinw">
-<meta property="article:tag" content="AI;data-processing">
+<meta property="article:tag" content="深度学习与计算地球物理">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.geophyai.com/2021/05/14/10.1016j.jcp.2018.10.045_b/fig03.png">
 
-<link rel="canonical" href="http://blog.geophyai.com/">
+<link rel="canonical" href="http://blog.geophyai.com/2021/05/14/10.1016j.jcp.2018.10.045_b/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>GeophyAI</title>
+  <title>Physics-informed neural networks:Translation Part II | GeophyAI</title>
   
 
 
@@ -184,9 +190,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -202,10 +209,9 @@
       <meta itemprop="name" content="GeophyAI">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/14/10.1016j.jcp.2018.10.045_b/" class="post-title-link" itemprop="url">Physics-informed neural networks:Translation Part II</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Physics-informed neural networks:Translation Part II
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -254,7 +260,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>原文地址：<a href="https://www.sciencedirect.com/science/article/pii/S0021999118307125" target="_blank" rel="noopener">PINN：深度学习框架下求解含有非线性偏微分方程的正问题、反问题</a><br>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>原文地址：<a href="https://www.sciencedirect.com/science/article/pii/S0021999118307125" target="_blank" rel="noopener">PINN：深度学习框架下求解含有非线性偏微分方程的正问题、反问题</a><br>
 doi:<a href="http://sci-hub.ren/10.1016/j.jcp.2018.10.045" target="_blank" rel="noopener">10.1016/j.jcp.2018.10.045</a></p>
 <h1>Data-driven discovery of partial differential equations</h1>
 <p>在我们研究的当前部分，我们将注意力转移到数据驱动的偏微分方程发现问题上<sup id="fnref:5"><a href="#fn:5" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="M. Raissi, P. Perdikaris, G.E. Karniadakis, Machine learning of linear differential equations using Gaussian processes, J. Comput. Phys. 348 (2017) 683–693.
@@ -335,849 +341,57 @@ $$q=0.5log\epsilon /log(\Delta t)$$<br>
 实验结果如图5所示。在顶部图例中，我们给出了精确解$u(t, x)$，以及用于训练的两个数据快照的位置。在中间的图例中给出了精确解和训练数据的更详细的概述。方程$27$的复杂非线性动力学是如何导致两个快照之间的解的形式存在显著差异的是需要我们注意的地方。尽管存在这些差异，并且两个训练快照之间存在较大的时间间隔，但是无论训练数据是否被噪声破坏，我们的方法都能够正确确定未知参数。具体来说，对于无噪声的训练数据，估计误差$\lambda_1$和$\lambda_2$分别为$0.023%$和$0.006%$，而训练数据中噪声为$1%$的情况返回的误差分别为$0.057%$和$0.017%$。</p>
 <details><summary>参考文献</summary>
 <div id="footnotes"><hr><div id="footnotelist"><ol style="list-style: none; padding-left: 0; margin-left: 40px"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">A. Krizhevsky, I. Sutskever, G.E. Hinton, Imagenet classifification with deep convolutional neural networks, in: Advances in Neural Information Processing Systems, 2012, pp. 1097–1105.<a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">B.M. Lake, R. Salakhutdinov, J.B. Tenenbaum, Human-level concept learning through probabilistic program induction, Science 350 (2015) 1332–1338.<a href="#fnref:2" rev="footnote"> ↩</a></span></li><li id="fn:3"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">3.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">B. Alipanahi, A. Delong, M.T. Weirauch, B.J. Frey, Predicting the sequence specifificities of DNA- and RNA-binding proteins by deep learning, Nat. Biotechnol. 33 (2015) 831–838.<a href="#fnref:3" rev="footnote"> ↩</a></span></li><li id="fn:4"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">4.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">M. Raissi, P. Perdikaris, G.E. Karniadakis, Inferring solutions of differential equations using noisy multi-fifidelity data, J. Comput. Phys. 335 (2017) 736–746.<a href="#fnref:4" rev="footnote"> ↩</a></span></li><li id="fn:5"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">5.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">M. Raissi, P. Perdikaris, G.E. Karniadakis, Machine learning of linear differential equations using Gaussian processes, J. Comput. Phys. 348 (2017) 683–693.<a href="#fnref:5" rev="footnote"> ↩</a></span></li><li id="fn:6"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">6.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">H. Owhadi, Bayesian numerical homogenization, Multiscale Model. Simul. 13 (2015) 812–828.<a href="#fnref:6" rev="footnote"> ↩</a></span></li><li id="fn:7"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">7.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">C.E. Rasmussen, C.K. Williams, Gaussian Processes for Machine Learning, vol. 1, MIT Press, Cambridge, 2006.<a href="#fnref:7" rev="footnote"> ↩</a></span></li><li id="fn:8"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">8.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">M. Raissi, P. Perdikaris, G.E. Karniadakis, Numerical Gaussian processes for time-dependent and non-linear partial differential equations, 2017, arXiv: 1703.10230.<a href="#fnref:8" rev="footnote"> ↩</a></span></li><li id="fn:9"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">9.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">M. Raissi, G.E. Karniadakis, Hidden physics models: machine learning of nonlinear partial differential equations, 2017, arXiv:1708.00588.<a href="#fnref:9" rev="footnote"> ↩</a></span></li><li id="fn:10"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">10.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">H. Owhadi, C. Scovel, T. Sullivan, et al., Brittleness of Bayesian inference under fifinite information in a continuous world, Electron. J. Stat. 9 (2015) 1–79.<a href="#fnref:10" rev="footnote"> ↩</a></span></li><li id="fn:11"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">11.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">K. Hornik, M. Stinchcombe, H. White, Multilayer feedforward networks are universal approximators, Neural Netw. 2 (1989) 359–366.<a href="#fnref:11" rev="footnote"> ↩</a></span></li><li id="fn:12"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">12.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">A.G. Baydin, B.A. Pearlmutter, A.A. Radul, J.M. Siskind, Automatic differentiation in machine learning: a survey, 2015, arXiv:1502.05767.<a href="#fnref:12" rev="footnote"> ↩</a></span></li><li id="fn:13"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">13.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">C. Basdevant, M. Deville, P. Haldenwang, J. Lacroix, J. Ouazzani, R. Peyret, P. Orlandi, A. Patera, Spectral and fifinite difference solutions of the Burgers equation, Comput. Fluids 14 (1986) 23–41.<a href="#fnref:13" rev="footnote"> ↩</a></span></li><li id="fn:14"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">14.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">S.H. Rudy, S.L. Brunton, J.L. Proctor, J.N. Kutz, Data-driven discovery of partial differential equations, Sci. Adv. 3 (2017).<a href="#fnref:14" rev="footnote"> ↩</a></span></li><li id="fn:15"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">15.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">I.E. Lagaris, A. Likas, D.I. Fotiadis, Artifificial neural networks for solving ordinary and partial differential equations, IEEE Trans. Neural Netw. 9 (1998) 987–1000.<a href="#fnref:15" rev="footnote"> ↩</a></span></li><li id="fn:16"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">16.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">D.C. Psichogios, L.H. Ungar, A hybrid neural network-fifirst principles approach to process modeling, AIChE J. 38 (1992) 1499–1511.<a href="#fnref:16" rev="footnote"> ↩</a></span></li><li id="fn:17"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">17.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">J.-X. Wang, J. Wu, J. Ling, G. Iaccarino, H. Xiao, A comprehensive physics-informed machine learning framework for predictive turbulence modeling, 2017, arXiv:1701.07102.<a href="#fnref:17" rev="footnote"> ↩</a></span></li><li id="fn:18"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">18.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Y. Zhu, N. Zabaras, Bayesian deep convolutional encoder-decoder networks for surrogate modeling and uncertainty quantifification, 2018, arXiv:1801. 06879.<a href="#fnref:18" rev="footnote"> ↩</a></span></li><li id="fn:19"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">19.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">T. Hagge, P. Stinis, E. Yeung, A.M. Tartakovsky, Solving differential equations with unknown constitutive relations as recurrent neural networks, 2017, arXiv:1710.02242.<a href="#fnref:19" rev="footnote"> ↩</a></span></li><li id="fn:20"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">20.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">R. Tripathy, I. Bilionis, Deep UQ: learning deep neural network surrogate models for high dimensional uncertainty quantifification, 2018, arXiv:1802. 00850.<a href="#fnref:20" rev="footnote"> ↩</a></span></li><li id="fn:21"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">21.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">P.R. Vlachas, W. Byeon, Z.Y. Wan, T.P. Sapsis, P. Koumoutsakos, Data-driven forecasting of high-dimensional chaotic systems with long-short term memory networks, 2018, arXiv:1802.07486.<a href="#fnref:21" rev="footnote"> ↩</a></span></li><li id="fn:22"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">22.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">E.J. Parish, K. Duraisamy, A paradigm for data-driven predictive modeling using field inversion and machine learning, J. Comput. Phys. 305 (2016) 758–774.<a href="#fnref:22" rev="footnote"> ↩</a></span></li><li id="fn:23"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">23.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">K. Duraisamy, Z.J. Zhang, A.P. Singh, New approaches in turbulence and transition modeling using data-driven techniques, in: 53rd AIAA Aerospace Sciences Meeting, 2018, p. 1284.<a href="#fnref:23" rev="footnote"> ↩</a></span></li><li id="fn:24"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">24.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">J. Ling, A. Kurzawski, J. Templeton, Reynolds averaged turbulence modelling using deep neural networks with embedded invariance, J. Fluid Mech. 807 (2016) 155–166.<a href="#fnref:24" rev="footnote"> ↩</a></span></li><li id="fn:25"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">25.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Z.J. Zhang, K. Duraisamy, Machine learning methods for data-driven turbulence modeling, in: 22nd AIAA Computational Fluid Dynamics Conference, 2015, p. 2460.<a href="#fnref:25" rev="footnote"> ↩</a></span></li><li id="fn:26"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">26.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">M. Milano, P. Koumoutsakos, Neural network modeling for near wall turbulent flow, J. Comput. Phys. 182 (2002) 1–26.<a href="#fnref:26" rev="footnote"> ↩</a></span></li><li id="fn:27"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">27.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">P. Perdikaris, D. Venturi, G.E. Karniadakis, Multififidelity information fusion algorithms for high-dimensional systems and massive data sets, SIAM J. Sci. Comput. 38 (2016) B521–B538.<a href="#fnref:27" rev="footnote"> ↩</a></span></li><li id="fn:28"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">28.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">R. Rico-Martinez, J. Anderson, I. Kevrekidis, Continuous-time nonlinear signal processing: a neural network based approach for gray box identification, in: Neural Networks for Signal Processing IV. Proceedings of the 1994 IEEE Workshop, IEEE, 1994, pp. 596–605.<a href="#fnref:28" rev="footnote"> ↩</a></span></li><li id="fn:29"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">29.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">J. Ling, J. Templeton, Evaluation of machine learning algorithms for prediction of regions of high Reynolds averaged Navier Stokes uncertainty, Phys. Fluids 27 (2015) 085103.<a href="#fnref:29" rev="footnote"> ↩</a></span></li><li id="fn:30"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">30.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">H.W. Lin, M. Tegmark, D. Rolnick, Why does deep and cheap learning work so well? J. Stat. Phys. 168 (2017) 1223–1247.<a href="#fnref:30" rev="footnote"> ↩</a></span></li><li id="fn:31"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">31.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">R. Kondor, N-body networks: a covariant hierarchical neural network architecture for learning atomic potentials, 2018, arXiv:1803.01588.<a href="#fnref:31" rev="footnote"> ↩</a></span></li><li id="fn:32"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">32.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">R. Kondor, S. Trivedi, On the generalization of equivariance and convolution in neural networks to the action of compact groups, 2018, arXiv:1802. 03690.<a href="#fnref:32" rev="footnote"> ↩</a></span></li><li id="fn:33"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">33.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">M. Hirn, S. Mallat, N. Poilvert, Wavelet scattering regression of quantum chemical energies, Multiscale Model. Simul. 15 (2017) 827–863.<a href="#fnref:33" rev="footnote"> ↩</a></span></li><li id="fn:34"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">34.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">S. Mallat, Understanding deep convolutional networks, Philos. Trans. R. Soc. A 374 (2016) 20150203.<a href="#fnref:34" rev="footnote"> ↩</a></span></li><li id="fn:35"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">35.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">D.C. Liu, J. Nocedal, On the limited memory BFGS method for large scale optimization, Math. Program. 45 (1989) 503–528.<a href="#fnref:35" rev="footnote"> ↩</a></span></li><li id="fn:36"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">36.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">I. Goodfellow, Y. Bengio, A. Courville, Deep Learning, MIT Press, 2016.<a href="#fnref:36" rev="footnote"> ↩</a></span></li><li id="fn:37"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">37.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">D. Kingma, J. Ba, Adam: a method for stochastic optimization, 2014, arXiv:1412.6980.<a href="#fnref:37" rev="footnote"> ↩</a></span></li><li id="fn:38"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">38.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">A. Choromanska, M. Henaff, M. Mathieu, G.B. Arous, Y. LeCun, The loss surfaces of multilayer networks, in: Artifificial Intelligence and Statistics, pp. 192–204.<a href="#fnref:38" rev="footnote"> ↩</a></span></li><li id="fn:39"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">39.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">R. Shwartz-Ziv, N. Tishby, Opening the black box of deep neural networks via information, 2017, arXiv:1703.00810.<a href="#fnref:39" rev="footnote"> ↩</a></span></li><li id="fn:40"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">40.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">T.A. Driscoll, N. Hale, L.N. Trefethen, Chebfun Guide, 2014.<a href="#fnref:40" rev="footnote"> ↩</a></span></li><li id="fn:41"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">41.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">M. Stein, Large sample properties of simulations using Latin hypercube sampling, Technometrics 29 (1987) 143–151.<a href="#fnref:41" rev="footnote"> ↩</a></span></li><li id="fn:42"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">42.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">J. Snoek, H. Larochelle, R.P. Adams, Practical bayesian optimization of machine learning algorithms, in: Advances in Neural Information Processing Systems, 2012, pp. 2951–2959.<a href="#fnref:42" rev="footnote"> ↩</a></span></li><li id="fn:43"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">43.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">H.-J. Bungartz, M. Griebel, Sparse grids, Acta Numer. 13 (2004) 147–269.<a href="#fnref:43" rev="footnote"> ↩</a></span></li><li id="fn:44"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">44.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">I.H. Sloan, H. Wo´zniakowski, When are quasi-Monte Carlo algorithms effiffifficient for high dimensional integrals? J. Complex. 14 (1998) 1–33.<a href="#fnref:44" rev="footnote"> ↩</a></span></li><li id="fn:45"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">45.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">A. Iserles, A First Course in the Numerical Analysis of Differential Equations, vol. 44, Cambridge University Press, 2009.<a href="#fnref:45" rev="footnote"> ↩</a></span></li><li id="fn:46"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">46.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">T. Von Kármán, Aerodynamics, vol. 9, McGraw-Hill, New York, 1963.<a href="#fnref:46" rev="footnote"> ↩</a></span></li><li id="fn:47"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">47.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">G. Karniadakis, S. Sherwin, Spectral/hp Element Methods for Computational Fluid Dynamics, Oxford University Press, 2013.<a href="#fnref:47" rev="footnote"> ↩</a></span></li><li id="fn:48"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">48.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">T. Dauxois, Fermi, Pasta, Ulam and a mysterious lady, 2008, arXiv:0801.1590.<a href="#fnref:48" rev="footnote"> ↩</a></span></li><li id="fn:49"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">49.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">M. Abadi, A. Agarwal, P. Barham, E. Brevdo, Z. Chen, C. Citro, G.S. Corrado, A. Davis, J. Dean, M. Devin, et al., Tensorflow: large-scale machine learning on heterogeneous distributed systems, 2016, arXiv:1603.04467.<a href="#fnref:49" rev="footnote"> ↩</a></span></li><li id="fn:50"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">50.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">S.L. Brunton, J.L. Proctor, J.N. Kutz, Discovering governing equations from data by sparse identifification of nonlinear dynamical systems, Proc. Natl. Acad. Sci. 113 (2016) 3932–3937.<a href="#fnref:50" rev="footnote"> ↩</a></span></li></ol></div></div></details><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
-      
     </div>
 
     
     
     
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2021/05/07/10.1016j.jcp.2018.10.045_a/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/05/07/10.1016j.jcp.2018.10.045_a/" class="post-title-link" itemprop="url">Physics-informed neural networks:Translation Part I</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-05-07 11:10:46" itemprop="dateCreated datePublished" datetime="2021-05-07T11:10:46+08:00">2021-05-07</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%96%87%E7%8C%AE%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">文献翻译</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/05/07/10.1016j.jcp.2018.10.045_a/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/05/07/10.1016j.jcp.2018.10.045_a/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Physics-informed neural networks翻译Part I</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/05/07/10.1016j.jcp.2018.10.045_a/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
 
-    
-    
-    
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>shaowinw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.geophyai.com/2021/05/14/10.1016j.jcp.2018.10.045_b/" title="Physics-informed neural networks:Translation Part II">http://blog.geophyai.com/2021/05/14/10.1016j.jcp.2018.10.045_b/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%8E%E8%AE%A1%E7%AE%97%E5%9C%B0%E7%90%83%E7%89%A9%E7%90%86/" rel="tag"> <i class="fa fa-tag"></i> 深度学习与计算地球物理</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2021/04/23/10.1126sciadv.aay6946/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2021/04/23/10.1126sciadv.aay6946/" class="post-title-link" itemprop="url">Wave physics as an analog recurrent neural network</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2021-04-23 11:10:46" itemprop="dateCreated datePublished" datetime="2021-04-23T11:10:46+08:00">2021-04-23</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%96%87%E7%8C%AE%E7%BF%BB%E8%AF%91/" itemprop="url" rel="index"><span itemprop="name">文献翻译</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2021/04/23/10.1126sciadv.aay6946/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/04/23/10.1126sciadv.aay6946/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>《Wave physics as an analog recurrent neural network》一文翻译</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/04/23/10.1126sciadv.aay6946/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/12/27/NoisePy001/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/27/NoisePy001/" class="post-title-link" itemprop="url">NoisePy安装及简易教程</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-27 20:40:58" itemprop="dateCreated datePublished" datetime="2020-12-27T20:40:58+08:00">2020-12-27</time>
-            </span>
 
 
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/obspy/" itemprop="url" rel="index"><span itemprop="name">obspy</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/12/27/NoisePy001/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/27/NoisePy001/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>NoisePy包使用简易教程（一）。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/27/NoisePy001/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
         
-      
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/05/07/10.1016j.jcp.2018.10.045_a/" rel="prev" title="Physics-informed neural networks:Translation Part I">
+      <i class="fa fa-chevron-left"></i> Physics-informed neural networks:Translation Part I
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
   
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/12/25/recfunc/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/12/25/recfunc/" class="post-title-link" itemprop="url">OBSpy+rf接收函数计算</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-12-25 07:30:58" itemprop="dateCreated datePublished" datetime="2020-12-25T07:30:58+08:00">2020-12-25</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/obspy/" itemprop="url" rel="index"><span itemprop="name">obspy</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/12/25/recfunc/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/12/25/recfunc/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>rf包计算接收函数。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/12/25/recfunc/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/14/tensorflow1.14.0_loss_summary/" class="post-title-link" itemprop="url">Tensorboard记录Loss变化</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-14 20:47:06" itemprop="dateCreated datePublished" datetime="2020-10-14T20:47:06+08:00">2020-10-14</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tensorflow/" itemprop="url" rel="index"><span itemprop="name">tensorflow</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/14/tensorflow1.14.0_loss_summary/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/14/tensorflow1.14.0_loss_summary/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>利用Tensorboard记录Loss变化。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/14/tensorflow1.14.0_loss_summary/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/10/05/python_wiggle_trace/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/10/05/python_wiggle_trace/" class="post-title-link" itemprop="url">地震数据波形变密度绘图</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-10-05 04:53:58" itemprop="dateCreated datePublished" datetime="2020-10-05T04:53:58+08:00">2020-10-05</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/pyseis/" itemprop="url" rel="index"><span itemprop="name">pyseis</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/10/05/python_wiggle_trace/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/05/python_wiggle_trace/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>地震数据的波形变密度显示。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/10/05/python_wiggle_trace/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/09/08/obspy4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/08/obspy4/" class="post-title-link" itemprop="url">OBSpy天然地震IV</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-08 20:21:58" itemprop="dateCreated datePublished" datetime="2020-09-08T20:21:58+08:00">2020-09-08</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/obspy/" itemprop="url" rel="index"><span itemprop="name">obspy</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/09/08/obspy4/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/08/obspy4/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>地震数据处理包obspy简易教程-根据已知地震事件的经纬度和深度计算走时。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/08/obspy4/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/09/06/obspy3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/06/obspy3/" class="post-title-link" itemprop="url">OBSpy天然地震III</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-06 09:39:58" itemprop="dateCreated datePublished" datetime="2020-09-06T09:39:58+08:00">2020-09-06</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/obspy/" itemprop="url" rel="index"><span itemprop="name">obspy</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/09/06/obspy3/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/06/obspy3/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>地震数据处理包obspy简易教程-根据时间和台站下载数据。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/06/obspy3/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/09/05/obspy_install/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="shaowinw">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="GeophyAI">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2020/09/05/obspy_install/" class="post-title-link" itemprop="url">OBSpy installation Q&A</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2020-09-05 07:52:58" itemprop="dateCreated datePublished" datetime="2020-09-05T07:52:58+08:00">2020-09-05</time>
-            </span>
-
-
-	
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/obspy/" itemprop="url" rel="index"><span itemprop="name">obspy</span></a>
-                </span>
-            </span>
-
-          
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/2020/09/05/obspy_install/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/09/05/obspy_install/" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>Questions and answers of the installation of obspy package in anaconda.</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2020/09/05/obspy_install/">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
-  </nav>
 
 
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -1224,6 +438,7 @@ $$q=0.5log\epsilon /log(\Delta t)$$<br>
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">Data-driven discovery of partial differential equations</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">4.1 连续时间模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-1-例子（Naiver-Stokes方程）"><span class="nav-number">2.1.</span> <span class="nav-text">4.1.1 例子（Naiver-Stokes方程）</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">4.2 离散时间模型</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-例子"><span class="nav-number">3.0.1.</span> <span class="nav-text">4.2.1 例子</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -1406,7 +621,7 @@ $$q=0.5log\epsilon /log(\Delta t)$$<br>
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2021/05/14/10.1016j.jcp.2018.10.045_b/',]
       });
       });
   </script>
