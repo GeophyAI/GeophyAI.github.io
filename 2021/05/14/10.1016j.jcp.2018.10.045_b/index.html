@@ -277,7 +277,7 @@ $$f:=u_t+\mathcal{N}[u:\lambda]\tag{14}$$<br>
 <p>我们的下一个例子涉及到不可压缩流体流动的现实场景，由无处不在的Navier-Stokes方程所描述。Naiver-Stokes方程描述了许多具有科学和工程意义的物理现象。它们可以用来模拟天气、洋流、管道中的水流和机翼周围的气流。完整和简化的Navier-Stokes方程有助于飞机和汽车的设计、血液流动的研究、电站的设计、污染物扩散的分析以及许多其他应用。让我们考虑二维的Navier-Stokes方程：<br>
 $$ u_t+\lambda_1(uu_x+vu_y)=-p_x+\lambda_2(u_{xx}+u_{yy}) $$<br>
 $$ v_t+\lambda_1(uv_x+uv_y)=-p_y+\lambda_2(v_{xx}+v_{yy}) \tag{15}$$<br>
-其中，$u(t, x, y)$表示速度场的$x$分量，$v(t, x, y)$表示速度场$y$分量，$p(t, x, y)$表示压力。$\lambda=(\lambda_1, \lambda_2)$为未知参数。通过在无散度函数集合中搜索Naiver-Stokes方程的解，即：<br>
+其中，$u(t, x, y)$表示速度场的$x$分量，$v(t, x, y)$表示速度场$y$分量，$p(t, x, y)$表示压力。$\lambda=(\lambda_1, \lambda_2)$为未知参数。通过在无散度函数集合中搜索$Naiver-Stokes$方程的解，即：<br>
 $$u_x+v_y=0\tag{16}$$<br>
 这个额外的方程是描述流体质量守恒的不可压缩流体的连续性方程。我们假设<br>
 $$u=\psi_y, v=-\psi_x$$<br>
@@ -288,9 +288,9 @@ $$\lbrace t^i, x^i, y^i, u^i, v^i\rbrace^N_{i=1}$$<br>
 $$f:=u_t+\lambda_1(uu_x+vu_y)+p_x-\lambda_2(u_{xx}+u_{yy})\<br>
 g:=v_t+\lambda_1(uv_x+vv_y)+p_y-\lambda_2(v_{xx}+v_{yy})<br>
 $$<br>
-然后使用有两个输出的神经网络近似$[\psi(t, x, y) p(t, x, y)]$。此先验假设以及公式$17$、$18$构成了PINN网络$[f(t, x, y) g(t, x, y)]$。Navier-Stokes算子的参数$\lambda$以及神经网络$[\psi(t, x, y) p(t, x, y)]$和$[f(t, x, y) g(t, x, y)]$的参数可以通过最小化均方误差函数$19$来训练得到。<br>
-$$MSE:=\frac{1}{N} \sum_{i=1}^{N}(\mid u(t^i, x^i, y^i)-u^i \mid^2+\mid v(t^i, x^i, y^i)-v^i\mid^2) \<br>
-+\frac{1}{N} \sum^<em>{i=1}N(\mid f(t^i, x^i, y^i)\mid^2+\mid g(t^i, x^i, y^i)\mid ^2)<br>
+然后使用有两个输出的神经网络近似$[\psi(t, x, y) p(t, x, y)]$。此先验假设以及公式$17$、$18$构成了PINN网络$[f(t, x, y) g(t, x, y)]$。$Navier-Stokes$算子的参数$\lambda$以及神经网络$[\psi(t, x, y) p(t, x, y)]$和$[f(t, x, y) g(t, x, y)]$的参数可以通过最小化均方误差函数$19$来训练得到。<br>
+$$MSE:=\frac{1}{N} \sum_{i=1}^N(\mid u(t^i, x^i, y^i)-u^i \mid^2+\mid v(t^i, x^i, y^i)-v^i\mid^2) \<br>
++\frac{1}N \sum^<em>{i=1}N(\mid f(t^i, x^i, y^i)\mid^2+\mid g(t^i, x^i, y^i)\mid ^2)<br>
 \tag{19}$$<br>
 这里我们讨论不可压缩流体通过圆柱体的问题，aproblem known to exhibit rich dynamic behavior and transitions for different regimes of theReynolds number$Re=u</em>\infty D/v$。假设一个无量纲自由流体速度为$u_\infty=1$,圆柱直径$D=1$，运动黏度$v=0.01$，该系统呈现周期性稳态行为，其特征是圆柱wake中的不对称涡旋脱落模式，即$Karman vortex street$<sup id="fnref:46"><a href="#fn:46" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T. Von Kármán, Aerodynamics, vol. 9, McGraw-Hill, New York, 1963.
 ">[46]</span></a></sup>。<br>
