@@ -328,7 +328,7 @@ $$x^n=\lbrace x^{n,i} \rbrace _{i=1}^{N_n}, u^n=\lbrace u^{n, i} \rbrace _{i=1}^
 $$u_t+\lambda_1uu_x+\lambda_2u_{xxx} = 0 \tag{27}$$<br>
 $(\lambda_1, \lambda_2)$为未知参数。对于KdV方程，公式$22$中的非线性算子由以下公式给定：<br>
 $$\mathcal{N}[u^{n+c_j}]=\lambda_1 u^{n+c_j}u_x^{n+c_j}-\lambda_2u_{xxx}^{n+c_j}$$<br>
-公式$23$、$24$、$25$的共享参数以及KdV方程的参数$\lambda=(\lambda_1, \lambda_2)￥可以通过最小化平方误差公式$26$得到。<br>
+公式$23$、$24$、$25$的共享参数以及KdV方程的参数$\lambda=(\lambda_1, \lambda_2)$可以通过最小化平方误差公式$26$得到。<br>
 我们通过使用传统谱方法模拟公式$27$来得到训练数据和测试数据。具体来讲，初始边界条件为$u(0, x)=cos(\pi x)$以及周期性边界条件，使用$Chebfun$包以512个modes的谱傅里叶离散以及四阶显式$Runge-Kutta$时间积分器以离散时间步长$\Delta t=10^{-6}$对公式$27$积分到$t=1.0$。利用该数据集，我们提取$t^n=0.2$和$t^{n+1}=0.8$的两个解的切片，并使用$N_n=199$和$N_{n+1}=201$对其进行随机降采样来生成训练集。然后我们利用这些数据来训练离散时间PINN，loss函数平方误差为$26$，优化器为L-BFGS<sup id="fnref:35"><a href="#fn:35" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="D.C. Liu, J. Nocedal, On the limited memory BFGS method for large scale optimization, Math. Program. 45 (1989) 503–528.
 ">[35]</span></a></sup>。网络架构包括4个隐藏层，每层有50个神经元，以及一个用于预测q阶Runge-Kutta解（即$u^{n+c_j}(x)$）的输出层（$j=1,…,q$）其中，q是生成及其精度阶时间误差累积的经验值，其由以下公式决定：<br>
 $$q=0.5log\epsilon /log(\Delta t)$$<br>
