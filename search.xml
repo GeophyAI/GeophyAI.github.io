@@ -1504,7 +1504,7 @@ $$[u^{n+c_1}(x),…,u^{n+c_q}(x)] \tag{23}$$<br>
 $$[u_1^n(x),…,u_q^n(x), u_{q+1}^n(x)] \tag{24}$$<br>
 以及<br>
 $$[u_1^{n+1}(x),…,u_q^{n+1}(x),u_{q+1}^{n+1}(x)] \tag{25}$$<br>
-给定两个不同时刻$t^n$和$t^{n+1}$的时间切片$\lbrace \bold x^n, \bold u^n \rbrace$和$\lbrace \bold x^{n+1}, \bold u^{n+1} \rbrace$，神经网络$23$、$24$和$25$的共享参数以及微分算子的参数$\lambda$可以通过最小化平方误差$26$得到。<br>
+给定两个不同时刻$t^n$和$t^{n+1}$的时间切片$\lbrace \bold {x}^n, \bold u^n \rbrace$和$\lbrace \bold x^{n+1}, \bold u^{n+1} \rbrace$，神经网络$23$、$24$和$25$的共享参数以及微分算子的参数$\lambda$可以通过最小化平方误差$26$得到。<br>
 $$SSE=SSE_n+SSE_n+1 \tag{26}$$<br>
 其中<br>
 $$SSE_n:=\sum_{j=1}^q \sum_{i=1}^{N_n}  \mid u_j^n(x^{n, i})-u^{n, i}\mid^2$$<br>
