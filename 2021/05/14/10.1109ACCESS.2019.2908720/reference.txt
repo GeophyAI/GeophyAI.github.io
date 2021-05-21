@@ -1,0 +1,43 @@
+[^1]: A. Jara et al., ‘‘Joint de-blurring and nonuniformity correction method for infrared microscopy imaging,’’ Infr. Phys. Technol., vol. 90, pp. 199–206, May 2018.
+[^2]: Y. Cao and Y. Li, ‘‘Strip non-uniformity correction in uncooled long-wave infrared focal plane array based on noise source characterization,’’ Opt. Commun., vol. 339, pp. 236–242, Mar. 2015.
+[^3]: Y. Huang, C. He, H. Fang, and X. Wang, ‘‘Iteratively reweighted unidirectional variational model for stripe non-uniformity correction,’’ Infr. Phys. Technol., vol. 75, pp. 107–116, Mar. 2016.
+[^4]: C. Chen, X. Liu, H.-H. Chen, M. Li, and L. Zhao, ‘‘A rear-end collision risk evaluation and control scheme using a Bayesian network model,’’ IEEE Trans. Intell. Transp. Syst., vol. 20, no. 1, pp. 264–284, Jan. 2019.
+[^5]: R. Lai, G. Yue, and G. Zhang, ‘‘Total variation based neural network regression for nonuniformity correction of infrared images,’’ Symmetry, vol. 10, no. 5, p. 157, 2018.
+[^6]: R. Lai, J. Guan, Y. Yang, and A. Xiong, ‘‘Spatiotemporal adaptive nonuniformity correction based on BTV regularization,’’ IEEE Access, vol. 7, pp. 753–762, 2019.
+[^7]: K. Liang, C.Yang, L. Peng, and B. Zhou, ‘‘Nonuniformity correction based on focal plane array temperature in uncooled long-wave infrared cameras without a shutter,’’ Appl. Opt., vol. 56, no. 4, pp. 884–889, 2017.
+[^8]: X. Jian, R. Lu, Q. Guo, and G.-P. Wang, ‘‘Single image non-uniformity correction using compressive sensing,’’ Infr. Phys. Technol., vol. 76, pp. 360–364, May 2016.
+[^9]: S. Rong, H. Zhou, D. Zhao, K. Cheng, K. Qian, and H. Qin, ‘‘Infrared fix pattern noise reduction method based on shearlet transform,’’ Infr. Phys. Technol., vol. 91, pp. 243–249, Jun. 2018.
+[^10]: K. Dabov, A. Foi, and K. Egiazarian, ‘‘Video denoising by sparse 3D transform-domain collaborative filtering,’’ in Proc. Eur. Signal Process. Conf., Poznan, Poland, Sep. 2007, pp. 145–149.
+[^11]: L. I. Rudin, S. Osher, and E. Fatemi, ‘‘Nonlinear total variation based noise removal algorithms,’’ Phys. D, Nonlinear Phenomena, vol. 60, nos. 1–4, pp. 259–268, 1992.
+[^12]: K. He, J. Sun, and X. Tang, ‘‘Guided image filtering,’’ IEEE Trans. Pattern Anal. Mach. Intell., vol. 35, no. 6, pp. 1397–1409, Jun. 2013.
+[^13]: H. Li and C. Y. Suen, ‘‘A novel non-local means image denoising method based on grey theory,’’ Pattern Recognit., vol. 49, pp. 237–248, Jan. 2016.
+VOLUME 7, 2019
+[^14]: Y. Chang, L. Yan, T. Wu, and S. Zhong, ‘‘Remote sensing image stripe noise removal: From image decomposition perspective,’’ IEEE Trans. Geosci. Remote Sens., vol. 54, no. 12, pp. 7018–7031, Dec. 2016.
+[^15]: Y. Tendero, J. Gilles, S. Landeau, and J. M. Morel, ‘‘Efficient single image non-uniformity correction algorithm,’’ Proc. SPIE, vol. 7834, Oct. 2010, Art. no. 78340E.
+[^16]: X. Kuang, X. Sui, Q. Chen, and G. Gu, ‘‘Single infrared image stripe noise removal using deep convolutional networks,’’ IEEEPhoton. J., vol. 9, no. 4, Aug. 2017, Art. no. 3900913.
+[^17]: Z. He, Y. Cao, Y. Dong, J. Yang, Y. Cao, and C.-L. Tisse, ‘‘Single-imagebased nonuniformity correction of uncooled long-wave infrared detectors: A deep-learning approach,’’ Appl. Opt., vol. 57, no. 18, pp. D155–D164, 2018.
+[^18]: P. Xiao, Y. Guo, and P. Zhuang, ‘‘Removing stripe noise from infrared cloud images via deep convolutional networks,’’ IEEE Photon. J., vol. 10, no. 4, Aug. 2018, Art. no. 7801114.
+[^19]: S. G. Chang, B. Yu, and M. Vetterli, ‘‘Adaptive wavelet thresholding for image denoising and compression,’’ IEEE Trans. Image Process., vol. 9, no. 9, pp. 1532–1546, Sep. 2000.
+[^20]: A. L. da Cunha, J. Zhou, and M. N. Do, ‘‘The nonsubsampled contourlet transform: Theory, design, and applications,’’ IEEETrans. Image Process., vol. 15, no. 10, pp. 3089–3101, Oct. 2006.
+[^21]: H. Huang, R. He, Z. Sun, and T. Tan, ‘‘Wavelet-SRNet: A wavelet-based CNN for multi-scale face super resolution,’’ in Proc. IEEE Conf. CVPR, Honolulu, HI, USA, Oct. 2017, pp. 1689–1697.
+[^22]: E. Kang, J. Min, and J. C. Ye, ‘‘A deep convolutional neural network using directional wavelets for low-dose X-ray CT reconstruction,’’ Med. Phys., vol. 44, no. 10, pp. e360–e375, 2017.
+[^23]: Y. Chen, T.-Z. Huang, L.-J. Deng, X.-L. Zhao, and M. Wang, ‘‘Group sparsity based regularization model for remote sensing image stripe noise removal,’’ Neurocomputing, vol. 267, pp. 95–106, Dec. 2017.
+[^24]: B. L. Lai and L. W. Chang, ‘‘Adaptive data hiding for images based on harr discrete wavelet transform,’’ in Advances in Image and Video Technology (Lecture Notes in Computer Science), vol. 4319. Berlin, Germany: Springer, 2006, pp. 1085–1093.
+[^25]: H. Chen, X. He, L. Qing, S. Xiong, and T. Q. Nguyen, ‘‘DPW-SDNet: Dual pixel-wavelet domain deep CNNs for soft decoding of JPEG-compressed images,’’ presented at the IEEE Conf. CVPR, Salt Lake City, UT, USA, 2018.
+[^26]: C. Ledig et al., ‘‘Photo-realistic single image super-resolution using a generative adversarial network,’’ in Proc. IEEE Conf. CVPR, Honolulu, HI, USA, Jul. 2017, pp. 105–114.
+[^27]: X. Liu, X. Lu, H. Shen, Q. Yuan, Y. Jiao, and L. Zhang, ‘‘Stripe noise separation and removal in remote sensing images by consideration of the global sparsity and local variational properties,’’ IEEE Trans. Geosci. Remote Sens., vol. 54, no. 5, pp. 3049–3060, May 2016.
+[^28]: W. Luo, J. Li, W. Xu, and J. Yang, ‘‘Learning sparse features in convolutional neural networks for image classification,’’ in Proc. Int. Conf. Intell. Sci. Big Data Eng., Suzhou, China, 2015, pp. 29–38.
+[^29]: K. Simonyan and A. Zisserman. (2014). ‘‘Very deep convolutional networks for large-scale image recognition.’’ [^Online]:. Available: https:// arxiv.org/abs/1409.1556
+[^30]: K. Zhang, W. Zuo, Y. Chen, D. Meng, and L. Zhang, ‘‘Beyond a Gaussian denoiser: Residual learning of deep CNN for image denoising,’’ IEEE Trans. Image Process., vol. 26, no. 7, pp. 3142–3155, Jul. 2017.
+[^31]: D. Graziotin and P. Abrahamsson, ‘‘A Web-based modeling tool for the SEMAT essence theory of software engineering,’’ J. Open Res. Softw., to be published. doi: 10.5334/jors.ad.
+[^32]: D. P. Kingma and J. Ba. (2014). ‘‘Adam: A method for stochastic optimization.’’ [^Online]:. Available: https://arxiv.org/abs/1412.6980
+[^33]: J. Kim, J. K. Lee, and K. M. Lee, ‘‘Accurate image super-resolution using very deep convolutional networks,’’ in Proc. IEEE Conf. CVPR, Las Vegas, NV, USA, Jun. 2016, pp. 1646–1654.
+[^34]: Z. Wang, A. C. Bovik, H. R. Sheikh, and E. P. Simoncelli, ‘‘Image quality assessment: From error visibility to structural similarity,’’ IEEE Trans. Image Process., vol. 13, no. 4, pp. 600–612, Apr. 2004.
+[^35]: Y. Cao, M. Y. Yang, and C.-L. Tisse, ‘‘Effective strip noise removal for low-textured infrared images based on 1-D guided filtering,’’ IEEE Trans. Circuits Syst. Video Technol., vol. 26, no. 12, pp. 2176–2188, Dec. 2016.
+[^36]: N. Liu, L. Wan, Y. Zhang, T. Zhou, H. Huo, and T. Fang, ‘‘Exploiting convolutional neural networks with deeply local description for remote sensing image classification,’’ IEEE Access, vol. 6, pp. 11215–11228, 2018.
+[^37]: Z. Jin et al., ‘‘EEG classification using sparse Bayesian extreme learning machine for brain–computer interface,’’ Neural Comput. Appl., to be published. doi: 10.1007/s00521-018-3735-3.
+[^38]: G. Zhou et al., ‘‘Linked component analysis from matrices to high-order tensors: Applications to biomedical data,’’ Proc. IEEE, vol. 104, no. 2, pp. 310–331, Feb. 2016.
+[^39]: R. Lai, Y. Mo, Z. Liu, and J. Guan, ‘‘Local and nonlocal steering kernel weighted total variation model for image denoising,’’ Symmetry, vol. 11, no. 3, p. 329, 2019.
+[^40]: M. Sandler, A. Howard, M. Zhu, A. Zhmoginov, and L.-C. Chen, ‘‘MobileNetV2: Inverted residuals and linear bottlenecks,’’ in Proc. IEEE
+Conf. Comput. Vis. Pattern Recognit., Salt Lake City, UT, USA, Jun. 2018, pp. 4510–4520.
+[^41]: W.-Q. Lim, ‘‘The discrete shearlet transform: A new directional transform and compactly supported shearlet frames,’’ IEEE Trans. Image Process., vol. 19, no. 5, pp. 1166–1180, May 2010.
