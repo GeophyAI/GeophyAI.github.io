@@ -1502,7 +1502,7 @@ $$q=0.5log\epsilon /log(\Delta t)$$<br>
   </entry>
   <entry>
     <title>Wavelet Deep Neural Network for Stripe Noise Removal</title>
-    <url>/2021/05/14/10.1109ACCESS.2019.2908720/</url>
+    <url>/2021/05/21/10.1109ACCESS.2019.2908720/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><p>基于小波深度神经网络的条纹噪声去除<br>
 原文地址：<a href="https://ieeexplore.ieee.org/document/8678750/authors#authors" target="_blank" rel="noopener">https://ieeexplore.ieee.org/document/8678750/authors#authors</a><br>
 doi：10.1109/ACCESS.2019.2908720</p>
@@ -1543,15 +1543,15 @@ VOLUME 7, 2019
 本文其余部分组织结构如下：在Section2中，我们分析了条纹噪声在小波域的表现形式。Section3详细阐述了SNRWDNN的实现细节。为了更好地展示本文所提方法的效果，模拟数据和真实数据实验均用于分析（Section4）。Section5为结论。</li>
 </ol>
 <h1>PROPERTY ANALYSIS OF STRIPE NOISE</h1>
-<p><img src="/2021/05/14/10.1109ACCESS.2019.2908720/fig01.png" alt="fig01"><br>
+<p><img src="/2021/05/21/10.1109ACCESS.2019.2908720/fig01.png" alt="fig01"><br>
 为了准确地估计图像中含有的条纹噪声，关键是要挖掘出条纹噪声分量的属性并使用合理的方式描述它们。如文献<sup id="fnref:23"><a href="#fn:23" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="Y. Chen, T.-Z. Huang, L.-J. Deng, X.-L. Zhao, and M. Wang, ‘‘Group sparsity based regularization model for remote sensing image stripe noise removal,’’ Neurocomputing, vol. 267, pp. 95–106, Dec. 2017.
 ">[23]</span></a></sup>中所述，条纹噪声具有明显的方向属性，这一属性有利于去噪过程中图像细节和噪声分量的分离。图1展示了含条纹噪声图像的水平梯度和垂向梯度。从结果中我们可以看出，条纹噪声明显存在于水平梯度中，并且严重影响着垂直方向的图像细节信息。与之相反的是，垂向梯度中的条纹噪声分量表现出较好的平滑性质，因此对图像细节影响不大。基于以上简单的分析，可以基于不同方向梯度信息来从含噪图像中去除条纹噪声并可能保留图像的结构信息。<br>
-<img src="/2021/05/14/10.1109ACCESS.2019.2908720/fig02.png" alt="fig02"><br>
+<img src="/2021/05/21/10.1109ACCESS.2019.2908720/fig02.png" alt="fig02"><br>
 $Harr$离散小波变换(HDWT)具有提取图像水平方向、垂直方向、对角方向高频信息、以及保留低频结构信息的能力。本文中，$HDWT$被用于提取条纹噪声的梯度信息并更彻底地从条纹噪声中区分场景细节信息。$HDWT$的结果如图2所示。可以明显看出条纹噪声在近似系数(cA)和水平系数(cH)中有明显的响应，与之相对应的，垂向系数(cV)和对角系数(cD)则主要描述了场景的细节信息。总结来讲，不同子频带的补充性信息有助于在去除条纹噪声的同时保留图像的细节信息。</p>
 <h1>THE PROPOSED SRNWDNN MODEL</h1>
 <p>在这一章节中，我们将详细介绍提出的$SNRWDNN$模型结构，然后深入讨论所设计的方向损失函数对于保留图像纹理细节的重要性，最后给出训练策略。</p>
 <h2 id="A-网络结构">A.网络结构</h2>
-<p><img src="/2021/05/14/10.1109ACCESS.2019.2908720/fig03.png" alt="fig03"><br>
+<p><img src="/2021/05/21/10.1109ACCESS.2019.2908720/fig03.png" alt="fig03"><br>
 $SNRWDNN$网络结构如图3所示。与现有的基于深度学习的条纹噪声去除方法不同，我们将条带噪声去除视为小波域的变换系数预测问题。$SNRWDNN$方法包括三个步骤：$HDWT$、小波系数预测和$Haar$离散小波逆变换$IHDWT$。首先，利用$HDWT$得到反映条纹噪声固有特性的四个子带系数。然后将这些系数串联成一个输入张量，送入小波系数预测网络，估计条纹分量，然后将输入张量与估计的条纹分量跳转连接，进行噪声消除，产生去条纹系数。值得注意的是，级联操作融合了不同子带中的信息，并保持了它们之间的一致性。最后，利用$IHDWT$对估计系数进行反变换，重建空间域去噪后结果。通过这种策略，我们提出的网络可以利用条纹的方向特性来抑制噪声，同时减少细节损失。小波系数预测网络由M层具有残差连接的卷积层构成，其中所有卷积滤波器共享大小为$3 \times3$、$stride$为1的卷积核。另外，采用零填充的方法使每个特征映射与输入张量保持相同的大小。除了最后一层输出4通道条纹分量外，每个卷积层的核数被设置为64。此外，将前一卷积层的输出输入到校正线性单元（ReLU）激活函数中进行非线性映射。由于SNRWDNN的输入和输出非常相似，我们采用了残差学习方法，使训练更加稳定、快速和精确。小波分解中的下采样操作有效地扩大了感受野，有利于场景细节的恢复<sup id="fnref:25"><a href="#fn:25" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="H. Chen, X. He, L. Qing, S. Xiong, and T. Q. Nguyen, ‘‘DPW-SDNet: Dual pixel-wavelet domain deep CNNs for soft decoding of JPEG-compressed images,’’ presented at the IEEE Conf. CVPR, Salt Lake City, UT, USA, 2018.
 ">[25]</span></a></sup>，同时其减少了计算复杂性。此外，小波分解大大降低了计算复杂度。</p>
 <h2 id="B-方向小波损失函数">B.方向小波损失函数</h2>
