@@ -1601,7 +1601,7 @@ $Radon$逆变换有多种表现形式，例如：<br>
 $$u(x, t)=-\frac{1}{2\pi^2} \iint dp d{\tau} \frac{\partial \check{u}(p,\tau-px)/\partial \tau}{\tau -t} \tag{5}$$<br>
 $Radon$变换函数$\check{u}(p,x)$也被称为慢度表示（$slowness representation$）、平面波分解（$plane-wave \quad decomposition$）或倾斜叠加（$slant \quad stack$）。倾斜叠加的描述更为清晰透彻：将波场中的值 沿“倾斜”的线进行叠加。$Radon$变换将时空域中一条斜率为$p_0$、截距为$\tau_0$的线转化为新域中的一个点$(p_0,\tau_0)$。即，Radon变换将一条线映射为一个点。$Radon$逆变换将新域中的点变为原来的线。<br>
 在$2D Fourier$变换中，其将一条时空域中的线转换为频率波数域中的一条线，其逆变换将$f-k$域中的线转换回$t-x$域。线$t=px+\tau$的$Fourier$变换为：<br>
-$$\int^{\infty}</em>{-\infty} \int^{\infty}</em>{-\infty} dx dt {\rm{exp}} [i(\omega t-k_xx)] \delta(t-px-\tau)= \int^{\infty}</em>{-\infty}dx {\rm{exp}} \lbrace i [\omega(px+\tau)-k_xx] \rbrace =2\pi {\rm {exp}} (i\omega \tau) \delta (p\omega -k_x) \tag{6}$$<br>
+$$\int^{\infty}</em>{-\infty} \int^{\infty}</em>{-\infty} dx dt {\rm{exp}} [i(\omega t-k_xx)] \delta(t-px-\tau)=\int^{\infty}</em>{-\infty}dx {\rm{exp}} \lbrace i [\omega(px+\tau)-k_xx] \rbrace =2\pi {\rm {exp}} (i\omega \tau) \delta (p\omega -k_x) \tag{6}$$<br>
 因此，$Fourier$变换的振幅由沿着以下公式的狄拉克函数给出：<br>
 $$\omega =k_x/p \tag{7}$$<br>
 其相位为$\omega \tau$，且过原点（截距为0），$Fourier$变换有时空域中线的倒数斜率。另外，相位谱包含了截距$\tau$的信息。通过$Fourier$逆变换可得到原来的线：<br>
