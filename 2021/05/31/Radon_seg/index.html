@@ -269,7 +269,7 @@
 ">[3]</span></a></sup>，略有不同。在二维空间中，函数的$Radon$变换是由沿线的积分组成的。斜截式直线可表示为：</p>
 <script type="math/tex; mode=display">t=px+ \tau \tag{1}</script><p>其中斜率$p=dt/dx$，表示慢度参数，$\tau$表示截距时间，地震剖面$u(x,t)$在$z=0$处的$Radon$变换为：</p>
 <script type="math/tex; mode=display">\check{u}=\iint{dx dt \delta(t-px-\tau)u(x,t)}=\int{dx u(x,\tau+px)} \tag{2}</script><p>$Fourier$变换和$Radon$变换之间的关系为：</p>
-<script type="math/tex; mode=display">U(\omega p+\omega)=\int{d\tau exp(i \omega \tau)\check{u}(p, \tau)} \tag{3}</script><p>上式可简写为：</p>
+<script type="math/tex; mode=display">U(\omega p,\omega)=\int{d\tau exp(i \omega \tau)\check{u}(p, \tau)} \tag{3}</script><p>上式可简写为：</p>
 <script type="math/tex; mode=display">\mathcal{F}_2u=\mathcal{F}_1 \check{u} \tag{4}</script><p>其中，$\mathcal{F}_2$和$\mathcal{F}_1$分别表示二维和一维$Fourier$变换。因此，关于截距变量$\tau$的$Radon$变换的$Fourier$变换，等价于$u(x,t)$沿$k_x=p\omega$的二维$Fourier$变换。公式$4$又被称为$Projection-Slice-Theorem$(投影切片定理，中心切片定理)。<br>$Radon$逆变换有多种表现形式，例如：</p>
 <script type="math/tex; mode=display">u(x, t)=-\frac{1}{2\pi^2} \iint dp d{\tau} \frac{\partial \check{u}(p,\tau-px)/\partial \tau}{\tau -t} \tag{5}</script><p>$Radon$变换函数$\check{u}(p,x)$也被称为慢度表示（$slowness representation$）、平面波分解（$plane-wave-decomposition$）或倾斜叠加（$slant-stack$）。倾斜叠加的描述更为清晰透彻：将波场中的值 沿“倾斜”的线进行叠加。$Radon$变换将时空域中一条斜率为$p_0$、截距为$\tau_0$的线转化为新域中的一个点$(p_0,\tau_0)$。即，Radon变换将一条线映射为一个点。$Radon$逆变换将新域中的点变为原来的线。<br>在$2D Fourier$变换中，其将一条时空域中的线转换为频率波数域中的一条线，其逆变换将$f-k$域中的线转换回$t-x$域。线$t=px+\tau$的$Fourier$变换为：</p>
 <script type="math/tex; mode=display">\int^{\infty}_{-\infty} \int^{\infty}_{-\infty} dx dt {\rm{exp}} [i(\omega t-k_xx)] \delta(t-px-\tau)=\int^{\infty}_{-\infty}dx {\rm{exp}} \lbrace i [\omega(px+\tau)-k_xx] \rbrace =2\pi {\rm {exp}} (i\omega \tau) \delta (p\omega -k_x) \tag{6}</script><p>因此，$Fourier$变换的振幅由沿着以下公式的狄拉克函数给出：</p>
@@ -329,7 +329,10 @@
     <a href="/2021/05/21/10.1109ACCESS.2019.2908720/" rel="prev" title="Wavelet Deep Neural Network for Stripe Noise Removal">
       <i class="fa fa-chevron-left"></i> Wavelet Deep Neural Network for Stripe Noise Removal
     </a></div>
-      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2021/06/04/Madagascrar_01/" rel="next" title="如何在Python环境中使用Madagascrar函数">
+      如何在Python环境中使用Madagascrar函数 <i class="fa fa-chevron-right"></i>
+    </a></div>
     </div>
       </footer>
     
@@ -403,14 +406,14 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">29</span>
+          <span class="site-state-item-count">30</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">11</span>
+        <span class="site-state-item-count">12</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
