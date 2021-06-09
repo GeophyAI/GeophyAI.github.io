@@ -280,11 +280,11 @@
 ">[14]</span></a></sup>等任务。我们证明了基于波的物理系统可以训练成RNN，因此，可以被动地处理数据原有域的信号和信息，而无需进行模数转换，从而有效提升处理效率并降低功耗。在这个框架中，与有意将信号反馈给输入不同的是，递归关系自然地发生在物理本身的时间动力学中，用于信息处理的内存和容量由在空间中传播的波提供。</p>
 <h2 id="RESULTS"><a href="#RESULTS" class="headerlink" title="RESULTS"></a>RESULTS</h2><h3 id="波动力学与RNN之间的等效性"><a href="#波动力学与RNN之间的等效性" class="headerlink" title="波动力学与RNN之间的等效性"></a>波动力学与RNN之间的等效性</h3><p>本节中，我们介绍RNN运算与波动力学之间的关系。RNN通过对输入序列逐步应用相同的基本运算来得到输出序列，先前时刻的信息则被编码到RNN的隐藏状态中并在每个时刻进行更新。隐藏状态允许RNN保存历史信息的记忆，并学习到数据的时间结构以及长程依赖关系<sup id="fnref:15"><a href="#fn:15" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="J. L. Elman, Finding structure in time. Cognit. Sci. 14, 179–211 (1990).
 ">[15]</span></a></sup><sup id="fnref:16"><a href="#fn:16" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="M. I. Jordan, Serial order: A parallel distributed processing approach. Adv. Physcol. 121, 471–495 (1997).
-">[16]</span></a></sup>。在给定的时刻$\boldsymbol t$，RNN作用于输入矢量$\boldsymbol x_t$以及隐藏状态矢量$\boldsymbol h_{t-1}$，计算得到输出矢量$\boldsymbol y_t$以及更新后的隐藏状态$\boldsymbol h_t$。<br>RNN有多种表现形式，其中最常见的形式其更新公式如下所示：</p>
+">[16]</span></a></sup>。在给定的时刻$\boldsymbol t$，RNN作用于输入矢量$\boldsymbol x<em>t$以及隐藏状态矢量$\boldsymbol h</em>{t-1}$，计算得到输出矢量$\boldsymbol y_t$以及更新后的隐藏状态$\boldsymbol h_t$。<br>RNN有多种表现形式，其中最常见的形式其更新公式如下所示：</p>
 <script type="math/tex; mode=display">\boldsymbol h_t = \sigma^{(h)}(\boldsymbol W^{(h)}·\boldsymbol h_{t-1}+\boldsymbol W^{(x)}·\boldsymbol x_t) \tag{1}</script><script type="math/tex; mode=display">\boldsymbol y_t = \sigma^{(y)}(\boldsymbol W^{(y)}·\boldsymbol h_t) \tag{2}</script><p>如图1B所示。稠密矩阵$\boldsymbol W^{(h)}$、$\boldsymbol W^{(x)}$、$\boldsymbol W^{(y)}$是训练过程中不断优化得到的，$\sigma^{(h)}(·)$和$\sigma^{(y)}(·)$为非线性激活函数。当公式1、2所定义的运算作用于输入序列时，有向图如1C所示。<br>接下来我们讨论如式1、2所示的RNN与波动物理系统之间的关系。举个例子，标量波场分布$\boldsymbol u(x, y, z)$由二阶偏微分方程$3$（图1D）控制。</p>
 <script type="math/tex; mode=display">\frac{\partial^{2}u}{\partial t^{2}}-c^{2}·\nabla^{2}u=f \tag{3}</script><p>其中，$\nabla^{2}=\frac{\partial^{2}}{\partial x^{2}}+\frac{\partial^{2}}{\partial y^{2}}+\frac{\partial^{2}}{\partial z^{2}}$为拉普拉斯算子，$c=c(x, y, z)$为波速的空间分布，$f=f(x, y, z, t)$为源项。公式3的递推离散形式（以$\Delta t$为时间步长）为：</p>
-<script type="math/tex; mode=display">\frac{u_{t+1}-2u_{t}+u_{t-1}}{\Delta t^{2}}-c^{2}·\nabla^{2}u_t=f_t\tag{4}</script><p>其中，下标$t$表示在固定时刻的标量场值。波动系统的<strong>隐藏状态-Hidden stae</strong>被定义为当前时刻和前一时刻波场分布的级联(concatenation)，$\boldsymbol h_t \equiv[\boldsymbol u_{t-1}, \boldsymbol u_{t-1}]^T$，其中$\boldsymbol u_t$和$\boldsymbol u_{t-1}$均为定义在离散空间网格上的标量场$u_t$和$u_{t-1}$拉平(flatten)后的矢量。此时，波动方程的更新公式可改写为</p>
-<script type="math/tex; mode=display">\boldsymbol h_t=\boldsymbol A(\boldsymbol h_{t-1})·\boldsymbol h_{t-1}+\boldsymbol P^{(i)}·\boldsymbol x_t \tag{5}</script><script type="math/tex; mode=display">\boldsymbol y_t = (\boldsymbol P^{o}·\boldsymbol h_t)^{2}\tag{6}</script><p>其中稀疏矩阵$A$，描述了无源波场$\boldsymbol u_t$和$\boldsymbol u_{t-1}$的更新量（如图1E所示）。公式$5$和$6$推导过程见S1。<br>对于足够大的场强，$A$对$\boldsymbol h_{t-1}$的依赖性可以通过形式为$c=c_lin+u^{2}_t·c_{nl}$的强度依赖波速实现，其中$c_{nl}$表现为介质局部区域中的非线性响应。事实上，这种类型的非线性响应会在各种博物理线性中遇到，例如水波、Kerr效应<sup id="fnref:19"><a href="#fn:19" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="R. W. Boyd, Nonlinear Optics (Academic Press, 2008).
+<script type="math/tex; mode=display">\frac{u_{t+1}-2u_{t}+u_{t-1}}{\Delta t^{2}}-c^{2}·\nabla^{2}u_t=f_t\tag{4}</script><p>其中，下标$t$表示在固定时刻的标量场值。波动系统的<strong>隐藏状态-Hidden stae</strong>被定义为当前时刻和前一时刻波场分布的级联(concatenation)，$\boldsymbol h<em>t \equiv[\boldsymbol u</em>{t-1}, \boldsymbol u<em>{t-1}]^T$，其中$\boldsymbol u_t$和$\boldsymbol u</em>{t-1}$均为定义在离散空间网格上的标量场$u<em>t$和$u</em>{t-1}$拉平(flatten)后的矢量。此时，波动方程的更新公式可改写为</p>
+<script type="math/tex; mode=display">\boldsymbol h_t=\boldsymbol A(\boldsymbol h_{t-1})·\boldsymbol h_{t-1}+\boldsymbol P^{(i)}·\boldsymbol x_t \tag{5}</script><script type="math/tex; mode=display">\boldsymbol y_t = (\boldsymbol P^{o}·\boldsymbol h_t)^{2}\tag{6}</script><p>其中稀疏矩阵$A$，描述了无源波场$\boldsymbol u<em>t$和$\boldsymbol u</em>{t-1}$的更新量（如图1E所示）。公式$5$和$6$推导过程见S1。<br>对于足够大的场强，$A$对$\boldsymbol h<em>{t-1}$的依赖性可以通过形式为$c=c_lin+u^{2}_t·c</em>{nl}$的强度依赖波速实现，其中$c_{nl}$表现为介质局部区域中的非线性响应。事实上，这种类型的非线性响应会在各种博物理线性中遇到，例如水波、Kerr效应<sup id="fnref:19"><a href="#fn:19" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="R. W. Boyd, Nonlinear Optics (Academic Press, 2008).
 ">[19]</span></a></sup>的非线性光学材料、起泡流体以及柔软介质中的声波<sup id="fnref:20"><a href="#fn:20" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T. Rossing, Springer Handbook of Acoustics (Springer Science & Business Media, 2007). 
 ">[20]</span></a></sup>等。章节S2中提供了非线性材料响应的讨论和分析。正如激活函数$\sigma^{(y)}(·)$之于标准RNN中，当输出为波强度度量时，隐藏状态$\boldsymbol h_t$和输出$\boldsymbol y_t$之间的非线性关系在波动物理中也是非常典型的，正如公式$6$所示。<br>与标准RNN类似，波动方程中隐藏状态以及输入和输出之间的关系是由线性算子定义的，这里给定$\boldsymbol P^{(i)}$和$\boldsymbol P^{(o)}$。这些矩阵给定了空间中的注入(injecting)和测量(measuring)点。与输入和输出均为密集矩阵的标准RNN不同的是，波动方程的输入和输出矩阵都是稀疏的，因为他们只在注入和测量点是非零的。此外，这些矩阵在训练过程中都是不变的。与矩阵构造相关的更多信息请参照章节S3。<br>波动方程中可训练的自由参数为波速$c(x, y, z)$，对应于实际中材料的物理配置和布局。因此，当以离散时间（图1E）进行建模时，波动方程定义了一个映射到RNN的运算（图1B）。与RNN相类似，整个波动方程的动态过程可以被视为一个有向图，但相反的是，拉普拉斯算子的存在（最近邻耦合）使得信息通过隐藏层的速度是有限的。<br><img src="/2021/04/23/10.1126sciadv.aay6946/fig01.png" alt="RNN"><br>图1.标准RNN和基于波动物理系统的概念比较(A)作用于离散输入序列上并产生离散输出序列的RNN单元图(B)RNN单元的内部组成部分，由可训练密集矩阵$\boldsymbol W^{(h)}$、$\boldsymbol W^{(x)}$、$\boldsymbol W^{(y)}$组成。隐态和输出的激活函数分别用$\sigma^{(h)}$和$\sigma^{(y)}$表示(C)RNN单元的有向图(D)连续物理系统在连续输入序列上运行并产生连续输出序列的循环表示图(E)波动方程用有限差分离散时递推关系的内部分量(F)连续物理系统离散时间步长的有向图，以及波扰动如何在空间内传播示意图。</p>
 <h2 id="DISCUSSION"><a href="#DISCUSSION" class="headerlink" title="DISCUSSION"></a>DISCUSSION</h2><p>本文提出的基于波动力学的RNN具有许多优点，为其处理时间编码信息提供了可能。与标准RNN不同的是，波动方程从一个时刻到下一个时刻的更新通过拉普拉斯算子（由图1E中的稀疏矩阵表示）强制隐态元素之间的最近邻耦合。这种近邻耦合是由于波动方程是一个双曲偏微分方程，其中信息以有限的速度传播。因此，模拟RNN隐藏状态的大小，以及它的存储容量，直接由传播介质的大小决定。此外，与传统的RNN不同，波动方程加强了能量守恒约束，防止了隐态范数和输出信号的无限增长。相反，定义标准RNN更新关系的无约束稠密矩阵将会导致梯度消失和爆炸，这对传统RNN的训练提出了重大挑战<sup id="fnref:27"><a href="#fn:27" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="L. Jing, Y. Shen, T. Dubcek, J. Peurifoy, S. Skirlo, Y. LeCun, M. Tegmark, M. Soljačić, Tunable Efficient Unitary Neural Networks (EUNN) and their application to RNNs, Proceedings of the 34th International Conference on Machine Learning-Volume 70 (JMLR.org, 2017), pp. 1733–1741.
@@ -411,20 +411,20 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">32</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-categories">
             <a href="/categories/">
           
-        <span class="site-state-item-count">13</span>
+        <span class="site-state-item-count">14</span>
         <span class="site-state-item-name">分类</span></a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">19</span>
+        <span class="site-state-item-count">20</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -463,7 +463,7 @@
   <span class="author" itemprop="copyrightHolder">shaowinw</span>
 </div>
 
-//
+
 
         
 
