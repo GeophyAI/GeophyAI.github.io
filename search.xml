@@ -1696,7 +1696,7 @@ Conf. Comput. Vis. Pattern Recognit., Salt Lake City, UT, USA, Jun. 2018, pp. 45
 <h3 id="建立初始速度模型"><a href="#建立初始速度模型" class="headerlink" title="建立初始速度模型"></a>建立初始速度模型</h3><p>建立初始速度模型的两种常用方法为：均方根速度(时间域成像)或层速度。均方根速度是从CMP道集的<code>semblance</code>图中选取的，然后可利用<strong>Dix</strong>公式(Box 3.3)将其转换为层速度。初始速度模型即可以构建出初始模型。</p>
 <p>正如我们在“反问题示例的关键假设”一节中所阐述的，我们需要对层速度模型进行平滑，以避免不平滑速度场中包含的突变界面层可能会产生的虚假构造。</p>
 <h3 id="迭代过程"><a href="#迭代过程" class="headerlink" title="迭代过程"></a>迭代过程</h3><p>第一步是使用初始速度模型进行叠前深度偏移，然后进行<strong>剩余动校正分析</strong>。（剩余动校正分析，<strong>RMO</strong>，是在共反射点道集上计算得到的剩余时差量）。<strong>RMO</strong>分析之后，我们再次修正速度模型以使得<strong>RMO</strong>在<strong>CRP</strong>(Common-reflection-point)道集上最小。</p>
-<p>有两种基本方法来获得最终的速度模型：<strong>层析方法</strong>和<strong>全局方法</strong>。<br><strong>层析方法</strong>从顶层开始，一次只处理一层，每层都会包含地球物理和地质约束。当顶层处理结束并且速度收敛到一个“真值”时，我们将该层“锁定”以使得其不再被修改，然后对下一层进行修正。重复以上步骤，直到所有层都被处理完毕。这种方法通常被用于复杂构造区，如图11.51所示。<br><strong>全局方法</strong>即同时对整个模型进行处理。每一层都有其地球物理和地质约束，但与层析方法不同的是，在每次迭代中都对整个模型进行修正，直到模型收敛到设定的极小值，如图11.52所示。<br><img src="/2021/06/09/ITPS_pp500~503/11.51.png" alt="11.51"><br><img src="/2021/06/09/ITPS_pp500~503/11.52.png" alt="11.52"></p>
+<p>有两种基本方法来获得最终的速度模型：<strong>层析方法</strong>和<strong>全局方法</strong>。<br><strong>层析方法</strong>从顶层开始，一次只处理一层，每层都会包含地球物理和地质约束。当顶层处理结束并且速度收敛到一个“真值”时，我们将该层“锁定”以使得其不再被修改，然后对下一层进行修正。重复以上步骤，直到所有层都被处理完毕。这种方法通常被用于复杂构造区，如图11.51所示。<br><strong>全局方法</strong>即同时对整个模型进行处理。每一层都有其地球物理和地质约束，但与层析方法不同的是，在每次迭代中都对整个模型进行修正，直到模型收敛到设定的极小值，如图11.52所示。<br><img src="/2021/06/09/ITPS_pp500~503/11.51_11.52.png" alt="11.51"></p>
 <p>备注：其它图片请到原文中查看。<a href="ori.pdf">点击下载</a></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
