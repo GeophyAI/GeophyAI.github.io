@@ -20,20 +20,20 @@
     var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="利用Tensorboard记录Loss变化。">
+  <meta name="description" content="Born散射级数，节选自SEG BOOK《Introduction to petroleum Seismology》的BOX11.1。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Tensorboard记录Loss变化">
-<meta property="og:url" content="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/index.html">
+<meta property="og:title" content="Born散射级数">
+<meta property="og:url" content="http://blog.geophyai.com/2021/06/12/IPTS_BOX11.1/index.html">
 <meta property="og:site_name" content="GeophyAI">
-<meta property="og:description" content="利用Tensorboard记录Loss变化。">
+<meta property="og:description" content="Born散射级数，节选自SEG BOOK《Introduction to petroleum Seismology》的BOX11.1。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-10-14T12:47:06.000Z">
-<meta property="article:modified_time" content="2020-10-14T12:47:06.000Z">
+<meta property="article:published_time" content="2021-06-12T08:21:18.652Z">
+<meta property="article:modified_time" content="2021-06-12T08:21:18.652Z">
 <meta property="article:author" content="shaowinw">
-<meta property="article:tag" content="tensorboard">
+<meta property="article:tag" content="Born散射级数">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/">
+<link rel="canonical" href="http://blog.geophyai.com/2021/06/12/IPTS_BOX11.1/">
 
 
 <script id="page-configurations">
@@ -46,7 +46,7 @@
   };
 </script>
 
-  <title>Tensorboard记录Loss变化 | GeophyAI</title>
+  <title>Born散射级数 | GeophyAI</title>
   
 
 
@@ -195,7 +195,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2021/06/12/IPTS_BOX11.1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -208,7 +208,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Tensorboard记录Loss变化
+          Born散射级数
         </h1>
 
         <div class="post-meta">
@@ -218,7 +218,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2020-10-14 20:47:06" itemprop="dateCreated datePublished" datetime="2020-10-14T20:47:06+08:00">2020-10-14</time>
+              <time title="创建时间：2021-06-12 16:21:18" itemprop="dateCreated datePublished" datetime="2021-06-12T16:21:18+08:00">2021-06-12</time>
             </span>
 
 
@@ -229,7 +229,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/tensorflow/" itemprop="url" rel="index"><span itemprop="name">tensorflow</span></a>
+                  <a href="/categories/%E5%9C%B0%E7%90%83%E7%89%A9%E7%90%86%E6%95%B0%E7%90%86%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">地球物理数理知识</span></a>
                 </span>
             </span>
 
@@ -242,13 +242,13 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2020/10/14/tensorflow1.14.0_loss_summary/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2020/10/14/tensorflow1.14.0_loss_summary/" itemprop="commentCount"></span>
+    <a title="valine" href="/2021/06/12/IPTS_BOX11.1/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2021/06/12/IPTS_BOX11.1/" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">利用Tensorboard记录Loss变化。</div>
+            <div class="post-description">Born散射级数，节选自SEG BOOK《Introduction to petroleum Seismology》的BOX11.1。</div>
 
         </div>
       </header>
@@ -259,16 +259,49 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>利用Tensorboard记录Loss值</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">运行环境：</span><br><span class="line">tensorflow==<span class="number">1.14</span><span class="number">.0</span></span><br><span class="line">keras==<span class="number">2.2</span><span class="number">.5</span></span><br></pre></td></tr></table></figure>
-<h1>构建模型</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">CNN = build_cnn()</span><br><span class="line"><span class="comment"># type(CNN) = keras.engine.training.Model</span></span><br></pre></td></tr></table></figure>
-<h1>log记录函数</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">write_log</span><span class="params">(callback, names, logs, batch_no)</span>:</span></span><br><span class="line">    <span class="keyword">for</span> name, value <span class="keyword">in</span> zip(names, logs):</span><br><span class="line">        summary = tf.Summary()</span><br><span class="line">        summary_value = summary.value.add()</span><br><span class="line">        summary_value.simple_value = value</span><br><span class="line">        summary_value.tag = name</span><br><span class="line">        callback.writer.add_summary(summary, batch_no)</span><br><span class="line">        callback.writer.flush()</span><br></pre></td></tr></table></figure>
-<h1>创建Tensorboard记录</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># log_path = './logs'</span></span><br><span class="line">callback = TensorBoard(log_path)</span><br><span class="line">callback.set_model(CNN)</span><br></pre></td></tr></table></figure>
-<h1>在训练过程中记录Loss</h1>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">datasize = X.shape[<span class="number">0</span>]</span><br><span class="line">batches = datasize//batch_size</span><br><span class="line"><span class="keyword">for</span> epoch <span class="keyword">in</span> range(epochs):</span><br><span class="line">	<span class="keyword">for</span> batch <span class="keyword">in</span> range(batches):</span><br><span class="line">		loss = CNN.train_on_batch(x, y)</span><br><span class="line">		write_log(callback, </span><br><span class="line">                  CNN.metrics_names,</span><br><span class="line">                  loss,</span><br><span class="line">                  epoch * batches + batch)</span><br></pre></td></tr></table></figure>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Born散射级数"><a href="#Born散射级数" class="headerlink" title="Born散射级数"></a>Born散射级数</h1><p>Born散射级数是由Lippmann-Schwinger积分方程推导而来的，在应用这个方程时，除预测地震响应的实际介质外，我们还需要选择一个背景介质(参考介质)。</p>
+<p>下面我们从频率域中控制压力场的波动方程开始推导相关方程。若$P({\rm \textbf x}, \omega, {\rm \textbf x}_s)$表示由位于${\rm \textbf x}_s$处点源激发， 在${\rm \textbf x}$记录的压力场，它遵守以下方程：</p>
+<script type="math/tex; mode=display">L({\rm \textbf x}, \omega) P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s) = -S(\omega)\delta ({\rm \textbf x} - {\rm \textbf x}_s), \tag{11.33}</script><p>其中，</p>
+<script type="math/tex; mode=display">L({\rm \textbf x}, \omega) = \omega^2K({\rm \textbf x}) + {\rm {div}}[\sigma({\rm \textbf x}) \textbf{grad}],\tag{11.34}</script><p> $K({\rm \textbf x})$表示压缩系数(体积模量的倒数)，$\sigma({\rm \textbf x})$为比容积(密度的倒数)，$S(\omega)$为位于${\rm \textbf x}_s$的源。</p>
+<p>波在背景介质中传播所产生的压力场$P_0=P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s), \tag{11.35}$<br>并有：</p>
+<script type="math/tex; mode=display">L_0({\rm \textbf x}, \omega)=\omega^2 K_0 + {\rm {div}}[\sigma_0 \textbf{grad}]</script><p>$L_0=L_0({\rm \textbf x}, \omega)$为描述背景介质波动方程的微分算子。$K_0$为压缩系数，$\sigma_0$为比容积。</p>
+<p>同时，我们还需要背景介质中波动方程的格林函数$G_0=G_0({\rm \textbf x}, \omega, {\rm \textbf x}_s)$, 其定义如下：</p>
+<script type="math/tex; mode=display">L_0({\rm \textbf x}, \omega)G_0({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime})=-\delta({\rm \textbf x}-{\rm \textbf x}^{\prime})\tag{11.37}</script><p>所以，</p>
+<script type="math/tex; mode=display">P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s)=S(\omega)G_0({\rm \textbf x}, \omega;{\rm \textbf x}_s) \tag{11.38}</script><p>另一个我们需要的量是格林函数的逆：$G_{0}^{-1} = G_{0}^{-1}({\rm \textbf x}, \omega;{\rm \textbf x}_s)$，其由如下公式所定义：</p>
+<script type="math/tex; mode=display">\int d{\rm \textbf x}^{\prime}G_0({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime}) G_0^{-1}({\rm \textbf x}^{\prime}, \omega;{\rm \textbf x}^{\prime\prime}) \tag{11.39}</script><p>利用压力场$P_0$和格林函数$G_0$，Lippmann-Schwinger积分方程给出了压力场$P$的一个解，即在实际介质中的任何地方，都有如下积分方程:</p>
+<script type="math/tex; mode=display">\begin{align}
+\notag
+P({\rm \textbf x}, &\omega, {\rm \textbf x}_s) = P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s) \\\\
+\notag
+&+\int_D d{\rm \textbf x}^{\prime} G_0({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime}) W({\rm \textbf x}^{\prime}, \omega) P({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime})
+\end{align}\tag{11.40}</script><p>其中，</p>
+<script type="math/tex; mode=display">W({\rm \textbf x}, \omega) = L({\rm \textbf x}, \omega)-L_0({\rm \textbf x}, \omega)\tag{11.41}</script><p>$D$为$W({\rm \textbf x}, \omega)$的定义域($D$外$W({\rm \textbf x}, \omega)$为<code>null</code>)，如图11.6中所示，11.40可用如下更简洁形式表示：</p>
+<script type="math/tex; mode=display">P=P_0+G_0WP\tag{11.42}</script><p>或者，</p>
+<script type="math/tex; mode=display">P=[I-G_0W]^{-1}P_0\tag{11.43}</script><p> 其中，$G_0({\rm \textbf x}, \omega, {\rm \textbf x}^{\prime})$为$G_0$的核，$W({\rm \textbf x}, \omega)$为势$W$的核。<br>将11.42泰勒展开后即可得到$Born$逆散射级数：</p>
+<script type="math/tex; mode=display">\begin{align}
+\notag
+P &= P_0 \\\\
+\notag&+G_0WP_0 \\\\
+\notag&-G_0WG_0WP_0 \\\\
+\notag&+G_0WG_0WG_0WP_0-...
+\end{align}
+\tag{11.44}</script><p>或者，</p>
+<script type="math/tex; mode=display">\begin{align}
+\notag
+P &= P_0 \\\\
+\notag&+SG_0WG_0 \\\\
+\notag&-SG_0WG_0WS_0 \\\\
+\notag&+SG_0WG_0WG_0WS_0-...
+\end{align}
+\tag{11.45}</script><p>$Born$散射级数也可写为：</p>
+<script type="math/tex; mode=display">P=P_0+SG_0W^{\prime}G_0\tag{11.46}</script><script type="math/tex; mode=display">\begin{align}
+\notag W^{\prime} &= W \\\\
+\notag & - WG_0 W  \\\\
+\notag & + WG_0 WG_0 W  \\\\
+\notag & - WG_0 WG_0 WG_0 W  
+\end{align}\tag{11.47}</script><p>忽略$Born$级数(公式11.44和11.45)三阶及以上项即可得到$Born$近似：</p>
+<script type="math/tex; mode=display">P \approx P_0+SG_0WG_0 \tag{11.48}</script><p>将11.46做如下替换也可得到11.48所示的$Born$近似：</p>
+<script type="math/tex; mode=display">W^{\prime} = W.\tag{11.49}</script><p>通过不同的方式均能够在保证$P$和$W$线性关系的同时得到$Born$近似。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -284,7 +317,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/" title="Tensorboard记录Loss变化">http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/</a>
+    <a href="http://blog.geophyai.com/2021/06/12/IPTS_BOX11.1/" title="Born散射级数">http://blog.geophyai.com/2021/06/12/IPTS_BOX11.1/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -295,7 +328,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/tensorboard/" rel="tag"> <i class="fa fa-tag"></i> tensorboard</a>
+              <a href="/tags/Born%E6%95%A3%E5%B0%84%E7%BA%A7%E6%95%B0/" rel="tag"> <i class="fa fa-tag"></i> Born散射级数</a>
           </div>
 
         
@@ -304,13 +337,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2020/10/05/python_wiggle_trace/" rel="prev" title="地震数据波形变密度绘图">
-      <i class="fa fa-chevron-left"></i> 地震数据波形变密度绘图
+    <a href="/2021/06/11/IPTS_ch11_445~456/" rel="prev" title="反问题">
+      <i class="fa fa-chevron-left"></i> 反问题
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/12/25/recfunc/" rel="next" title="OBSpy+rf接收函数计算">
-      OBSpy+rf接收函数计算 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -370,7 +400,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">利用Tensorboard记录Loss值</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">构建模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">log记录函数</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">4.</span> <span class="nav-text">创建Tensorboard记录</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">5.</span> <span class="nav-text">在训练过程中记录Loss</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Born散射级数"><span class="nav-number">1.</span> <span class="nav-text">Born散射级数</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -492,6 +522,59 @@
   
 
   
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
   <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
@@ -500,7 +583,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2020/10/14/tensorflow1.14.0_loss_summary/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2021/06/12/IPTS_BOX11.1/',]
       });
       });
   </script>

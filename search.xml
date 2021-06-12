@@ -135,7 +135,7 @@ $$ F=\sum_s \sum_r \int_{t_0}^{t_1} [P_{obs}(x_s, x_r, t)-P_{pred}(x_s, x_r, t)]
 <li>线性化反演。</li>
 </ol>
 <p>注意，在井中地震中，速度模型通常可从测井测量中获得。因此，通常不需要进行速度估计。我们不能用三章内容来描述所有这些处理步骤。我们将重点讨论海洋数据多步反演的四个步骤。对这四个步骤的描述为有助于了解本章内容。</p>
-<p>由于成本原因，其中的一些步骤，例如多次波去除，都是从几何光学或者纯信号处理领域发展来的(例如Chapter8中$fk$倾角滤波方法)，并不是基于波动方程的。这些工具倾向于只关注旅行时变化而忽略振幅变化。并且，这些方法还会产生假象，并且在数据中留有较大的残差。但是由于这些方法的对于计算资源的需求较小，因此应用较为广泛。但随着近年来计算能力的提升，人们不再考虑使用这些几何光学工具来替换波动方程。此外，为达到现在地震资料处理中追求的高分辨率和多次波衰减的目的，我们必须基于运动学和动力学更加精确的波动方程方法。这些方法的隐喻是理论地震学中用于表示波场的两个积分方程：$Lippmann-Schwinger$积分方程和表示定理。$Lippmann-Schwinger$积分方程导出了所谓的$Born$散射级数，而表示定理导出了$Kirchhoff$散射级数。上述反演的四个步骤(去鬼波、多次波衰减、宏观模型估计和线性化反演)均可以通过$Born$散射级数和$Kirchhoff$散射级数推导得出，正如我们在第10章多次衰减中看到的那样。<strong>本章的重点是线性化反演和宏观模型的估计</strong>。</p>
+<p>由于成本原因，其中的一些步骤，例如多次波去除，都是从几何光学或者纯信号处理领域发展来的(例如Chapter8中$fk$倾角滤波方法)，并不是基于波动方程的。这些工具倾向于只关注旅行时变化而忽略振幅变化。并且，这些方法还会产生假象，并且在数据中留有较大的残差。但是由于这些方法对于计算资源的需求较小，因此应用较为广泛。但随着近年来计算能力的提升，人们不再考虑使用这些几何光学工具来替换基于波动方程的方法。此外，为达到现在地震资料处理中追求的高分辨率和多次波衰减的目的，我们也必须基于运动学和动力学更加精确的波动方程方法。这些方法背后的理论是地震学中用于表示波场的两个积分方程：$Lippmann-Schwinger$积分方程和表示定理。$Lippmann-Schwinger$积分方程导出了所谓的$Born$散射级数，而表示定理导出了$Kirchhoff$散射级数。上述反演的四个步骤(去鬼波、多次波衰减、宏观模型估计和线性化反演)均可以通过$Born$散射级数和$Kirchhoff$散射级数推导得出，正如我们在第10章多次衰减中看到的那样。<strong>本章的重点是线性化反演和宏观模型的估计</strong>。</p>
 <p>在前面的章节中，我们提到了<strong>NMO</strong>，<strong>DMO</strong>，偏移等作为地震成像的工具。我们刚才描述的地震反问题中，这些工具从何而来？在本章中，我们将看到<strong>偏移只是线性化反演的一个特例</strong>。我们还将动校正叠加与线性化反演、以及倾角校正叠加联系起来。</p>
 <h1>反问题示例的关键假设</h1>
 <p>在对数据进行去多次波和去鬼波处理(如Cahpters9和10所述)之后，下一步是从包含初至波的数据中构建地下模型。这一章节中我们通过线性化反演解来讲述如何解决反问题，线性化反演非常好地提供了一种从原始数据域构建地震剖面的方法。线性化反演问题的关键假设如下面的章节所述。</p>
@@ -171,7 +171,7 @@ $$\delta P \approx SG_0WG_0\tag{11.10}$$<br>
 <h2 id="平滑背景介质">平滑背景介质</h2>
 <p>如图11.7所示，方程11.9中的$Born$近似使我们能够预测初至以及多次波。由于在大多数成像中都假定数据只包含初至，因此我们需要调整11.9的$Born$近似，使预测数据满足成像假设。如果描述背景介质中波动方程的格林函数$G_0$不包含反射波，此时11.9的$Born$近似将只预测初至波。换句话说，如果我们假设背景模型是平滑的(即没有反射或只有非常弱的反射)，那么11.9中的$Born$近似将只预测初至波。实现这种平滑的经典方法是将实际模型分解为两部分：低空间频率分量和高空间频率分量。$a1D$(横向不变)模型的分解示例如图11.8所示，低空间频率（长波数）分量表示背景模型，高空间频率（即短波数）分量引起散射和反射。<br>
 <img src="/2021/06/11/IPTS_ch11_445~456/11.7_8.png" alt="11.7~8"><br>
-当背景模型中没有$reflectors$时，如图11.8所示，描述波在背景介质中传播的直达波场基本上可以以旅行时和几何扩散来描述，而这两者主要取决于速度变化。这也是为什么<strong>在石油地震学中背景模型一般被称为背景速度模型</strong>。</p>
+当背景模型中没有反射点时，如图11.8所示，描述波在背景介质中传播的直达波场基本上可以以旅行时和几何扩散来描述，而这两者主要取决于速度变化。这也是为什么<strong>在石油地震学中背景模型一般被称为背景速度模型</strong>。</p>
 <h1>Born近似的局限性</h1>
 <p>如<strong>Box 11.1</strong>所描述的那样，11.3所示$Lippmann-Schwinger $积分方程的解可以表示成$Born$级数的形式，其中此级数的前两项为$Born$近似，有时我们将这种近似称为单散射点近似。通过截断$Born$级数，只取其前两项，我们假设背景介质与实际介质十分相近，并且高于二阶的$Born$级数项均可以忽略不计。<br>
 下面我们以实际的声速介质为例，将$Born$近似的假设公式化。我们从$Box 11.1$中定义的散射势(散射势的表达式源自量子力学，$W$实际上是粒子散射的势，这一表达现在被那些将散射理论应用于地震学的学者们所广泛采用)出发：<br>
@@ -2446,6 +2446,60 @@ U盘制作工具使用<a href="https://cn.ultraiso.net/xiazai.html">UltraISO</a>
       </categories>
       <tags>
         <tag>天然地震</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Born散射级数</title>
+    <url>/2021/06/12/IPTS_BOX11.1/</url>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="Born散射级数"><a href="#Born散射级数" class="headerlink" title="Born散射级数"></a>Born散射级数</h1><p>Born散射级数是由Lippmann-Schwinger积分方程推导而来的，在应用这个方程时，除预测地震响应的实际介质外，我们还需要选择一个背景介质(参考介质)。</p>
+<p>下面我们从频率域中控制压力场的波动方程开始推导相关方程。若$P({\rm \textbf x}, \omega, {\rm \textbf x}_s)$表示由位于${\rm \textbf x}_s$处点源激发， 在${\rm \textbf x}$记录的压力场，它遵守以下方程：</p>
+<script type="math/tex; mode=display">L({\rm \textbf x}, \omega) P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s) = -S(\omega)\delta ({\rm \textbf x} - {\rm \textbf x}_s), \tag{11.33}</script><p>其中，</p>
+<script type="math/tex; mode=display">L({\rm \textbf x}, \omega) = \omega^2K({\rm \textbf x}) + {\rm {div}}[\sigma({\rm \textbf x}) \textbf{grad}],\tag{11.34}</script><p> $K({\rm \textbf x})$表示压缩系数(体积模量的倒数)，$\sigma({\rm \textbf x})$为比容积(密度的倒数)，$S(\omega)$为位于${\rm \textbf x}_s$的源。</p>
+<p>波在背景介质中传播所产生的压力场$P_0=P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s), \tag{11.35}$<br>并有：</p>
+<script type="math/tex; mode=display">L_0({\rm \textbf x}, \omega)=\omega^2 K_0 + {\rm {div}}[\sigma_0 \textbf{grad}]</script><p>$L_0=L_0({\rm \textbf x}, \omega)$为描述背景介质波动方程的微分算子。$K_0$为压缩系数，$\sigma_0$为比容积。</p>
+<p>同时，我们还需要背景介质中波动方程的格林函数$G_0=G_0({\rm \textbf x}, \omega, {\rm \textbf x}_s)$, 其定义如下：</p>
+<script type="math/tex; mode=display">L_0({\rm \textbf x}, \omega)G_0({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime})=-\delta({\rm \textbf x}-{\rm \textbf x}^{\prime})\tag{11.37}</script><p>所以，</p>
+<script type="math/tex; mode=display">P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s)=S(\omega)G_0({\rm \textbf x}, \omega;{\rm \textbf x}_s) \tag{11.38}</script><p>另一个我们需要的量是格林函数的逆：$G_{0}^{-1} = G_{0}^{-1}({\rm \textbf x}, \omega;{\rm \textbf x}_s)$，其由如下公式所定义：</p>
+<script type="math/tex; mode=display">\int d{\rm \textbf x}^{\prime}G_0({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime}) G_0^{-1}({\rm \textbf x}^{\prime}, \omega;{\rm \textbf x}^{\prime\prime}) \tag{11.39}</script><p>利用压力场$P_0$和格林函数$G_0$，Lippmann-Schwinger积分方程给出了压力场$P$的一个解，即在实际介质中的任何地方，都有如下积分方程:</p>
+<script type="math/tex; mode=display">\begin{align}
+\notag
+P({\rm \textbf x}, &\omega, {\rm \textbf x}_s) = P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s) \\\\
+\notag
+&+\int_D d{\rm \textbf x}^{\prime} G_0({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime}) W({\rm \textbf x}^{\prime}, \omega) P({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime})
+\end{align}\tag{11.40}</script><p>其中，</p>
+<script type="math/tex; mode=display">W({\rm \textbf x}, \omega) = L({\rm \textbf x}, \omega)-L_0({\rm \textbf x}, \omega)\tag{11.41}</script><p>$D$为$W({\rm \textbf x}, \omega)$的定义域($D$外$W({\rm \textbf x}, \omega)$为<code>null</code>)，如图11.6中所示，11.40可用如下更简洁形式表示：</p>
+<script type="math/tex; mode=display">P=P_0+G_0WP\tag{11.42}</script><p>或者，</p>
+<script type="math/tex; mode=display">P=[I-G_0W]^{-1}P_0\tag{11.43}</script><p> 其中，$G_0({\rm \textbf x}, \omega, {\rm \textbf x}^{\prime})$为$G_0$的核，$W({\rm \textbf x}, \omega)$为势$W$的核。<br>将11.42泰勒展开后即可得到$Born$逆散射级数：</p>
+<script type="math/tex; mode=display">\begin{align}
+\notag
+P &= P_0 \\\\
+\notag&+G_0WP_0 \\\\
+\notag&-G_0WG_0WP_0 \\\\
+\notag&+G_0WG_0WG_0WP_0-...
+\end{align}
+\tag{11.44}</script><p>或者，</p>
+<script type="math/tex; mode=display">\begin{align}
+\notag
+P &= P_0 \\\\
+\notag&+SG_0WG_0 \\\\
+\notag&-SG_0WG_0WS_0 \\\\
+\notag&+SG_0WG_0WG_0WS_0-...
+\end{align}
+\tag{11.45}</script><p>$Born$散射级数也可写为：</p>
+<script type="math/tex; mode=display">P=P_0+SG_0W^{\prime}G_0\tag{11.46}</script><script type="math/tex; mode=display">\begin{align}
+\notag W^{\prime} &= W \\\\
+\notag & - WG_0 W  \\\\
+\notag & + WG_0 WG_0 W  \\\\
+\notag & - WG_0 WG_0 WG_0 W  
+\end{align}\tag{11.47}</script><p>忽略$Born$级数(公式11.44和11.45)三阶及以上项即可得到$Born$近似：</p>
+<script type="math/tex; mode=display">P \approx P_0+SG_0WG_0 \tag{11.48}</script><p>将11.46做如下替换也可得到11.48所示的$Born$近似：</p>
+<script type="math/tex; mode=display">W^{\prime} = W.\tag{11.49}</script><p>通过不同的方式均能够在保证$P$和$W$线性关系的同时得到$Born$近似。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>地球物理数理知识</category>
+      </categories>
+      <tags>
+        <tag>Born散射级数</tag>
       </tags>
   </entry>
 </search>
