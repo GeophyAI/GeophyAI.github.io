@@ -223,17 +223,22 @@ $$\check{u}=\iint{dx dt \delta(t-px-\tau)u(x,t)}=\int{dx u(x,\tau+px)} \tag{2}$$
 $Fourier$变换和$Radon$变换之间的关系为：<br>
 $$U(\omega p,\omega)=\int{d\tau exp(i \omega \tau)\check{u}(p, \tau)} \tag{3}$$<br>
 上式可简写为：<br>
-$$\mathcal{F}<em>2u=\mathcal{F}<em>1 \check{u} \tag{4}$$<br>
-其中，$\mathcal{F}<em>2$和$\mathcal{F}<em>1$分别表示二维和一维$Fourier$变换。因此，关于截距变量$\tau$的$Radon$变换的$Fourier$变换，等价于$u(x,t)$沿$k_x=p\omega$的二维$Fourier$变换。公式$4$又被称为$Projection-Slice-Theorem$(投影切片定理，中心切片定理)。<br>
-$Radon$逆变换有多种表现形式，例如：<br>
+$$\mathcal{F}_2u=\mathcal{F}_1 \check{u} \tag{4}$$</p>
+<p>其中，$\mathcal{F}_2$和$\mathcal{F}_1$分别表示二维和一维$Fourier$变换。因此，关于截距变量$\tau$的$Radon$变换的$Fourier$变换，等价于$u(x,t)$沿$k_x=p\omega$的二维$Fourier$变换。公式$4$又被称为$Projection-Slice-Theorem$(投影切片定理，中心切片定理)。</p>
+<p>$Radon$逆变换有多种表现形式，例如：<br>
 $$u(x, t)=-\frac{1}{2\pi^2} \iint dp d{\tau} \frac{\partial \check{u}(p,\tau-px)/\partial \tau}{\tau -t} \tag{5}$$<br>
-$Radon$变换函数$\check{u}(p,x)$也被称为慢度表示（$slowness representation$）、平面波分解（$plane-wave-decomposition$）或倾斜叠加（$slant-stack$）。倾斜叠加的描述更为清晰透彻：将波场中的值 沿“倾斜”的线进行叠加。$Radon$变换将时空域中一条斜率为$p_0$、截距为$\tau_0$的线转化为新域中的一个点$(p_0,\tau_0)$。即，Radon变换将一条线映射为一个点。$Radon$逆变换将新域中的点变为原来的线。<br>
-在$2D Fourier$变换中，其将一条时空域中的线转换为频率波数域中的一条线，其逆变换将$f-k$域中的线转换回$t-x$域。线$t=px+\tau$的$Fourier$变换为：<br>
-$$\int^{\infty}</em>{-\infty} \int^{\infty}</em>{-\infty} dx dt {\rm{exp}} [i(\omega t-k_xx)] \delta(t-px-\tau)=\int^{\infty}</em>{-\infty}dx {\rm{exp}} \lbrace i [\omega(px+\tau)-k_xx] \rbrace =2\pi {\rm {exp}} (i\omega \tau) \delta (p\omega -k_x) \tag{6}$$<br>
-因此，$Fourier$变换的振幅由沿着以下公式的狄拉克函数给出：<br>
+$Radon$变换函数$\check{u}(p,x)$也被称为慢度表示（$slowness representation$）、平面波分解（$plane-wave-decomposition$）或倾斜叠加（$slant-stack$）。倾斜叠加的描述更为清晰透彻：将波场中的值 沿“倾斜”的线进行叠加。$Radon$变换将时空域中一条斜率为$p_0$、截距为$\tau_0$的线转化为新域中的一个点$(p_0,\tau_0)$。即，Radon变换将一条线映射为一个点。$Radon$逆变换将新域中的点变为原来的线。</p>
+<p>在$2D Fourier$变换中，其将一条时空域中的线转换为频率波数域中的一条线，其逆变换将$f-k$域中的线转换回$t-x$域。线$t=px+\tau$的$Fourier$变换为：</p>
+<p>$$\begin{align}<br>
+\notag<br>
+\int_{-\infty}^{\infty} \int_{-\infty}^{\infty} dx dt {\rm{exp}} [i(\omega t-k_xx)] \delta(t-px-\tau) \\<br>
+\notag<br>
+=\int_{-\infty}^{\infty}dx {\rm{exp}} \lbrace i [\omega(px+\tau)-k_xx] \rbrace =2\pi {\rm {exp}} (i\omega \tau) \delta (p\omega -k_x)<br>
+\end{align}\tag{6}$$</p>
+<p>因此，$Fourier$变换的振幅由沿着以下公式的狄拉克函数给出：<br>
 $$\omega =k_x/p \tag{7}$$<br>
 其相位为$\omega \tau$，且过原点（截距为0），$Fourier$变换有时空域中线的倒数斜率。另外，相位谱包含了截距$\tau$的信息。通过$Fourier$逆变换可得到原来的线：<br>
-$$\frac{1}{2\pi^2} \int^{\infty}</em>{-\infty}\int^{\infty}_{-\infty} dk_xd{\omega} {\rm{exp}} [-i(\omega t-k_xx)] \times {\rm{exp}}(i\omega\tau) \delta(p\omega-k_x)=\delta(t-px-\tau)\tag{8}$$<br>
+$$\frac{1}{2\pi^2} \int_{-\infty}^{\infty} \int_{-\infty}^{\infty} dk_xd{\omega} {\rm{exp}} [-i(\omega t-k_xx)] \times {\rm{exp}}(i\omega\tau) \delta(p\omega-k_x)=\delta(t-px-\tau)\tag{8}$$<br>
 地震学中常用的是包含非线性曲线（将公式1替换）的广义$Radon$变换($GRT$)。常用的 非线性曲线有抛物线($t=\tau+px^2$)、双曲线$t=\sqrt{(\tau^2+px^2)}$，$p$为双曲线的慢度或抛物线中慢度与位移的比值。</p>
 <h2 id="关于快速离散Radon变换">关于快速离散Radon变换</h2>
 <p>我们简要讨论了$Radon$变换的连续形式，但在地震勘探领域的应用中，例如$\tau-p$域去除多次波<sup id="fnref:4"><a href="#fn:4" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="基于预测反褶积的多次波去除建立在多次波为周期性的基础上，但是，在时间—位移道集，例如共炮点道集、共中心点道集或者共检波点道集中，当偏移距非零时，时间剖面上的多次波通常不是周期性的。Taner(1980)首先认识到层状介质中的多次波沿径向轨迹是周期性的（固定$p$）。径向道之间的时间间隔不同。因此，可以从每个$p$道的自相关图中设计一个预测反褶积算子，并将其应用于$(\tau, p)$域衰减多次波，其中初至和多次波为椭圆。
@@ -246,33 +251,33 @@ $$\frac{1}{2\pi^2} \int^{\infty}</em>{-\infty}\int^{\infty}_{-\infty} dk_xd{\ome
 <li>对径向切片做一维傅里叶逆变换</li>
 </ol>
 <p>投影切片定理可用于离散数据，即分别将步骤1和3替换为笛卡尔网格中的二维和一维傅里叶变换。然而，由于傅立叶域的径向切片通常不与二维FFT输出的笛卡尔网格相交，我们需要在第二步中插值。<br>
-对于其中的插值，我们做更细致的解释。采样的时空域数据$u(nx\Delta x, nt\Delta t)$，其中$nx=1, 2, …, NX$以及$nt=0, 2, …, NT-1$, $\Delta x$和$\Delta t$分别为空间和时间采样间隔。二维傅里叶变换将时空域数据转换到相应的频率波数域。$Nyquist$频率和$Nyquist$波数分别为$\omega^{N}=\pi/\Delta t$和$k^{N}<em>x=\pi/\Delta x$。由于$u$为实数，因此我们只需考虑零频和正频率。最大不超过$Nyquist$的零频和正频率值为$n\omega =0, 2, …, NW$,($NW=NT/2$)。频率采样间隔为：<br>
+对于其中的插值，我们做更细致的解释。采样的时空域数据$u(nx\Delta x, nt\Delta t)$，其中$nx=1, 2, …, NX$以及$nt=0, 2, …, NT-1$, $\Delta x$和$\Delta t$分别为空间和时间采样间隔。二维傅里叶变换将时空域数据转换到相应的频率波数域。$Nyquist$频率和$Nyquist$波数分别为$\omega^{N}=\pi/\Delta t$和$k^{N}_x=\pi/\Delta x$。由于$u$为实数，因此我们只需考虑零频和正频率。最大不超过$Nyquist$的零频和正频率值为$n\omega =0, 2, …, NW$,($NW=NT/2$)。频率采样间隔为：<br>
 $$\Delta \omega = 2\omega^{(N)}/NT \tag{9}$$<br>
-所有的正频率和负频率都需要考虑在内，$nkx=-NX/2+1,-NX/2+2,…,-,0，1,…,NX/2-1,NX/2$。波数$NKX$的数量等于空间采样点数$NX$。波数采样间隔为：<br>
-$$\Delta k_x=2k^N_x/NX\tag{10}$$<br>
-采样二维傅里叶变换为$U(nkx\Delta k_x, n\omega \Delta \omega)$。为表述方便，我们将其简写为$U(nkx, n\omega)$，即不将数据的采样间隔显式表示。<br>
-时空域到频波域的二维傅里叶变换由两个运算构成，首先，对数据$u(nx,nt)$做时间$FFT$。得到：<br>
-$$\tilde{U}(nx,n\omega) = \sum^{NT-1}</em>{nt=0}u(nx,nt) {\rm{exp}} (i \frac{2\pi n\omega nt}{NT}) \tag{11}$$<br>
-$$n\omega=0,…,NT/2$$<br>
-其中$\tilde{U}(nx,n\omega)$为$u(nx,nt)$对于时间的傅里叶变换。然后，对$U(nx,n\omega)$做空间$FFT$，将空间转换为波数：<br>
-$$U(nkx, n\omega)=\sum^{NX/2}<em>{nx=-NX/2+1} \tilde{U}(nx,n\omega) \times {\rm{exp}}(-i\frac{2\pi nkxnx}{NX})\tag{12}$$<br>
-$$nkx=-NX/2+1,…,NX/2$$<br>
-<img src="/2021/05/31/ITPS_Radon644~645/fig01.png" alt="fig01"><br>
+所有的正频率和负频率都需要考虑在内，$nkx=-NX/2+1,-NX/2+2,…,-,0，1,…,NX/2-1,NX/2$。波数$NKX$的数量等于空间采样点数$NX$。波数采样间隔为：</p>
+<p>$$\Delta k_x=2k^N_x/NX\tag{10}$$</p>
+<p>采样二维傅里叶变换为$U(nkx\Delta k_x, n\omega \Delta \omega)$。为表述方便，我们将其简写为$U(nkx, n\omega)$，即不将数据的采样间隔显式表示。<br>
+时空域到频波域的二维傅里叶变换由两个运算构成，首先，对数据$u(nx,nt)$做时间$FFT$。得到：</p>
+<p>$$\tilde{U}(nx,n\omega) = \sum^{NT-1}_{nt=0}u(nx,nt) {\rm{exp}} (i \frac{2\pi n\omega nt}{NT}) \tag{11}$$</p>
+<p>$$n\omega=0,…,NT/2$$</p>
+<p>其中$\tilde{U}(nx,n\omega)$为$u(nx,nt)$对于时间的傅里叶变换。然后，对$U(nx,n\omega)$做空间$FFT$，将空间转换为波数：</p>
+<p>$$U(nkx, n\omega)=\sum^{NX/2}_{nx=-NX/2+1} \tilde{U}(nx,n\omega) \times {\rm{exp}}(-i\frac{2\pi nkxnx}{NX})\tag{12}$$<br>
+$$nkx=-NX/2+1,…,NX/2$$</p>
+<p><img src="/2021/05/31/ITPS_Radon644~645/fig01.png" alt="fig01"><br>
 通常，我们将波数和正频率分别沿水平方向和垂直方向绘图。图1展示了$NT=32$、$NX=16$的$\omega-k_x$网格。这里，$NW=16,NKX=16$。<br>
 但是，图1所示网格并不适用于离散$Radon$变换。$Fourier$切片定理中，对截距变量$\tau$的$Radon$变换的$Fourier$变换，等价于$u(x,t)$沿$k_x=p\omega$的二维$Fourier$变换。在数值计算中，由于$u(nx,nt)$的二维$FFT$是定义在规则网格$\omega-k_x$上的，即其为频率-波数的函数，也就是说通常需要将$\omega-k_x$网格插值为线$k_x=p\omega$（对于不同$p$），来得到$U(nkx,n\omega)$。<br>
 <img src="/2021/05/31/ITPS_Radon644~645/fig02.png" alt="fig02"><br>
 另外，利用伪极坐标或三角法，傅里叶变换解决了上述需要插值的问题。三角傅里叶变换（$T-FFT$）结合了传统对时间采样点的$FFT$和修正的对于空间采样点的$FFT$。在空间$FFT$（公式$12$）中，令<br>
 $$nx \to 2nx n\omega /NT, n\omega =0,…,NT/2\tag{13}$$<br>
 输出非笛卡尔系的坐标数据（如图2所示），我们将这一伪极坐标网格的子集称为三角网格。Mersereau和Oppenheim(1974)<sup id="fnref:5"><a href="#fn:5" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="Mersereau, R. M., and A. V. Oppenheim, 1974, Digital reconstruction of multidimensional signals from their projections: Proceedings of the IEEE, 62, 1319–1338.">[5]</span></a></sup>首先提出了此类网格，这种网格可以实现快速傅立叶计算。采用伪极坐标网格的具体思路，Averbuch提出了快速倾斜叠加（2003年）。<br>
-$T-FFT$沿着特定的线$k_x=p\omega$输出$Fourier$变换后的数据。采样线为$npx=-NPX/2+1,-NPX/2+2,…,-1,0,1,…,NPX/2-1,NPX/2$。线的数量$NPX$等于波数的数量$NKX$，同时也等于空间采样数$NX$。对于$f_x \geq 0$，<br>
-$$p_0=0$$<br>
+$T-FFT$沿着特定的线$k_x=p\omega$输出$Fourier$变换后的数据。采样线为$npx=-NPX/2+1,-NPX/2+2,…,-1,0,1,…,NPX/2-1,NPX/2$。线的数量$NPX$等于波数的数量$NKX$，同时也等于空间采样数$NX$。对于$f_x \geq 0$，</p>
+<p>$$p_0=0$$<br>
 $$p_1=\Delta kx/\omega^{(N)}=\frac{1}{(NX/2)}  \frac{\Delta t}{\Delta x}$$<br>
 $$p_npx=npx \Delta k_x/ \omega^{(N)}=\frac{1}{(NX/2)} \frac{\Delta t}{\Delta x}$$<br>
-$$p</em>{NPX/2}=k^{(N)}<em>x/{\omega}^{(N)}$$<br>
-这些线在斜率上等距分布，距离间隔为慢度采样间隔：<br>
-$$\Delta p=\frac{1}{(NX/2)} \frac{\Delta t}{\Delta x}$$<br>
-<img src="/2021/05/31/ITPS_Radon644~645/fig03.png" alt="fig02"><br>
-但是它们有不同的长度（半径）。此外，如图3所示，频率波数域蓝色三角区域之外的信号信息在$T-FFT$变换后将不存在。所以，$T-FFT$对地震数据进行了隐式的速度滤波。例如，当$\Delta t=0.008 ms$、$\Delta x=12.5m$时，线$NPX/2$对应视速度$p^{-1}</em>{NPX/2}=1562.5 m/s$，任何低于视速度的信号都将被滤掉。<br>
+$$p_{NPX/2}=k^{(N)}_x/{\omega}^{(N)}$$</p>
+<p>这些线在斜率上等距分布，距离间隔为慢度采样间隔：</p>
+<p>$$\Delta p=\frac{1}{(NX/2)} \frac{\Delta t}{\Delta x}$$</p>
+<p><img src="/2021/05/31/ITPS_Radon644~645/fig03.png" alt="fig02"><br>
+但是它们有不同的长度（半径）。此外，如图3所示，频率波数域蓝色三角区域之外的信号信息在$T-FFT$变换后将不存在。所以，$T-FFT$对地震数据进行了隐式的速度滤波。例如，当$\Delta t=0.008 ms$、$\Delta x=12.5m$时，线$NPX/2$对应视速度$p^{-1}_{NPX/2}=1562.5 m/s$，任何低于视速度的信号都将被滤掉。<br>
 对每一个$p$道做一维逆傅里叶变换即可得到$Radon$变换后的数据。离散$Radon$变换是精确的、可逆的且能够快速计算的。这里我们详细阐述了如何对二维地震数据做$Radon$变换。同时能够将这一步骤直接推广到三维$Radon$变换的计算中，或者$\tau-p_x-p_y$变换，或者三维地震数据$u(nx,ny,nt)$($ny=1,…,NY$，$NY$为$crossline$方向的道数)中。在空间$FFT$中由坐标$y$转换为波数$k_y$，只需要作如下替换$ny \to 2ny n\omega /NT$。</p>
 <details><summary>参考文献</summary>
 <div id="footnotes"><hr><div id="footnotelist"><ol style="list-style: none; padding-left: 0; margin-left: 40px"><li id="fn:1"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">1.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Chapman, C. H., 1978, A new method for computing seismograms: Geophysical Journal of the Royal Astronomical Society, 54, 481–518.<a href="#fnref:1" rev="footnote"> ↩</a></span></li><li id="fn:2"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">2.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Deans, S. R., 1993, The Radon transform and some of its applications: John Wiley &amp; Sons, Inc.<a href="#fnref:2" rev="footnote"> ↩</a></span></li><li id="fn:3"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">3.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Deans, S. R., 1996, Radon and Abel transforms, in A. D. Poularikas, ed., The transforms and applications handbook: CRC Press, 631–717.<a href="#fnref:3" rev="footnote"> ↩</a></span></li><li id="fn:4"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">4.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">基于预测反褶积的多次波去除建立在多次波为周期性的基础上，但是，在时间—位移道集，例如共炮点道集、共中心点道集或者共检波点道集中，当偏移距非零时，时间剖面上的多次波通常不是周期性的。Taner(1980)首先认识到层状介质中的多次波沿径向轨迹是周期性的（固定$p$）。径向道之间的时间间隔不同。因此，可以从每个$p$道的自相关图中设计一个预测反褶积算子，并将其应用于$(\tau, p)$域衰减多次波，其中初至和多次波为椭圆。<a href="#fnref:4" rev="footnote"> ↩</a></span></li><li id="fn:5"><span style="display: inline-block; vertical-align: top; padding-right: 10px; margin-left: -40px">5.</span><span style="display: inline-block; vertical-align: top; margin-left: 10px;">Mersereau, R. M., and A. V. Oppenheim, 1974, Digital reconstruction of multidimensional signals from their projections: Proceedings of the IEEE, 62, 1319–1338.<a href="#fnref:5" rev="footnote"> ↩</a></span></li></ol></div></div></details><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
