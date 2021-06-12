@@ -265,43 +265,60 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="NoisePy简易教程"><a href="#NoisePy简易教程" class="headerlink" title="NoisePy简易教程"></a>NoisePy简易教程</h1><h4 id="翻译自GitHub"><a href="#翻译自GitHub" class="headerlink" title="翻译自GitHub"></a>翻译自<a href="https://github.com/mdenolle/NoisePy" target="_blank" rel="noopener">GitHub</a></h4><p>NoisePy是一个Python软件包，旨在快速轻松地计算背景噪声互相关函数。 它提供了用于噪声监视和表面波色散分析的其他功能。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>NoisePy简易教程</h1>
+<h4 id="翻译自GitHub">翻译自<a href="https://github.com/mdenolle/NoisePy">GitHub</a></h4>
+<p>NoisePy是一个Python软件包，旨在快速轻松地计算背景噪声互相关函数。 它提供了用于噪声监视和表面波色散分析的其他功能。</p>
 <p>免责声明：此代码不应“按原样”使用，也不能像黑盒一样运行。 希望用户更改本地路径和参数。 如果有问题，请将其提交到github，其中包含要调试的脚本和错误消息等信息。</p>
-<p>完整doc请参考 <a href="https://noise-python.readthedocs.io/en/latest/" target="_blank" rel="noopener">https://noise-python.readthedocs.io/en/latest/</a><br><img src="/2020/12/27/NoisePy001/logo.png" alt="logo"></p>
-<h2 id="引用"><a href="#引用" class="headerlink" title="引用"></a>引用</h2><p>如果您在文章中使用了代码，请引用：</p>
+<p>完整doc请参考 <a href="https://noise-python.readthedocs.io/en/latest/">https://noise-python.readthedocs.io/en/latest/</a><br>
+<img src="/2020/12/27/NoisePy001/logo.png" alt="logo"></p>
+<h2 id="引用">引用</h2>
+<p>如果您在文章中使用了代码，请引用：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Jiang, C. and Denolle, M. &quot;NoisePy: a new high-performance python tool for seismic ambient noise seismology.&quot; Seismological Research Letter 91 (3): 1853–1866.</span><br></pre></td></tr></table></figure>
-<h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>NoisePy由python脚本组成，因此其安装方式十分灵活，这实际上是为了构建脚本和相关功能的依赖库。 我们建议使用conda和pip安装库，因为它们更方便。 下面是我们经过测试的命令行，这些命令行将创建一个运行NoisePy的python环境。 请注意，该测试是在MacOS上执行的，因此对于其他OS可能会略有不同。（假设主机已经安装了MPI，mpi4py包会用到）</p>
+<h2 id="安装">安装</h2>
+<p>NoisePy由python脚本组成，因此其安装方式十分灵活，这实际上是为了构建脚本和相关功能的依赖库。 我们建议使用conda和pip安装库，因为它们更方便。 下面是我们经过测试的命令行，这些命令行将创建一个运行NoisePy的python环境。 请注意，该测试是在MacOS上执行的，因此对于其他OS可能会略有不同。（假设主机已经安装了MPI，mpi4py包会用到）</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">conda create -n noisepy -c conda-forge python=3.7 numpy=1.16.2 numba pandas pycwt jupyter mpi4py=3.0.1 obspy=1.1 pyasdf</span><br><span class="line">conda activate noisepy</span><br><span class="line">git <span class="built_in">clone</span> https://github.com/mdenolle/NoisePy.git</span><br></pre></td></tr></table></figure>
-<h2 id="功能"><a href="#功能" class="headerlink" title="功能"></a>功能</h2><ul>
+<h2 id="功能">功能</h2>
+<ul>
 <li>根据obspy的<code>get_station</code>和<code>get_waveforms</code>的核心功能下载连续噪声数据</li>
 <li>以ASDF格式保存地震数据，该数据可以方便地将元数据、波形数据和辅助数据组合到一个文件中（读/写ASDF文件的教程）</li>
 <li>提供了高度的灵活性来处理存储在本地计算机上的混乱的SAC / miniSEED数据并将其转换为ASDF格式的数据，可以轻松地将其插入NoisePy</li>
 <li>通过MPI并行运行功能，执行快速，简单的互相关(cross-correlation)</li>
 <li>包括一系列监视功能，可使用一些最近开发的新方法来对结果互相关函数上的dv / v进行测量（有关更多详细信息，请参见我们的论文）</li>
 </ul>
-<h2 id="简易教程"><a href="#简易教程" class="headerlink" title="简易教程"></a>简易教程</h2><h3 id="0A-使用S0A-download-ASDF-MPI-py下载地震噪声数据"><a href="#0A-使用S0A-download-ASDF-MPI-py下载地震噪声数据" class="headerlink" title="0A. 使用S0A_download_ASDF_MPI.py下载地震噪声数据"></a>0A. 使用<code>S0A_download_ASDF_MPI.py</code>下载地震噪声数据</h3><p>该脚本（位于<code>src</code>目录中）及其现有参数允许通过SCEC数据中心下载位于某个区域并在1/Jul/2016-2/Jul/2016 期间运行的所有可用宽频CI台站（BH？） 。</p>
-<p>在脚本中，为所有可根据用户需要更改的输入参数提供了简短摘要。 </p>
+<h2 id="简易教程">简易教程</h2>
+<h3 id="0A-使用S0A-download-ASDF-MPI-py下载地震噪声数据">0A. 使用<code>S0A_download_ASDF_MPI.py</code>下载地震噪声数据</h3>
+<p>该脚本（位于<code>src</code>目录中）及其现有参数允许通过SCEC数据中心下载位于某个区域并在1/Jul/2016-2/Jul/2016 期间运行的所有可用宽频CI台站（BH？） 。</p>
+<p>在脚本中，为所有可根据用户需要更改的输入参数提供了简短摘要。</p>
 <p>在脚本的当前形式中，我们设置<code>inc_hours = 24</code>，下载一整天的连续噪声数据以及元信息，并将其存储在单个ASDF文件中。 为了增加最终互相关函数的信噪比（SNR）（更多详细信息，请参见Seats等，2012），我们将整天的序列分成了较小的段，每个<code>cc_len</code>长， 相邻段之间有部分重叠。 如果在下载过程中需要保存中间输出/操作时间，则可能需要将<code>flag</code>设置为<code>True</code>。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python S0A_download_ASDF_MPI.py</span><br></pre></td></tr></table></figure>
 <p>如果要使用多个内核（例如4个），请使用以下命令（使用mpi4py包）运行脚本。</p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mpirun -n 4 python S0A_download_ASDF_MPI.py</span><br></pre></td></tr></table></figure>
 <p>从S0A输出的文件包括包含每日（24h）连续噪声数据的ASDF文件，在S0A脚本中记录所有使用的参数的参数文件以及所有电台信息的CSV文件（有关读取带有下载数据的ASDF文件的更多详细信息 可以在docs / src / ASDF.md中找到）。 可以使用src目录中名为plotting_modules的绘图模块显示存储在ASDF文件中的连续波形数据，如下所示。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> plotting_modules <span class="comment">#(cd to your source file directory first before loading this module)</span></span><br><span class="line">sfile = <span class="string">'/RAW_DATA/2016_07_01_00_00_00T2016_07_02_00_00_00.h5'</span></span><br><span class="line">plotting_modules.plot_waveform(sfile,<span class="string">'CI'</span>,<span class="string">'BLC'</span>,<span class="number">0.01</span>,<span class="number">0.4</span>)</span><br></pre></td></tr></table></figure>
-<p><img src="/2020/12/27/NoisePy001/waveform3.png" alt="waveform3"><br>请注意，该脚本还提供了从现有台站列表下载数据的选项，其格式与输出的CSV文件相同。 在这种情况下，应该在<code>L53</code>将<code>down_list</code>设置为<code>True</code>。 </p>
+<p><img src="/2020/12/27/NoisePy001/waveform3.png" alt="waveform3"><br>
+请注意，该脚本还提供了从现有台站列表下载数据的选项，其格式与输出的CSV文件相同。 在这种情况下，应该在<code>L53</code>将<code>down_list</code>设置为<code>True</code>。</p>
 <p>实际上，下载速度取决于许多因素，例如目标数据的原始采样率，网络，托管该数据的数据中心以及要存储在计算机上的一般结构等。我们测试了许多评估其性能的参数，读者可参考我们的论文以获取更多详细信息（Jiang等人，2019）。</p>
-<h3 id="0B-使用S0B-sacMSEED-to-ASDF-py处理本地SAC-缩小文件"><a href="#0B-使用S0B-sacMSEED-to-ASDF-py处理本地SAC-缩小文件" class="headerlink" title="0B. 使用S0B_sacMSEED_to_ASDF.py处理本地SAC /缩小文件"></a>0B. 使用<code>S0B_sacMSEED_to_ASDF.py</code>处理本地SAC /缩小文件</h3><p>如果要使用<code>NoisePy</code>处理存储在自己磁盘上的SAC /缩小格式的本地数据，则需要使用此脚本。 大多数变量与S0A的变量相同，因此应该很容易理解和更改。 </p>
+<h3 id="0B-使用S0B-sacMSEED-to-ASDF-py处理本地SAC-缩小文件">0B. 使用<code>S0B_sacMSEED_to_ASDF.py</code>处理本地SAC /缩小文件</h3>
+<p>如果要使用<code>NoisePy</code>处理存储在自己磁盘上的SAC /缩小格式的本地数据，则需要使用此脚本。 大多数变量与S0A的变量相同，因此应该很容易理解和更改。</p>
 <p>在此脚本中，它将通过合并，去趋势，去斜，下采样然后进行修整来对数据进行预处理，然后再将其保存为ASDF格式以用于以后的<code>NoisePy</code>处理。 特别是，我们希望脚本能够处理非常混乱的数据，这意味着地震数据会被分解成小块，并且混乱的时间信息（例如重叠的时间）会被分解。 <strong>记住，当数据混乱时，将<code>L62</code>处的<code>messydata</code>设置为<code>True</code>！ （有关删除仪器响应的教程）</strong></p>
-<h3 id="1-使用S1-fft-cc-MPI-py-执行互相关"><a href="#1-使用S1-fft-cc-MPI-py-执行互相关" class="headerlink" title="1. 使用S1_fft_cc_MPI.py 执行互相关"></a>1. 使用<code>S1_fft_cc_MPI.py</code> 执行互相关</h3><p>这是NoisePy的核心脚本，该脚本首先对所有噪声数据执行傅立叶变换，然后将它们加载到内存中，然后再进行进一步的互相关。 </p>
-<p>这意味着互相关是在频率域进行的。 在脚本中，我们提供了几种计算互相关的选项，包括<code>raw</code>，<code>coherency</code>和<code>deconv</code>（有关详细定义，请参见我们的论文*）。 我们在这里以<code>coherency</code>为例。 </p>
-<p>运行脚本后，它将创建一个名为<code>CCF</code>的新文件夹，在其中放置了包含不同工作站对之间所有互相关函数的新ASDF文件。 它还创建一个<code>fft_cc_data.txt</code>参数文件，该文件记录了此脚本中使用的所有有用参数。 </p>
+<h3 id="1-使用S1-fft-cc-MPI-py-执行互相关">1. 使用<code>S1_fft_cc_MPI.py</code> 执行互相关</h3>
+<p>这是NoisePy的核心脚本，该脚本首先对所有噪声数据执行傅立叶变换，然后将它们加载到内存中，然后再进行进一步的互相关。</p>
+<p>这意味着互相关是在频率域进行的。 在脚本中，我们提供了几种计算互相关的选项，包括<code>raw</code>，<code>coherency</code>和<code>deconv</code>（有关详细定义，请参见我们的论文*）。 我们在这里以<code>coherency</code>为例。</p>
+<p>运行脚本后，它将创建一个名为<code>CCF</code>的新文件夹，在其中放置了包含不同工作站对之间所有互相关函数的新ASDF文件。 它还创建一个<code>fft_cc_data.txt</code>参数文件，该文件记录了此脚本中使用的所有有用参数。</p>
 <p>一旦获得互相关文件，就可按以下方式在<code>plotting_modules</code>中调用<code>plot_substack_cc</code>函数来显示所有<strong>站对</strong>之间的每日时间变化。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> plotting_modules</span><br><span class="line">sfile = <span class="string">'/2016_07_01_00_00_00T2016_07_02_00_00_00.h5'</span></span><br><span class="line">plot_modules.plot_substack_cc(sfile,<span class="number">0.1</span>,<span class="number">0.2</span>,<span class="number">200</span>,<span class="literal">True</span>,<span class="string">'/Users/chengxin/Documents/SCAL/CCF/figures'</span>)</span><br></pre></td></tr></table></figure>
 <p><img src="/2020/12/27/NoisePy001/substack_cc_ZZ.png" alt="waveform3"></p>
-<h3 id="2-使用S2-stacking-py叠加"><a href="#2-使用S2-stacking-py叠加" class="headerlink" title="2. 使用S2_stacking.py叠加"></a>2. 使用<code>S2_stacking.py</code>叠加</h3><p>该脚本用于叠加S1中所有台站对的互相关函数，并将它们保存到ASDF文件中以供将来分析（例如，时间变化和/或频散提取）。 特别地，叠加过程有两种选择，包括线性和相位加权堆叠（pws）。 通常，pws产生的波形具有高SNR，下面的快照显示了两种叠加方法的波形比较。 我们使用下面的命令来绘制动校正图。</p>
+<h3 id="2-使用S2-stacking-py叠加">2. 使用<code>S2_stacking.py</code>叠加</h3>
+<p>该脚本用于叠加S1中所有台站对的互相关函数，并将它们保存到ASDF文件中以供将来分析（例如，时间变化和/或频散提取）。 特别地，叠加过程有两种选择，包括线性和相位加权堆叠（pws）。 通常，pws产生的波形具有高SNR，下面的快照显示了两种叠加方法的波形比较。 我们使用下面的命令来绘制动校正图。</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> plotting_modules,glob</span><br><span class="line">sfiles = glob.glob(<span class="string">'/SCAL/STACK/*/*.h5'</span>)</span><br><span class="line">plot_modules.plot_all_moveout(sfiles,<span class="string">'Allstack_linear'</span><span class="number">0.1</span>,<span class="number">0.2</span>,<span class="string">'ZZ'</span>,<span class="number">1</span>,<span class="number">300</span>,<span class="literal">True</span>,<span class="string">'/SCAL/STACK'</span>) <span class="comment">#(move-out for linear stacking)</span></span><br><span class="line">plot_modules.plot_all_moveout(sfiles,<span class="string">'Allstack_pws'</span><span class="number">0.1</span>,<span class="number">0.2</span>,<span class="string">'ZZ'</span>,<span class="number">1</span>,<span class="number">300</span>,<span class="literal">True</span>,<span class="string">'/SCAL/STACK'</span>)    <span class="comment">#(move-out for pws)</span></span><br></pre></td></tr></table></figure>
-<p><img src="/2020/12/27/NoisePy001/linear_stack1.png" alt="waveform3"><br><img src="/2020/12/27/NoisePy001/pws_stack1.png" alt="waveform3"><br>无论如何，这里仅给出一个简单的示例，说明NoisePy可能如何工作！<br>我们强烈建议您下载NoisePy软件包并自行探索！<br>如果在运行代码期间有任何意见和/或建议，请不要犹豫通过电子邮件与我们联系，或在<a href="https://github.com/mdenolle/NoisePy" target="_blank" rel="noopener">此github页面</a>中创建issue！</p>
+<p><img src="/2020/12/27/NoisePy001/linear_stack1.png" alt="waveform3"><br>
+<img src="/2020/12/27/NoisePy001/pws_stack1.png" alt="waveform3"><br>
+无论如何，这里仅给出一个简单的示例，说明NoisePy可能如何工作！<br>
+我们强烈建议您下载NoisePy软件包并自行探索！<br>
+如果在运行代码期间有任何意见和/或建议，请不要犹豫通过电子邮件与我们联系，或在<a href="https://github.com/mdenolle/NoisePy">此github页面</a>中创建issue！</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Chengxin Jiang (chengxin_jiang@fas.harvard.edu)</span><br><span class="line">Marine Denolle (mdenolle@fas.harvard.edu).</span><br></pre></td></tr></table></figure>
-<h3 id="参考文献"><a href="#参考文献" class="headerlink" title="参考文献"></a>参考文献</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Seats, K. J., Jesse F. L., and German A. P. &quot;Improved ambient noise correlation functions using Welch′ s method.&quot; Geophysical Journal International 188, no. 2 (2012): 513-523.</span><br></pre></td></tr></table></figure>
+<h3 id="参考文献">参考文献</h3>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Seats, K. J., Jesse F. L., and German A. P. &quot;Improved ambient noise correlation functions using Welch′ s method.&quot; Geophysical Journal International 188, no. 2 (2012): 513-523.</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">*Jiang, C. and Denolle, M. &quot;NoisePy: a new high-performance python tool for seismic ambient noise seismology.&quot; Seismological Research Letter 91, no. 3 (2020): 1853–1866..</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">** Yuan, C., Bryan, J. T., Jiang, C., Okubo, K., Clements, T. and Denolle, M. (2019). Comparing approaches to measuring time- and frequency-dependent seismic phase variations for coda wave interferometry. In AGU Fall Meeting 2019.</span><br></pre></td></tr></table></figure>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
@@ -405,7 +422,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#NoisePy简易教程"><span class="nav-number">1.</span> <span class="nav-text">NoisePy简易教程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#翻译自GitHub"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">翻译自GitHub</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用"><span class="nav-number">1.1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能"><span class="nav-number">1.3.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简易教程"><span class="nav-number">1.4.</span> <span class="nav-text">简易教程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0A-使用S0A-download-ASDF-MPI-py下载地震噪声数据"><span class="nav-number">1.4.1.</span> <span class="nav-text">0A. 使用S0A_download_ASDF_MPI.py下载地震噪声数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0B-使用S0B-sacMSEED-to-ASDF-py处理本地SAC-缩小文件"><span class="nav-number">1.4.2.</span> <span class="nav-text">0B. 使用S0B_sacMSEED_to_ASDF.py处理本地SAC &#x2F;缩小文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-使用S1-fft-cc-MPI-py-执行互相关"><span class="nav-number">1.4.3.</span> <span class="nav-text">1. 使用S1_fft_cc_MPI.py 执行互相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用S2-stacking-py叠加"><span class="nav-number">1.4.4.</span> <span class="nav-text">2. 使用S2_stacking.py叠加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">1.4.5.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">NoisePy简易教程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#翻译自GitHub"><span class="nav-number">1.0.0.1.</span> <span class="nav-text">翻译自GitHub</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#引用"><span class="nav-number">1.1.</span> <span class="nav-text">引用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.2.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#功能"><span class="nav-number">1.3.</span> <span class="nav-text">功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简易教程"><span class="nav-number">1.4.</span> <span class="nav-text">简易教程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#0A-使用S0A-download-ASDF-MPI-py下载地震噪声数据"><span class="nav-number">1.4.1.</span> <span class="nav-text">0A. 使用S0A_download_ASDF_MPI.py下载地震噪声数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#0B-使用S0B-sacMSEED-to-ASDF-py处理本地SAC-缩小文件"><span class="nav-number">1.4.2.</span> <span class="nav-text">0B. 使用S0B_sacMSEED_to_ASDF.py处理本地SAC &#x2F;缩小文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-使用S1-fft-cc-MPI-py-执行互相关"><span class="nav-number">1.4.3.</span> <span class="nav-text">1. 使用S1_fft_cc_MPI.py 执行互相关</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-使用S2-stacking-py叠加"><span class="nav-number">1.4.4.</span> <span class="nav-text">2. 使用S2_stacking.py叠加</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文献"><span class="nav-number">1.4.5.</span> <span class="nav-text">参考文献</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -419,7 +436,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">34</span>
+          <span class="site-state-item-count">35</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
@@ -432,7 +449,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">20</span>
+        <span class="site-state-item-count">21</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
