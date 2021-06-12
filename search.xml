@@ -487,18 +487,25 @@ $$MSE_f = \frac{1}{N_f}\sum_{i=1}^{N_f}\mid f(t_f^{i}, x^i_f)\mid^2$$<br>
 <img src="/2021/05/07/10.1016j.jcp.2018.10.045_a/fig01.png" alt="fig01"></p>
 <h2 id="3-2-离散时间模型">3.2 离散时间模型</h2>
 <p>对方程$2$应用$q$阶Runge-Kutta方法得到以下公式：<br>
-$$u^{n+c_i}=u^n-\Delta t\sum_{j=1}^q a_ij\mathcal{N}[u^{n+c_j}], i=1,…,q,  \<br>
-u^{n+1}=u^n-\Delta t \sum_{j=1}^q b_j \mathcal{N}[u^{n+c_j}]. \tag 7$$<br>
-其中，$u^{n+c_j}(x)=u(t^n+c_j\Delta t, x)$（$j=1,…,q$）。这一通用格式封装了显式和隐式时间递推格式，该格式取决于参数${a_ij, b_j, c_j}$。公式$7$可以被等价地表示为：<br>
+$$\begin{align}<br>
+\notag<br>
+&amp;u^{n+c_i}=u^n-\Delta t\sum_{j=1}^q a_ij\mathcal{N}[u^{n+c_j}], i=1,…,q, \\<br>
+\notag<br>
+&amp;u^{n+1}=u^n-\Delta t \sum_{j=1}^q b_j \mathcal{N}[u^{n+c_j}].<br>
+\end{align}\tag 7$$</p>
+<p>其中，$u^{n+c_j}(x)=u(t^n+c_j\Delta t, x)$（$j=1,…,q$）。这一通用格式封装了显式和隐式时间递推格式，该格式取决于参数${a_ij, b_j, c_j}$。公式$7$可以被等价地表示为：<br>
 $$u^n=u^n_i, i=1,…,q,\<br>
 u^n=u^n_{q+1} \tag{8}$$<br>
 其中:<br>
-$$u^n_j:=u^{n+c_i}+\Delta t \sum^q_{j=1}a_ij \mathcal{N}[u^{n+c_j}], i=1,…,q \<br>
-u^n_{q+1}:=u^{n+1}+\Delta t \sum^q_{j=1}b_j \mathcal{N}[u^{n+c_j}] \tag{9}$$<br>
+$$\begin{align}<br>
+\notag<br>
+&amp;u^n_j:=u^{n+c_i}+\Delta t \sum^q_{j=1}a_ij \mathcal{N}[u^{n+c_j}], i=1,…,q \\<br>
+&amp;u^n_{q+1}:=u^{n+1}+\Delta t \sum^q_{j=1}b_j \mathcal{N}[u^{n+c_j}]<br>
+\end{align}\tag{9}$$<br>
 我们将多输出神经网络置于以下公式之前<br>
-$$[u^{n+c_1}(x),…,u^{n+c_q}(x), u^{n+1}(x)] \tag{10}$$<br>
-上述先验信息以及公式$9$共同构成了以$x$为输入、以公式$11$为输出的PINN：<br>
-$$[u^n_1(x),…,u^n_q(x), u^{n}_{q+1}(x)] \tag{11}$$</p>
+$$[u^{n+c_1}(x),…,u^{n+c_q}(x), u^{n+1}(x)] \tag{10}$$</p>
+<p>上述先验信息以及公式$9$共同构成了以$x$为输入、以公式$11$为输出的PINN：</p>
+<p>$$[u^n_1(x),…,u^n_q(x), u^{n}_{q+1}(x)] \tag{11}$$</p>
 <h3 id="3-2-1-例子（Allen-Cahn方程）">3.2.1 例子（Allen-Cahn方程）</h3>
 <p>这个例子旨在强调以上提出的离散时间模型处理不同类型非线性偏微分方程的能力。为此，让我们考虑Allen-Cahn和周期边界条件<br>
 $$u_t-0.0001u_{xx}+5u^3-5u=0, x\in [-1, 1], t \in[0, 1]$$<br>
@@ -511,10 +518,15 @@ $$\mathcal{N}[u^{n+c_j}]=-0.0001u_{xx}^{n+c_j}+5(u^{n+c_j})^3-5u^{n+c_j}$$<br>
 $$SSE=SSE_n+SSE_b$$<br>
 其中，<br>
 $$SSE_n=\sum_{j=1}^{q+1} \sum_{i=1}^{N_n} \mid u_j^n(x^{n,i}-u^{n, i}) \mid ^2$$<br>
-$$SSE_b=\sum_{i=1}^q\mid u^{n+c_i}(-1)-u^{n+c_i}(1)\mid ^2+<br>
-\mid u^{n+1}(-1)-u^{n+1}(1) \mid ^2+ \<br>
-\sum_{i=1}^q \mid u^{n+c_i}_x(-1)-u^{n+c_i}_x(1) \mid ^2 +<br>
-\mid u_x^{n+1}(-1)-u^{n+1}_x(1)\mid ^2.$$<br>
+$$\begin{align}<br>
+\notag<br>
+SSE_b&amp;=\sum_{i=1}^q\mid u^{n+c_i}(-1)-u^{n+c_i}(1)\mid ^2+<br>
+\mid u^{n+1}(-1)-u^{n+1}(1) \mid ^2 \\<br>
+\notag<br>
+&amp;+\sum_{i=1}^q \mid u^{n+c_i}_x(-1)-u^{n+c_i}_x(1) \mid ^2 +<br>
+\mid u_x^{n+1}(-1)-u^{n+1}_x(1)\mid ^2.<br>
+\end{align}<br>
+$$<br>
 $\lbrace x^{n, i}, u^{n, i}\rbrace _{i=1}^{N_n}$表示$t^n$时刻的数据。<br>
 在经典的数值分析中，受显式格式的稳定性约束或隐式公式的计算复杂性约束，时间步长通常被限制为较小值。随着Runge–Kutta阶数$q$增加，这些限制变得更加严格，并且对于大多数实际问题，需要进行数千到数百万个时间步长以达到最终时间。与经典方法形成鲜明对比的是，这里我们可以使用隐式Runge–Kutta格式，其中包含任意阶数，需要额外付出的成本非常小。这使得我们能够在保证稳定性和高预测精度的同时采取非常大的时间步长，所以允许我们仅通过一次递推就完成整个时空域求解。<br>
 在这个例子中，我们使用传统光谱法模拟$Allen-Cahn$方程得到了训练数据和测试数据。具体来讲，设初始条件为$u(0, x)=x^2cos(\pi x)$，周期性边界条件$u(t, -1)=u(t, 1)$和$u_x(t, -1)=u_x(t, 1)$，使用Chebfun包<sup id="fnref:40"><a href="#fn:40" rel="footnote"><span class="hint--top hint--error hint--medium hint--rounded hint--bounce" aria-label="T.A. Driscoll, N. Hale, L.N. Trefethen, Chebfun Guide, 2014.
