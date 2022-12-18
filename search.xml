@@ -2574,7 +2574,7 @@ $$\begin{align}<br>
       </tags>
   </entry>
   <entry>
-    <title>反问题</title>
+    <title>地震反演（第一章 前言）</title>
     <url>/2022/12/18/seismic_inversion_1.2/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>反问题</h1>
 <p>在野外地震勘探中，我们采集地震数据<strong>d</strong>的过程实际上是一个正演过程，即：</p>
