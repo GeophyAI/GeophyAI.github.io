@@ -280,7 +280,9 @@ $$\underset{j} \Sigma l_{ij}m_j=d_i \rm \space or  \space \rm \textbf {Lm}=\rm \
 其中，$l_{ij}$是第$i$条射线在第$j$个单元格中的射线路径段长度，$m_j$是第$j$个单元格中的常慢度$s_j$。这里，$\rm \textbf L$是$M\times N$的矩阵。</li>
 <li><strong>线性化</strong>。方程$1.4$是非线性的，因为射线路径段长度$l_{ij}$取决于速度模型。这并不奇怪，因为根据$Snell$定律，较大的速度梯度变化将会引起射线路径的较大变化。所以$L$隐式地依赖模型$\rm \textbf m$，所以除非我们的初始慢度模型非常接近实际模型，否则将无法反演出好的结果。解决办法是我们从一个接近于真实模型的模型$m^{(0)}=m_o$出发，对模型与数据之间的关系进行线性化。然后利用数据反演出一个更准确的模型$m^{(1)}$，将其作为新的初始模型，反复迭代直到收敛。<br>
 定义第$j$个模型参数为$m_j$，通过将在$\rm \textbf m$下观测到的数据$d_i(\rm \textbf m)$在初始模型$\rm \textbf m_o$处泰勒一阶展开来将其线性化：<br>
-$$d_i(\rm \textbf m) \approx d_i(\rm \textbf m_o)+\underset{j} \Sigma [\frac{\partial d_i(\rm \textbf m)}{\partial m_j}]_{\rm \textbf m_o} \delta m_j, \tag{1.5}$$</li>
+$$d_i(\rm \textbf m) \approx d_i(\rm \textbf m_o)+\underset{j} \Sigma [\frac{\partial d_i(\rm \textbf m)}{\partial m_j}]_{\rm \textbf m_o} \delta m_j, \tag{1.5}$$<br>
+其中，$\rm \textbf m=\rm \textbf m_o+\delta \rm \textbf m$。所以有<br>
+$$\delta d_i(\rm \textbf m)= \underset{j} \Sigma [\frac{\partial d_i(\rm \textbf m)}{\partial m_j}]{\rm \textbf m_o} \delta m_j, \tag{1.6}$$</li>
 </ol>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
