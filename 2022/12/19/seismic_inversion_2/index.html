@@ -280,7 +280,7 @@
 <script type="math/tex; mode=display">f(\rm \textbf x_0+\Delta \rm \textbf x) ≈ f(\rm \textbf x_0)+ \underset {i=1:N} \Sigma \frac{\partial f(\rm \textbf x_0)}{\partial x_i}\Delta x_i +\frac{1}{2} \underset {i=1:N} \Sigma\underset {j=1:N} \Sigma \frac{\partial^2 f(\rm \textbf x_0)}{\partial x_i \partial x_j}\Delta x_i\Delta x_j \tag{2.12}</script><p>对于一个足够小的$\Delta \rm \textbf x$，截断泰勒级数是原函数在$\rm \textbf x_0+\Delta \rm \textbf x$一个较好的近似。当N=2时，，公式2.12是一个椭圆，其最小值在$\rm \textbf x^{\ast}$。如果Hessian矩阵中的交叉项为0（即$\partial ^2f(\rm \textbf x)/\partial x_i \partial x_j=0 \space for \space i !=j$)，椭圆的最大轴和最小轴将和$x_1$、$x_2$平行，否则他们将和图2.2所示一样有一定角度的旋转。<br>![seismic_inversion_2/Figure2.2.png]</p>
 <p>定义$\Delta \rm \textbf x = \rm \textbf  x - \rm \textbf x_0$，$\partial \Delta x_i/\partial x_k=\delta_{ik}$，将第k个分量的梯度带入得：</p>
 <script type="math/tex; mode=display">\begin{align}
-\notag \frac{\partial f(\rm \textbf x)}{\partial x_k}=\frac{\partial f(\rm \textbf x+\Delta \rm \textbf x)}{\partial x_k} \\\\
+\notag \frac{\partial f(\rm \textbf x)}{\partial x_k}&=\frac{\partial f(\rm \textbf x+\Delta \rm \textbf x)}{\partial x_k} \\\\
 \notag & = \frac {\partial f(\rm \textbf x_0)}{\partial x_k}+\underset {j=1:N}\Sigma \frac{\partial^2f(\rm \textbf x_0)}{\partial x_k \partial x_j} \Delta x_j
 \tag{2.13}
 \notag \end{align}</script><p>如果$\rm \textbf x$在$f(\rm \textbf x)$的最小值点上，那么$\frac{\partial f(\rm \textbf x)}{\partial x_k}=0$，公式2.13可化简为线性系统：</p>
