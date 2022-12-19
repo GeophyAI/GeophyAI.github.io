@@ -259,10 +259,8 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>反问题</h1>
-<p>在野外地震勘探中，我们采集地震数据<strong>d</strong>的过程实际上是一个正演过程，即：</p>
-<p>$${\rm \textbf d}={\rm \textbf {Lm}}$$<br>
-其中，$\rm \textbf L$为隐式地依赖模型$\rm \textbf m$的非线性正演算子，其能够通过模型$\rm \textbf m$预测数据$\rm \textbf d$。如果原始的正演算子是非线性的，那么它通常可以通过背景模型来线性化。此时，我们可以将地球物理反问题定义为利用记录的数据矢量$\rm \textbf d$反演模型矢量$\rm \textbf m$。</p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="反问题"><a href="#反问题" class="headerlink" title="反问题"></a>反问题</h1><p>在野外地震勘探中，我们采集地震数据<strong>d</strong>的过程实际上是一个正演过程，即：</p>
+<script type="math/tex; mode=display">{\rm \textbf d}={\rm \textbf {Lm}}</script><p>其中，$\rm \textbf L$为隐式地依赖模型$\rm \textbf m$的非线性正演算子，其能够通过模型$\rm \textbf m$预测数据$\rm \textbf d$。如果原始的正演算子是非线性的，那么它通常可以通过背景模型来线性化。此时，我们可以将地球物理反问题定义为利用记录的数据矢量$\rm \textbf d$反演模型矢量$\rm \textbf m$。</p>
 <p>据Hadamard(1902)，适定数学模型，例如线性化后的${\rm \textbf d}={\rm \textbf {Lm}}$，具有以下特点：</p>
 <ol>
 <li>存在解。对于地球物理数据而言，噪声较多引起方程不相同或超定会导致解不存在。一个解决办法是寻找能够使得数据误差和惩罚项的加权和最小的解。</li>
@@ -270,22 +268,12 @@
 <li>解持续地依赖数据，否则解将会不稳定。例如，当数据中噪声水平产生微小变化时，肯恩贵引起模型的不连续变化（当病态矩阵$\rm \textbf L$存在许多接近于零的特征值时，会使得许多模型都能拟合相同的数据）。</li>
 </ol>
 <p>我们通常会改写反问题以使我们能够找到一个最优模型，这个最优模型能够使数据误差和惩罚方程的加权和最小。</p>
-<h1>旅行时成像 Traveltime tomography</h1>
-<p>旅行时成像是通过拾取的特定同相轴的旅行时来估计地下速度分布。旅行时层析需要六个步骤，这六个步骤对于大多数其他地球物理反演问题也是是适用的。</p>
+<h1 id="旅行时成像-Traveltime-tomography"><a href="#旅行时成像-Traveltime-tomography" class="headerlink" title="旅行时成像 Traveltime tomography"></a>旅行时成像 Traveltime tomography</h1><p>旅行时成像是通过拾取的特定同相轴的旅行时来估计地下速度分布。旅行时层析需要六个步骤，这六个步骤对于大多数其他地球物理反演问题也是是适用的。</p>
 <ol>
 <li><strong>模型</strong>$\rm \textbf m$<strong>的离散</strong>。地球慢度模型被离散化为一系列未知慢度的网格，每一个网格点上都有一个未知的慢度值。假设网格非常细所以在第$j$个网格中慢度$s_j$为常数。$N$个未知慢度构成了$N \times1$的模型矢量$\rm \textbf m$。</li>
 <li><strong>数据</strong>$\rm \textbf d$<strong>的离散</strong>。对于初至旅行时成像，我们首先要拾取每一道的初至并记为第$i_{th}$射线的时间$t_i$。$M$道数据能够形成$M\times1$的数据矢量$\rm \textbf d$。</li>
-<li><strong>模型算子</strong>$\rm \textbf L$<strong>的离散</strong>。通过给定一个初始模型和基于正演算子$\rm \textbf L$生成的预测数据来解决反问题。旅行时成像是基于高频近似假设的，因此第$i_{th}$射线的旅行时是所有单元格中旅行时$d_i$的和。<br>
-$$\underset{j} \Sigma l_{ij}m_j=d_i \rm \space or  \space \rm \textbf {Lm}=\rm \textbf d \tag{1.4}$$<br>
-其中，$l_{ij}$是第$i$条射线在第$j$个单元格中的射线路径段长度，$m_j$是第$j$个单元格中的常慢度$s_j$。这里，$\rm \textbf L$是$M\times N$的矩阵。</li>
-<li><strong>线性化</strong>。方程$1.4$是非线性的，因为射线路径段长度$l_{ij}$取决于速度模型。这并不奇怪，因为根据$Snell$定律，较大的速度梯度变化将会引起射线路径的较大变化。所以$L$隐式地依赖模型$\rm \textbf m$，所以除非我们的初始慢度模型非常接近实际模型，否则将无法反演出好的结果。解决办法是我们从一个接近于真实模型的模型$m^{(0)}=m_o$出发，对模型与数据之间的关系进行线性化。然后利用数据反演出一个更准确的模型$m^{(1)}$，将其作为新的初始模型，反复迭代直到收敛。<br>
-定义第$j$个模型参数为$m_j$，通过将在$\rm \textbf m$下观测到的数据$d_i(\rm \textbf m)$在初始模型$\rm \textbf m_o$处泰勒一阶展开来将其线性化：<br>
-$$d_i(\rm \textbf m) \approx d_i (\rm \textbf m_o) + \underset {j} \Sigma [ \frac { \partial d_i (\rm \textbf m)} {\partial m_j}]<em>{\rm \textbf m_o} \delta m_j, \tag{1.5}$$<br>
-其中，$\rm \textbf m=\rm \textbf m_o+\delta \rm \textbf m$。所以有<br>
-$$\delta d_i(\rm \textbf m)= \underset {j} \Sigma [\frac{\partial d_i(\rm \textbf m)} {\partial m_j}] {\rm \textbf m_o} \delta m_j, \tag{1.6}$$<br>
-或者写成矩阵矢量形式<br>
-$$\delta \rm \textbf d(\rm \textbf m)=\rm \textbf L(\delta \rm \textbf m),\tag{1.7}$$<br>
-这里，数据残差$\delta d_i=[d_i(\rm \textbf m)-d_i(\rm \textbf m_o)]$为观测数据第$i$个分量$\rm \textbf d_i(\rm \textbf m)$与预测数据第$i$个分量$\rm \textbf d_i(\rm \textbf m_o)$的差，模型扰动$\delta \rm \textbf m=\rm \textbf m-\rm \textbf m_o$为实际模型$\rm \textbf m$与猜测模型$\rm \textbf m_o$的误差。矩阵$\rm \textbf L$为雅可比矩阵，其元素为$l</em>{ij}=\frac{\partial d_i(\rm \textbf m_o)} {\partial m_j}$，</li>
+<li><strong>模型算子</strong>$\rm \textbf L$<strong>的离散</strong>。通过给定一个初始模型和基于正演算子$\rm \textbf L$生成的预测数据来解决反问题。旅行时成像是基于高频近似假设的，因此第$i_{th}$射线的旅行时是所有单元格中旅行时$d_i$的和。<script type="math/tex; mode=display">\underset{j} \Sigma l_{ij}m_j=d_i \rm \space or  \space \rm \textbf {Lm}=\rm \textbf d \tag{1.4}</script>其中，$l_{ij}$是第$i$条射线在第$j$个单元格中的射线路径段长度，$m_j$是第$j$个单元格中的常慢度$s_j$。这里，$\rm \textbf L$是$M\times N$的矩阵。</li>
+<li><strong>线性化</strong>。方程$1.4$是非线性的，因为射线路径段长度$l_{ij}$取决于速度模型。这并不奇怪，因为根据$Snell$定律，较大的速度梯度变化将会引起射线路径的较大变化。所以$L$隐式地依赖模型$\rm \textbf m$，所以除非我们的初始慢度模型非常接近实际模型，否则将无法反演出好的结果。解决办法是我们从一个接近于真实模型的模型$m^{(0)}=m_o$出发，对模型与数据之间的关系进行线性化。然后利用数据反演出一个更准确的模型$m^{(1)}$，将其作为新的初始模型，反复迭代直到收敛。<br>定义第$j$个模型参数为$m_j$，通过将在$\rm \textbf m$下观测到的数据$d_i(\rm \textbf m)$在初始模型$\rm \textbf m_o$处泰勒一阶展开来将其线性化：<script type="math/tex; mode=display">d_i(\rm \textbf m) \approx d_i (\rm \textbf m_o) + \underset {j} \Sigma [ \frac { \partial d_i (\rm \textbf m)} {\partial m_j}]_{\rm \textbf m_o} \delta m_j, \tag{1.5}</script>其中，$\rm \textbf m=\rm \textbf m_o+\delta \rm \textbf m$。所以有<script type="math/tex; mode=display">\delta d_i(\rm \textbf m)= \underset {j} \Sigma [\frac{\partial d_i(\rm \textbf m)} {\partial m_j}] {\rm \textbf m_o} \delta m_j, \tag{1.6}</script>或者写成矩阵矢量形式<script type="math/tex; mode=display">\delta \rm \textbf d(\rm \textbf m)=\rm \textbf L(\delta \rm \textbf m),\tag{1.7}</script>这里，数据残差$\delta d_i=[d_i(\rm \textbf m)-d_i(\rm \textbf m_o)]$为观测数据第$i$个分量$\rm \textbf d_i(\rm \textbf m)$与预测数据第$i$个分量$\rm \textbf d_i(\rm \textbf m_o)$的差，模型扰动$\delta \rm \textbf m=\rm \textbf m-\rm \textbf m_o$为实际模型$\rm \textbf m$与猜测模型$\rm \textbf m_o$的误差。矩阵$\rm \textbf L$为雅可比矩阵，</li>
 </ol>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
@@ -388,7 +376,7 @@ $$\delta \rm \textbf d(\rm \textbf m)=\rm \textbf L(\delta \rm \textbf m),\tag{1
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">反问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">旅行时成像 Traveltime tomography</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#反问题"><span class="nav-number">1.</span> <span class="nav-text">反问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#旅行时成像-Traveltime-tomography"><span class="nav-number">2.</span> <span class="nav-text">旅行时成像 Traveltime tomography</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
