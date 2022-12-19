@@ -2260,13 +2260,7 @@ $$\delta \rm \textbf d(\rm \textbf m)=\rm \textbf L(\delta \rm \textbf m),\tag{1
 $$\delta t_i=\Sigma_j l_{ij}\delta s_j \tag {1.8}$$</li>
 <li><strong>正则化解</strong>。记录数据含有的噪声会导致一组不一致的(inconsistent)（当我们使用的模拟算子无法模拟数据所需要的所有的物理信息时，也会出现不一致问题）超定方程。此外，由于许多模型都可以满足相同的数据，所以解可能是不稳定的。<br>
 为了一定程度上解决这种问题，我们通常寻找能够使得目标函数$\epsilon$最小的模型，目标函数由一个惩罚项和数据残差的$p$范数的$p$次方构成：<br>
-$$\epsilon=\frac{1}{p} ||\rm \textbf L\delta \rm \textbf m-\delta \rm \textbf d||^p_p+ \eta^2g(\rm \textbf m), \tag {1.9}$$<br>
-其中$\eta^2$为一个非常小的正数，$g(\rm \textbf m)$是惩罚因子项，当估计模型接近实际模型的先验估计时其会变得很小。$p$是正整数，残差矢量$\rm \textbf L \delta \rm \textbf m-\delta \rm \textbf d$是观测数据和预测数据之差。当$p=2$时，残差矢量的平方长度即为误差函数。<br>
-有时惩罚项会被表示为$g(\rm \textbf m)=\frac{1}{p} ||m-m^{‘}||^p_p$（模型残差），其中$m^{’}$为先验模型。通常设置$p=2$，即平方数据残差和约束模型惩罚之和$||\rm \textbf L \delta \rm \textbf m -\delta \rm \textbf d ||^2+\eta ^2||\delta \rm \textbf m||^2$作为目标函数。这种情况下，正则化阻尼最小二乘解为:<br>
-$$\delta \rm \textbf m=[\rm \textbf L^{\rm \textbf T}\rm \textbf T + \eta^2\rm \textbf I]^{-1}\rm \textbf L ^{\rm \textbf T}\delta \rm \textbf d, \tag {1.10}$$<br>
-其中$I$为单位矩阵，当元素均为复数时转置算子表示复共轭。对于复数，我们使用伴随符号$\dagger$代替转置符号。</li>
-<li><strong>迭代正则化解</strong>。数据与模型之间的关系通常是非线性的，所以公式$1.10$的解常由迭代的形式来得到:<br>
-$$\rm \textbf m^{(k+1)}=\rm \textbf m^{(k)}-\alpha [\rm \textbf L^{\rm \textbf T}\rm \textbf T + \eta^2\rm \textbf I]^{-1}\rm \textbf L ^{\rm \textbf T}\delta \rm \textbf d^{(k)},\tag {1.11}$$</li>
+$$\epsilon=\frac{1}{p} ||\rm \textbf L\delta \rm \textbf m-\delta \rm \textbf d||^p_p+ \eta^2g(\rm \textbf m), \tag {1.9}$$</li>
 </ol>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
