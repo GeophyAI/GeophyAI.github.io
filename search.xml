@@ -2599,7 +2599,7 @@ $$\underset{j} \Sigma l_{ij}m_j=d_i \rm \space or  \space \rm \textbf {Lm}=\rm \
 定义第$j$个模型参数为$m_j$，通过将在$\rm \textbf m$下观测到的数据$d_i(\rm \textbf m)$在初始模型$\rm \textbf m_o$处泰勒一阶展开来将其线性化：<br>
 $$d_i(\rm \textbf m) \approx d_i(\rm \textbf m_o)+\underset{j}\Sigma [\frac{\partial d_i(\rm \textbf m)}{\partial m_j}]<em>{\rm \textbf m_o} \delta m_j, \tag{1.5}$$<br>
 其中，$\rm \textbf m=\rm \textbf m_o+\delta \rm \textbf m$。所以有<br>
-$$\delta d_i(\rm \textbf m)=\underset{j}\Sigma [\frac{\partial d_i(\rm \textbf m)}{\partial m_j}]|{\rm \textbf m_o} \delta m_j, \tag{1.6}$$<br>
+$$\delta d_i(\rm \textbf m)=\underset{j}\Sigma [\frac{\partial d_i(\rm \textbf m)}{\partial m_j}]{\rm \textbf m_o} \delta m_j, \tag{1.6}$$<br>
 或者写成矩阵矢量形式<br>
 $$\delta \rm \textbf d(\rm \textbf m)=\rm \textbf L(\delta \rm \textbf m),\tag{1.7}$$<br>
 这里，数据残差$\delta d_i=[d_i(\rm \textbf m)-d_i(\rm \textbf m_o)]$为观测数据第$i$个分量$\rm \textbf d_i(\rm \textbf m)$与预测数据第$i$个分量$\rm \textbf d_i(\rm \textbf m_o)$的差，模型扰动$\delta \rm \textbf m=\rm \textbf m-\rm \textbf m_o$为实际模型$\rm \textbf m$与猜测模型$\rm \textbf m_o$的误差。矩阵$\rm \textbf L$为雅可比矩阵，其元素为$l</em>{ij}=\frac{\partial d_i(\rm \textbf m_o)}{\partial m_j}$，即$Fr\acute echet$导数，表示第$i$个数据相对于模型扰动在第$j$个单元格处的敏感核。<br>
