@@ -2250,27 +2250,11 @@ $$\underset{j} \Sigma l_{ij}m_j=d_i \rm \space or  \space \rm \textbf {Lm}=\rm \
 其中，$l_{ij}$是第$i$条射线在第$j$个单元格中的射线路径段长度，$m_j$是第$j$个单元格中的常慢度$s_j$。这里，$\rm \textbf L$是$M\times N$的矩阵。</li>
 <li><strong>线性化</strong>。方程$1.4$是非线性的，因为射线路径段长度$l_{ij}$取决于速度模型。这并不奇怪，因为根据$Snell$定律，较大的速度梯度变化将会引起射线路径的较大变化。所以$L$隐式地依赖模型$\rm \textbf m$，所以除非我们的初始慢度模型非常接近实际模型，否则将无法反演出好的结果。解决办法是我们从一个接近于真实模型的模型$m^{(0)}=m_o$出发，对模型与数据之间的关系进行线性化。然后利用数据反演出一个更准确的模型$m^{(1)}$，将其作为新的初始模型，反复迭代直到收敛。<br>
 定义第$j$个模型参数为$m_j$，通过将在$\rm \textbf m$下观测到的数据$d_i(\rm \textbf m)$在初始模型$\rm \textbf m_o$处泰勒一阶展开来将其线性化：<br>
-$$d_i(\rm \textbf m) \approx d_i(\rm \textbf m_o)+\underset {j} \Sigma [\frac {\partial d_i(\rm \textbf m)} {\partial m_j}]<em>{\rm \textbf m_o} \delta m_j, \tag{1.5}$$<br>
+$$d_i(\rm \textbf m) \approx d_i (\rm \textbf m_o) + \underset {j} \Sigma [ \frac { \partial d_i (\rm \textbf m)} {\partial m_j}]_{\rm \textbf m_o} \delta m_j, \tag{1.5}$$<br>
 其中，$\rm \textbf m=\rm \textbf m_o+\delta \rm \textbf m$。所以有<br>
 $$\delta d_i(\rm \textbf m)= \underset {j} \Sigma [\frac{\partial d_i(\rm \textbf m)} {\partial m_j}] {\rm \textbf m_o} \delta m_j, \tag{1.6}$$<br>
 或者写成矩阵矢量形式<br>
-$$\delta \rm \textbf d(\rm \textbf m)=\rm \textbf L(\delta \rm \textbf m),\tag{1.7}$$<br>
-这里，数据残差$\delta d_i=[d_i(\rm \textbf m)-d_i(\rm \textbf m_o)]$为观测数据第$i$个分量$\rm \textbf d_i(\rm \textbf m)$与预测数据第$i$个分量$\rm \textbf d_i(\rm \textbf m_o)$的差，模型扰动$\delta \rm \textbf m=\rm \textbf m-\rm \textbf m_o$为实际模型$\rm \textbf m$与猜测模型$\rm \textbf m_o$的误差。矩阵$\rm \textbf L$为雅可比矩阵，其元素为$l</em>{ij}=\frac{\partial d_i(\rm \textbf m_o)}{\partial m_j}$，即$Fr\acute echet$导数，表示第$i$个数据相对于模型扰动在第$j$个单元格处的敏感核。<br>
-对于旅行时成像和较小的单元格，$Fr\acute echet$导数可以表示为射线段长度$l_{ij}$在第$j$个单元格第$i$条射线，公式$(1.6)$变为<br>
-$$\delta t_i=\Sigma_j l_{ij}\delta s_j \tag {1.8}$$</li>
-<li><strong>正则化解</strong>。记录数据含有的噪声会导致一组不一致的(inconsistent)（当我们使用的模拟算子无法模拟数据所需要的所有的物理信息时，也会出现不一致问题）超定方程。此外，由于许多模型都可以满足相同的数据，所以解可能是不稳定的。<br>
-为了一定程度上解决这种问题，我们通常寻找能够使得目标函数$\epsilon$最小的模型，目标函数由一个惩罚项和数据残差的$p$范数的$p$次方构成：<br>
-$$\epsilon=\frac{1}{p} ||\rm \textbf L\delta \rm \textbf m-\delta \rm \textbf d||^p_p+ \eta^2g(\rm \textbf m), \tag {1.9}$$<br>
-其中$\eta^2$为一个非常小的正数，$g(\rm \textbf m)$是惩罚因子项，当估计模型接近实际模型的先验估计时其会变得很小。$p$是正整数，残差矢量$\rm \textbf L \delta \rm \textbf m-\delta \rm \textbf d$是观测数据和预测数据之差。当$p=2$时，残差矢量的平方长度即为误差函数。<br>
-有时惩罚项会被表示为$g(\rm \textbf m)=\frac{1}{p} ||m-m^{‘}||^p_p$（模型残差），其中$m^{’}$为先验模型。通常设置$p=2$，即平方数据残差和约束模型惩罚之和$||\rm \textbf L \delta \rm \textbf m -\delta \rm \textbf d ||^2+\eta ^2||\delta \rm \textbf m||^2$作为目标函数。这种情况下，正则化阻尼最小二乘解为:<br>
-$$\delta \rm \textbf m=[\rm \textbf L^{\rm \textbf T}\rm \textbf T + \eta^2\rm \textbf I]^{-1}\rm \textbf L ^{\rm \textbf T}\delta \rm \textbf d, \tag {1.10}$$<br>
-其中$I$为单位矩阵，当元素均为复数时转置算子表示复共轭。对于复数，我们使用伴随符号$\dagger$代替转置符号。</li>
-<li><strong>迭代正则化解</strong>。数据与模型之间的关系通常是非线性的，所以公式$1.10$的解常由迭代的形式来得到:<br>
-$$\rm \textbf m^{(k+1)}=\rm \textbf m^{(k)}-\alpha [\rm \textbf L^{\rm \textbf T}\rm \textbf T + \eta^2\rm \textbf I]^{-1}\rm \textbf L ^{\rm \textbf T}\delta \rm \textbf d^{(k)},\tag {1.11}$$<br>
-其中，$\alpha$为步长，$\rm \textbf m^{(k)}$（$\delta \rm \textbf d^{(k)}$）表示第$k$次迭代的模型（数据残差）。与矩阵$\rm \textbf L$相关的射线是由第$k$次的速度模型计算得到的，不断迭代得到后续的速度模型知道数据残差到我们能够接受的水平。矩阵$[\rm \textbf L^T\rm \textbf L]$的求取、存储和反演成本巨大，因此我们通常使用其主对角元素$[\rm \textbf L^T\rm \textbf L]<em>{ij} ≈[\rm \textbf L^T\rm \textbf L]</em>{ii}\delta <em>{ij}$来获得预处理后的最速下降梯度解。<br>
-$$\delta m_i^{(k+1)}=\delta m_i^{(k)}-\frac{\alpha [\rm \textbf L ^{\rm \textbf T}\delta \rm \textbf d^{(k)}]} {[\rm \textbf L^T \rm \textbf L]</em>{ii}+\eta^2},\tag {1.12}$$<br>
-非线性地震反演的主要问题是目标函数常常包含许多局部小值；所以，迭代解通常会陷入局部极小并且永远无法达到全局最优，或者无法反演到真实模型。为了避免这一问题，我们通常在前面的迭代中只反演重要的特征（骨骼化数据，Luo and Schuster，1991a；1991b），即反演长波长信息，后续的反演中慢慢添加高阶信息。<br>
-常见的骨骼化的方法包括multi-scale反演，early-arrivals反演，near-offset反演等。在后续的反演中逐渐添加远偏移距、长记录、以及更复杂的物理信息。</li>
+$$\delta \rm \textbf d(\rm \textbf m)=\rm \textbf L(\delta \rm \textbf m),\tag{1.7}$$</li>
 </ol>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
