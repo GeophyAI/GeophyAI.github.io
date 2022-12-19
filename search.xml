@@ -1752,8 +1752,9 @@ P &= P_0 \\\\
 <script type="math/tex; mode=display">f(\rm \textbf x_0+\Delta \rm \textbf x)=f(\rm \textbf x_0)+\rm \textbf g^T \Delta \rm \textbf x+\frac{1}{2} \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x_0)\Delta \rm \textbf x + o(||\Delta \rm \textbf x||^3) \tag{2.8}</script><p>忽略高阶项后可以得到二次模型近似：</p>
 <script type="math/tex; mode=display">\begin{align}
 \notag f(\rm \textbf x_0+\Delta \rm \textbf x)&≈f(\rm \textbf x_0)+\rm \textbf g^T \Delta \rm \textbf x+\frac{1}{2} \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x_0)\Delta \rm \textbf x \\\\
-\notag &= f(\rm \textbf x_0)+ \rm \textbf g^T \Delta \rm \textbf x +\frac{1}{2} \Delta \rm \textbf x^T \rm \textbf H \Delta \rm \textbf x\tag{2.9}
-\end{align}</script><p>如果存在局部或全局最小点$\rm \textbf x^{\ast}$，则图2.1中的一维曲线需满足$\partial f(\rm \textbf x^{\ast})/\partial x=0$,$\partial^2 f(\rm \textbf x^{\ast})/\partial x^2&gt;0$<br>多维情况下的最优条件为：</p>
+\notag &= f(\rm \textbf x_0)+ \rm \textbf g^T \Delta \rm \textbf x +\frac{1}{2} \Delta \rm \textbf x^T \rm \textbf H \Delta \rm \textbf x
+\notag \end{align} 
+\tag{2.9}</script><p>如果存在局部或全局最小点$\rm \textbf x^{\ast}$，则图2.1中的一维曲线需满足$\partial f(\rm \textbf x^{\ast})/\partial x=0$,$\partial^2 f(\rm \textbf x^{\ast})/\partial x^2&gt;0$<br>多维情况下的最优条件为：</p>
 <script type="math/tex; mode=display">\nabla f(\rm \textbf x^{\ast})=0 \space and \space  \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x^{\ast})\Delta \rm \textbf x>0\tag {2.10}</script><p>其中，第二个条件定义了Hessian矩阵的正定性。<br>许多地球物理问题使用$\rm \textbf L^T\rm \textbf L$，即反传算子$\rm \textbf L^T$和正传算子$\rm \textbf L$的级联，来近似Hessian矩阵$\rm \textbf H$。如果$\rm \textbf L$为实数，对于实特征矢量$\rm \textbf x_i$，有：</p>
 <script type="math/tex; mode=display">\rm \textbf x^T_i[\rm \textbf L^T\rm \textbf L]\rm \textbf x_i = \lambda_i \rm \textbf x^T_i \rm \textbf x_i≥0\tag{2.11}</script><p>这里的不等号是由于$||\rm \textbf {Lx}||_i≥0$。当$\rm \textbf x$不在原点时$\rm \textbf x^T_i \rm \textbf x_i&gt;0$，所以有$\lambda_i≥0$，也因此在时空域的最小二乘偏移和全波形反演的Hessian矩阵至少是半正定的。</p>
 <h1 id="2-2-梯度优化，泰勒级数和牛顿方法"><a href="#2-2-梯度优化，泰勒级数和牛顿方法" class="headerlink" title="2.2 梯度优化，泰勒级数和牛顿方法"></a>2.2 梯度优化，泰勒级数和牛顿方法</h1><p>公式2.9可以表示为:</p>
@@ -1762,8 +1763,8 @@ P &= P_0 \\\\
 <script type="math/tex; mode=display">\begin{align}
 \notag \frac{\partial f(\rm \textbf x)}{\partial x_k}&=\frac{\partial f(\rm \textbf x+\Delta \rm \textbf x)}{\partial x_k} \\\\
 \notag & = \frac {\partial f(\rm \textbf x_0)}{\partial x_k}+\underset {j=1:N}\Sigma \frac{\partial^2f(\rm \textbf x_0)}{\partial x_k \partial x_j} \Delta x_j
-\tag{2.13}
-\notag \end{align}</script><p>如果$\rm \textbf x$在$f(\rm \textbf x)$的最小值点上，那么$\frac{\partial f(\rm \textbf x)}{\partial x_k}=0$，公式2.13可化简为线性系统：</p>
+\notag \end{align}
+\tag{2.13}</script><p>如果$\rm \textbf x$在$f(\rm \textbf x)$的最小值点上，那么$\frac{\partial f(\rm \textbf x)}{\partial x_k}=0$，公式2.13可化简为线性系统：</p>
 <script type="math/tex; mode=display">g_k=-\Sigma_{j=1}^{N} \frac{\partial ^2 f(\rm \textbf x_0)}{\partial x_k \partial x_j} \Delta x_j \space or \space \rm \textbf g=-\rm \textbf H \Delta \rm \textbf x\tag{2.14}</script><p>其中$g_k=\partial f(\rm \textbf x)/ \partial x_k | \rm \textbf x=\rm \textbf x_0$</p>
 <p>求解2.14中$\Delta \rm \textbf x$可得：</p>
 <script type="math/tex; mode=display">\Delta \rm \textbf x = - \rm \textbf H^{-1}\rm \textbf g \tag {2.15}</script><p>因此，给定一个试验模型$\rm \textbf x_0$，利用梯度优化算法求解2.14中的$\Delta \rm \textbf x$进而求得$\rm \textbf x^{\ast}=\rm \textbf x_0+\Delta \rm \textbf x$来减小目标函数$f(\rm \textbf x)$。<br>如果方程构成的系统是线性的，那么其构成的Hessian矩阵与$\rm \textbf x$无关，，所以二次函数为如图2.2所示的椭圆。在这种情况下，可以直接使用LU分解来求解$\rm \textbf x^{\ast}$。这种方法被称线性牛顿方法。如果直接求解较为困难，则可以采用迭代方程</p>
