@@ -20,26 +20,20 @@
     var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="背景速度估计，节选自SEG BOOK《Introduction to petroleum Seismology》的ch11 An example of an Inverse Problem Lineariz。">
+  <meta name="description" content="梯度优化，节选自《Seismic Inversion》">
 <meta property="og:type" content="article">
-<meta property="og:title" content="速度分析">
-<meta property="og:url" content="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/index.html">
+<meta property="og:title" content="地震反演（第二章 梯度优化前言）">
+<meta property="og:url" content="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/index.html">
 <meta property="og:site_name" content="GeophyAI">
-<meta property="og:description" content="背景速度估计，节选自SEG BOOK《Introduction to petroleum Seismology》的ch11 An example of an Inverse Problem Lineariz。">
+<meta property="og:description" content="梯度优化，节选自《Seismic Inversion》">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/11.46.png">
-<meta property="og:image" content="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/11.47.png">
-<meta property="og:image" content="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/11.48.png">
-<meta property="og:image" content="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/11.49.png">
-<meta property="og:image" content="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/11.51_11.52.png">
-<meta property="article:published_time" content="2021-06-09T14:05:54.765Z">
-<meta property="article:modified_time" content="2021-06-09T14:05:54.765Z">
+<meta property="article:published_time" content="2022-12-19T03:10:46.000Z">
+<meta property="article:modified_time" content="2022-12-19T03:10:46.000Z">
 <meta property="article:author" content="shaowinw">
-<meta property="article:tag" content="速度分析">
+<meta property="article:tag" content="反问题 2">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/11.46.png">
 
-<link rel="canonical" href="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/">
+<link rel="canonical" href="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/">
 
 
 <script id="page-configurations">
@@ -52,7 +46,7 @@
   };
 </script>
 
-  <title>速度分析 | GeophyAI</title>
+  <title>地震反演（第二章 梯度优化前言） | GeophyAI</title>
   
 
 
@@ -201,7 +195,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -214,7 +208,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          速度分析
+          地震反演（第二章 梯度优化前言）
         </h1>
 
         <div class="post-meta">
@@ -224,7 +218,7 @@
               </span>
               <span class="post-meta-item-text">发表于</span>
 
-              <time title="创建时间：2021-06-09 22:05:54" itemprop="dateCreated datePublished" datetime="2021-06-09T22:05:54+08:00">2021-06-09</time>
+              <time title="创建时间：2022-12-19 11:10:46" itemprop="dateCreated datePublished" datetime="2022-12-19T11:10:46+08:00">2022-12-19</time>
             </span>
 
 
@@ -235,7 +229,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%9C%B0%E7%90%83%E7%89%A9%E7%90%86%E6%95%B0%E7%90%86%E7%9F%A5%E8%AF%86/" itemprop="url" rel="index"><span itemprop="name">地球物理数理知识</span></a>
+                  <a href="/categories/Seismic-Inversion/" itemprop="url" rel="index"><span itemprop="name">Seismic Inversion</span></a>
                 </span>
             </span>
 
@@ -248,13 +242,13 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2021/06/09/ITPS_pp500~503/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2021/06/09/ITPS_pp500~503/" itemprop="commentCount"></span>
+    <a title="valine" href="/2022/12/19/seismic_inversion_2/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2022/12/19/seismic_inversion_2/" itemprop="commentCount"></span>
     </a>
   </span>
   
   
-            <div class="post-description">背景速度估计，节选自SEG BOOK《Introduction to petroleum Seismology》的ch11 An example of an Inverse Problem Lineariz。</div>
+            <div class="post-description">梯度优化，节选自《Seismic Inversion》</div>
 
         </div>
       </header>
@@ -265,40 +259,27 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1>估计背景速度的模型</h1>
-<p>翻译自SEG Introduction to petroleum Seismology(pp. 500~503)</p>
-<h2 id="背景速度估计与成像之间的联系">背景速度估计与成像之间的联系</h2>
-<p>前面章节中描述的成像算法，其成功与否取决与背景速度模型的准确性。换句话说，我们只有知道一部分地下模型，才能重构出“整个”模型，这又被称为地震成像悖论。正如本章第一节所描述的，这一悖论是由于我们当前使用的成像技术中显式或隐式地使用了Born近似所致。</p>
-<p>幸运的是，如果地质构造不太复杂的话，能够用于成像的较为准确的速度模型，其也可以用来估计背景模型。如图11.46所示，其中只有一条反射同相轴，与同相轴相关的检波点的成像对于速度非常敏感。如前面章节所述，我们需要对由于偏移距所产生的旅行时差异(moveout)进行校正和叠加。如图11.47所示，对于一个包含三个同相轴的记录，正确的背景速度能够得到最大振幅动校正(maximun-amplitude-moveout correction)并将同相轴“拉平”。这一想法相当于“聚焦”地震道，以得到最大响应。当地震道正确排列时（即动校正完全时），地震道记录的总和将最大。这种想法类似于透镜或抛物面透镜对平面波的聚焦作用。<br>
-<img src="/2021/06/09/ITPS_pp500~503/11.46.png" alt="11.46"><br>
-因此，重建背景速度的基本思想是使用各种速度模型对数据进行成像，并选择能够对地下构造聚焦的模型。估计背景速度模型的两个关键点，一是成像算法，二是确定最佳速度模型的准则。在例11.46和1.47中，为了简化问题，我们使用动校正和叠加进行成像，能够使叠加结果振幅最大的模型为正确模型。（对Box11.9不做介绍）<br>
-<img src="/2021/06/09/ITPS_pp500~503/11.47.png" alt="11.47"><br>
-时间域成像和深度域成像是两种最常用的成像手段。时间域成像的背景速度是均方根速度，深度域成像的背景速度是实际速度(也称层速度)。实现$focus$和$defocus$的思想在时间域和深度域成像中有非常大的不同。时间域成像中违反了斯奈尔定律，所以聚焦和散焦可以应用于数据中的每个单独的同相轴，并且其独立于其它同相轴。我们可以通过在一系列均匀、非均匀速度模型上偏移来同时扫描所有同相轴，进而估计均方根速度。图11.47中，同时扫描了三个同相轴。</p>
-<p>在深度域成像中，由于没有使用常速度模型作为背景速度，因此我们没有违反斯奈尔定律。所以，要想将某一深度上的同相轴还原到深度域其构造上，就必须知道该层以上的所有的准确速度。所以我们必须从地表开始逐层扫描，以获得实际的速度，或者我们可以扫描一系列不均匀速度模型来获得背景速度。后文中将详细介绍用于深度域成像的恢复层速度的方法。下面，我们从时间域成像开始介绍速度估计。</p>
-<h2 id="速度谱">速度谱</h2>
-<p>11.47(b)中的曲线图即为<strong>速度谱</strong>。图中所示的量为对CMP道集动校正并叠加后的振幅。速度谱中另一个量是<code>Box 11.9</code>中定义的<code>semblance</code>。实际上，速度谱通常是基于<code>semblance</code>，如图11.48所示。我们可以看到，图11.48中<code>semblance</code>在反射波较强时更为突出。图11.48和11.49中的合成地震数据均通过有限差分计算得到。尽管图中只显示了纵波速度模型，但正演是基于弹性波的，这里我们主要考虑P-P反射。在图11.49中，这些强反射用红色表示。我们可以根据均方根速度通常随着时间或深度增加这一事实来对其进行选择。此外，由此选择的速度与理论计算的均方根速度(白色曲线)拟合较好。<br>
-<img src="/2021/06/09/ITPS_pp500~503/11.48.png" alt="11.48"><br>
-需要注意的是，我们可以在<code>semblance</code>图红色区域选择不同的值，但是其中一些值代表多次波，它们并不会参与均方根速度的计算。均方根速度通常会随时间和深度增加使我们能够避免选择与多次波相关的红色峰值。<br>
-<img src="/2021/06/09/ITPS_pp500~503/11.49.png" alt="11.49"><br>
-在<code>semblance</code>图上选择正确的速度是非常困难的。例如，11.49所示的炮集记录和速度谱对应于一个较为简单的模型，该模型包含一个高速玄武岩层，与图11.48不同的是，理论计算的均方根速度与<code>semblance</code>图3s位置选取的红色峰值处并不匹配。这种误差是非双曲的旅行时变化造成的，而我们的速度谱是基于动校正叠加计算的，也即暗含了时距曲线是双曲线这一假设(动校正量为双曲)。换句话说，这种误差是我们成像工具的局限性以及聚焦和散焦的局限性所致。在下一小节中，我们将讨论这种聚焦和散焦思想在复杂成像工具中的扩展。</p>
-<p>图11.49中的<code>semblance</code>图也显示，与图11.48中的<code>semblance</code>图相比，强振幅同相轴到达时间更晚。显然，这些波明显不是初至，而是多次波和转换波。这一结果说明了区分玄武岩上方产生的多次波和真正的初至是非常困难的。</p>
-<h1>偏移速度分析</h1>
-<p>如图11.48和11.49所示的均方根速度估计是基于动校正和叠加的。这种方法只有在检波器水平分布且时距曲线为双曲线时才有意义，当界面倾角较大时，速度模型的误差也会较大。<br>
-另一种方法是使用如公式11.202所示的叠前时间偏移算法来取代动校正和叠加。我们以$\Delta V$对$V_{min}$~$V_{max}$之间的速度进行常速偏移，在图11.50所示例子中，$V_{min}=2050 m/s$~$V_{max}=3350 m/s$，$\Delta V=50m/s$。偏移结果如图11.50所示(以 $200m/s$为间隔)。我们仍然可以十分清楚地看到同相轴能够聚焦，即使使用的速度模型偏离正确速度。例如，同相轴$A$和$B$在$2050m/s$的速度模型下偏移效果最好，而同相轴$C$在$3050m/s$的速度模型下偏移效果最好。这个例子证明了任何成像算法都能够用于速度估计。基于叠前时间偏移的速度估计方法被称为<strong>偏移速度分析</strong>。</p>
-<p>通过拼接11.50中基于不同常速模型的偏移结果即可得到最终成像结果，这样一来,每一部分的成像剖面都有较为正确的速度。</p>
-<h1>速度建模</h1>
-<p>在进行深度域成像之前，必须要获得较为准确的深度模型，或者，同时获得深度成像结果和深度域成像模型。首先，速度模型被认为是一系列的速度函数，建立这些函数的过程被称为<strong>速度建模</strong>。</p>
-<p>速度建模是一个不断迭代的过程，并且通常是一层一层来进行的，通过不断输入新的信息细化每次迭代的结果。正如所有的迭代处理过程，速度建模的第一个步骤是要获得<strong>初始速度模型</strong>。</p>
-<h3 id="建立初始速度模型">建立初始速度模型</h3>
-<p>建立初始速度模型的两种常用方法为：均方根速度(时间域成像)或层速度。均方根速度是从CMP道集的<code>semblance</code>图中选取的，然后可利用<strong>Dix</strong>公式(Box 3.3)将其转换为层速度。初始速度模型即可以构建出初始模型。</p>
-<p>正如我们在“反问题示例的关键假设”一节中所阐述的，我们需要对层速度模型进行平滑，以避免不平滑速度场中包含的突变界面层可能会产生的虚假构造。</p>
-<h3 id="迭代过程">迭代过程</h3>
-<p>第一步是使用初始速度模型进行叠前深度偏移，然后进行<strong>剩余动校正分析</strong>。（剩余动校正分析，<strong>RMO</strong>，是在共反射点道集上计算得到的剩余时差量）。<strong>RMO</strong>分析之后，我们再次修正速度模型以使得<strong>RMO</strong>在<strong>CRP</strong>(Common-reflection-point)道集上最小。</p>
-<p>有两种基本方法来获得最终的速度模型：<strong>层析方法</strong>和<strong>全局方法</strong>。<br>
-<strong>层析方法</strong>从顶层开始，一次只处理一层，每层都会包含地球物理和地质约束。当顶层处理结束并且速度收敛到一个“真值”时，我们将该层“锁定”以使得其不再被修改，然后对下一层进行修正。重复以上步骤，直到所有层都被处理完毕。这种方法通常被用于复杂构造区，如图11.51所示。<br>
-<strong>全局方法</strong>即同时对整个模型进行处理。每一层都有其地球物理和地质约束，但与层析方法不同的是，在每次迭代中都对整个模型进行修正，直到模型收敛到设定的极小值，如图11.52所示。<br>
-<img src="/2021/06/09/ITPS_pp500~503/11.51_11.52.png" alt="11.51"></p>
-<p>备注：其它图片请到原文中查看。<a href="ori.pdf">点击下载</a></p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="梯度优化"><a href="#梯度优化" class="headerlink" title="梯度优化"></a>梯度优化</h1><p>定义关于实函数$f(\rm \textbf x)$的无约束最优化问题（Fletcher, 1987）为，寻找一个最优的模型矢量$\rm \textbf x^*$ 满足以下条件：</p>
+<script type="math/tex; mode=display">f(\rm \textbf x^* ) ≤ f(\rm \textbf x)\tag{2.1}</script><p>通常会将模型惩罚函数$g(\rm \textbf x))$加入数据目标函数中：</p>
+<script type="math/tex; mode=display">\epsilon=f(\rm \textbf x)+\lambda g(\rm \textbf x), \tag{2.3}</script><p>其中，$\lambda &gt;0$为标量参数，用于平衡控制减少惩罚函数和增大目标函数。例如，在测井位置有速度曲线$\rm \textbf x^{well}$，应该强制让反演的速度模型$\rm \textbf x$在测井位置处等于声速曲线，有$g(\bold x)=||\rm \textbf x -\bold x^{well}||^2$。较大的$\lambda$意味着目标函数更多的确保反演模型接测井值，而尽管可能会导致预测数据和观测数据的误差较大。</p>
+<h2 id="两类优化方法"><a href="#两类优化方法" class="headerlink" title="两类优化方法"></a>两类优化方法</h2><p>优化方法主要包括<strong>全局优化</strong>和<strong>梯度优化</strong>两种（Gill et al., 1981）。在<strong>全局优化方法</strong>中，需要在整个模型空间中寻找$\rm \textbf x^<em>$使得公式$2.3$目标函数$\epsilon$最小来避免陷入局部极小。常用的全局优化算法有Monte Carlo方法(Fu and Hu, 1997)、线性和非线性编程(Horst and Pardalos, 1995),、模拟退火、遗传算法(Sen and Stoffa, 1995),和混合算法(Sen and Stoffa, 1992).等。如果优化问题足够小或者计算机足够快，地震反演就可以使用全局优化算法(Sen and<br>Stoffa, 1991; 1992; 1995)。但在实际的地震反演问题中往往是不可取的。<br>另一类优化方法是沿着目标函数的downhill方向迭代搜索模型矢量，然后在第一次局部极小时停止，即<em>*梯度优化方法</em></em>。相对于全局优化方法来讲这类方法需要更小的迭代次数就可以收敛，并且无需耗费巨大的计算量和存储量，常用算法有共轭梯度法（CG）和最速下降法等。这类方法的劣势在于容易陷入局部极小。如果初始模型选择不准确，就会陷入局部极小。如图2.1所示，如果选取的初始模型靠近左侧起始位置，那么反演会很快陷入局部极小，而如果选取的模型在右侧位置，反演则能够收敛到全局最小，但是选取一个好的初始模型以跳过局部极小在实际资料的反演中是不现实的。多尺度反演(Bunks et al., 1995; Nemeth et al., 1997; Ravaut et al., 2004; Krebs et al., 2009),可以很好地解决这一问题，能够使反演跳过局部极小并收敛到全局最小或其附近。<br>![seismic_inversion_2/Figure2.1.png]</p>
+<h2 id="多尺度策略"><a href="#多尺度策略" class="headerlink" title="多尺度策略"></a>多尺度策略</h2><p>在多尺度反中，通常要对地震数据做低通滤波以使其更简单，基于滤波后数据的目标函数也会更平滑。然后，通过梯度搜索来拟合平滑的目标函数，进而在后续的反演中添加更高频或更复杂的数据。重复以上步骤直到数据中所有的分量都反演完成。多尺度策略的变种包括骨骼化数据(Luo and Schuster, 1991a; 1991b)在前期反演中限制有限偏移距和有限时窗等。多尺度波形反演的结果显示(Bunks et al., 1995; Ravaut et al., 2004; Krebs et al., 2009)，多尺度梯度优化对于地震数据全波形反演而言是至关重要的。</p>
+<h1 id="2-1-数学定义"><a href="#2-1-数学定义" class="headerlink" title="2.1 数学定义"></a>2.1 数学定义</h1><p>函数$f(\rm \textbf x)$的梯度定义为:</p>
+<script type="math/tex; mode=display">\nabla f(\rm \textbf x):=[\frac{\partial f}{\partial x_1} ... ... ... \frac{\partial f}{\partial x_N}]^T \tag{2.4}</script><p>其中$\rm \textbf x \in R^N$，$N \times N$Hessian矩阵$\rm \textbf H$定义为$\nabla \nabla ^T f(\rm \textbf x)$，其元素为：</p>
+<script type="math/tex; mode=display">H_{ij}:=[\nabla \nabla ^T f(\rm \textbf x)]_{ij}= \frac{\partial ^2 f(\rm \textbf x)}{\partial x_i \partial x_j}\tag{2.5}</script><p>矩阵$\rm \textbf H$为实对称矩阵，因为$\frac{\partial ^2 f(\rm \textbf x)}{\partial x_i \partial x_j}=\frac{\partial ^2 f(\rm \textbf x)}{\partial x_j \partial x_i}$。Hessian矩阵中包含了$f(\rm \textbf x)$的曲率或者凹凸信息，负梯度方向$-\rm \textbf g=-\nabla f(\rm \textbf x)$则指示了$f(\rm \textbf x)$在$\rm \textbf x$处的最速下降方向。<br>根据Kelley(1999)，$N \times 1$矢量$\rm \textbf x$的欧几里得范数（Euclidean norm)定义为：</p>
+<script type="math/tex; mode=display">||\rm \textbf x||_2:=\sqrt{\underset {i=1,...,N}  \Sigma x^2_i} \tag {2.6}</script><p>由欧几里得范数推导得到矩阵范数：</p>
+<script type="math/tex; mode=display">||L||_2:=\rm \underset {x≠0} max \frac{||\rm \textbf {Lx}||_2}{||\rm \textbf x||_2}\tag{2.7}</script><p>假设$f(\rm \textbf x)$二阶可微，将$f(\rm \textbf x_0+\Delta \rm \textbf x)$在$\rm \textbf x__0$处展开可得：</p>
+<script type="math/tex; mode=display">f(\rm \textbf x_0+\Delta \rm \textbf x)=f(\rm \textbf x_0)+\rm \textbf g^T \Delta \rm \textbf x+\frac{1}{2} \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x_0)\Delta \rm \textbf x + o(||\Delta \rm \textbf x||^3) \tag{2.8}</script><p>忽略高阶项后可以得到二次模型近似：</p>
+<script type="math/tex; mode=display">f(\rm \textbf x_0+\Delta \rm \textbf x)≈f(\rm \textbf x_0)+\rm \textbf g^T \Delta \rm \textbf x+\frac{1}{2} \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x_0)\Delta \rm \textbf x \\ = f(\rm \textbf x_0)+ \rm \textbf g^T \Delta \rm \textbf x +\frac{1}{2} \Delta \rm \textbf x^T \rm \textbf H \Delta \rm \textbf x\tag{2.9}</script><p>如果存在局部或全局最小点$\rm \textbf x^<em>$，则图2.1中的一维曲线需满足$\partial f(\rm \textbf x^</em>)/\partial x=0$,$\partial^2 f(\rm \textbf x^*)/\partial x^2&gt;0$<br>多维情况下的最优条件为：</p>
+<script type="math/tex; mode=display">\nabla f(\rm \textbf x^*)=0 \space and \space  \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x^*)\Delta \rm \textbf x>0\tag {2.10}</script><p>其中，第二个条件定义了Hessian矩阵的正定性。<br>许多地球物理问题使用$\rm \textbf L^T\rm \textbf L$，即反传算子$\rm \textbf L^T$和正传算子$\rm \textbf L$的级联，来近似Hessian矩阵$\rm \textbf H$。如果$\rm \textbf L$为实数，对于实特征矢量$\rm \textbf x_i$，有：</p>
+<script type="math/tex; mode=display">\rm \textbf x^T_i[\rm \textbf L^T\rm \textbf L]\rm \textbf x_i = \lambda_i \rm \textbf x^T_i \rm \textbf x_i≥0\tag{2.11}</script><p>这里的不等号是由于$||\rm \textbf {Lx}||_i≥0$。当$\rm \textbf x$不在原点时$\rm \textbf x^T_i \rm \textbf x_i&gt;0$，所以有$\lambda_i≥0$，也因此在时空域的最小二乘偏移和全波形反演的Hessian矩阵至少是半正定的。</p>
+<h1 id="2-2-梯度优化，泰勒级数和牛顿方法"><a href="#2-2-梯度优化，泰勒级数和牛顿方法" class="headerlink" title="2.2 梯度优化，泰勒级数和牛顿方法"></a>2.2 梯度优化，泰勒级数和牛顿方法</h1><p>公式2.9可以表示为:</p>
+<script type="math/tex; mode=display">f(\rm \textbf x_0+\Delta \rm \textbf x) ≈ f(\rm \textbf x_0)+ \underset {i=1:N} \Sigma \frac{\partial f(\rm \textbf x_0)}{\partial x_i}\Delta x_i +\frac{1}{2} \underset {i=1:N} \Sigma\underset {j=1:N} \Sigma \frac{\partial^2 f(\rm \textbf x_0)}{\partial x_i \partial x_j}\Delta x_i\Delta x_j \tag{2.12}</script><p>对于一个足够小的$\Delta \rm \textbf x$，截断泰勒级数是原函数在$\rm \textbf x_0+\Delta \rm \textbf x$一个较好的近似。当N=2时，，公式2.12是一个椭圆，其最小值在$\rm \textbf x^*$。如果Hessian矩阵中的交叉项为0（即$\partial ^2f(\rm \textbf x)/\partial x_i \partial x_j=0 \space for \space i !=j$)，椭圆的最大轴和最小轴将和$x_1$、$x_2$平行，否则他们将和图2.2所示一样有一定角度的旋转。<br>![seismic_inversion_2/Figure2.2.png]<br>定义$\Delta \rm \textbf x = \rm \textbf  x - \rm \textbf x_0$，$\partial \Delta x_i/\partial x_k=\delta_{ik}$，将第k个分量的梯度带入得：</p>
+<script type="math/tex; mode=display">\begin{align}
+\notag \frac{\partial f(\rm \textbf x)}{\partial x_k}=\frac{\partial f(\rm \textbf x+\Delta \rm \textbf x)}{\partial x_k} \\\\
+\notag = \frac {\partial f(\rm \textbf x_0)}{\partial x_k}+\underset {j=1:N}\Sigma \frac{\partial^2f(\rm \textbf x_0)}{\partial x_k \partial x_j} \Delta x_j
+\end{align}
+\tag{2.13}</script><p>如果$\rm \textbf x$在$f(\rm \textbf x)$的最小值点sha</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -314,7 +295,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/" title="速度分析">http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/</a>
+    <a href="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/" title="地震反演（第二章 梯度优化前言）">http://blog.geophyai.com/2022/12/19/seismic_inversion_2/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -325,7 +306,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E9%80%9F%E5%BA%A6%E5%88%86%E6%9E%90/" rel="tag"> <i class="fa fa-tag"></i> 速度分析</a>
+              <a href="/tags/%E5%8F%8D%E9%97%AE%E9%A2%98-2/" rel="tag"> <i class="fa fa-tag"></i> 反问题 2</a>
           </div>
 
         
@@ -334,13 +315,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2021/06/09/Madagascrar_rsfIO/" rel="prev" title="Madagascrar之RSF文件输入与输出">
-      <i class="fa fa-chevron-left"></i> Madagascrar之RSF文件输入与输出
+    <a href="/2022/12/18/seismic_inversion_1.2/" rel="prev" title="地震反演（第一章 前言）">
+      <i class="fa fa-chevron-left"></i> 地震反演（第一章 前言）
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2021/06/11/IPTS_ch11_445~456/" rel="next" title="反问题">
-      反问题 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -400,7 +378,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text">估计背景速度的模型</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#背景速度估计与成像之间的联系"><span class="nav-number">1.1.</span> <span class="nav-text">背景速度估计与成像之间的联系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#速度谱"><span class="nav-number">1.2.</span> <span class="nav-text">速度谱</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">2.</span> <span class="nav-text">偏移速度分析</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#"><span class="nav-number">3.</span> <span class="nav-text">速度建模</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#建立初始速度模型"><span class="nav-number">3.0.1.</span> <span class="nav-text">建立初始速度模型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#迭代过程"><span class="nav-number">3.0.2.</span> <span class="nav-text">迭代过程</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#梯度优化"><span class="nav-number">1.</span> <span class="nav-text">梯度优化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#两类优化方法"><span class="nav-number">1.1.</span> <span class="nav-text">两类优化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多尺度策略"><span class="nav-number">1.2.</span> <span class="nav-text">多尺度策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-1-数学定义"><span class="nav-number">2.</span> <span class="nav-text">2.1 数学定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-2-梯度优化，泰勒级数和牛顿方法"><span class="nav-number">3.</span> <span class="nav-text">2.2 梯度优化，泰勒级数和牛顿方法</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
@@ -583,7 +561,7 @@
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2021/06/09/ITPS_pp500~503/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2022/12/19/seismic_inversion_2/',]
       });
       });
   </script>
