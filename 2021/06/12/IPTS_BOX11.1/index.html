@@ -272,7 +272,7 @@
 <script type="math/tex; mode=display">\int d{\rm \textbf x}^{\prime}G_0({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime}) G_0^{-1}({\rm \textbf x}^{\prime}, \omega;{\rm \textbf x}^{\prime\prime}) \tag{11.39}</script><p>利用压力场$P_0$和格林函数$G_0$，Lippmann-Schwinger积分方程给出了压力场$P$的一个解，即在实际介质中的任何地方，都有如下积分方程:</p>
 <script type="math/tex; mode=display">\begin{align}
 \notag
-P({\rm \textbf x}, &\omega, {\rm \textbf x}_s) = P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s) \\\\
+P({\rm \textbf x}, &\omega, {\rm \textbf x}_s) = P_0({\rm \textbf x}, \omega, {\rm \textbf x}_s) \\
 \notag
 &+\int_D d{\rm \textbf x}^{\prime} G_0({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime}) W({\rm \textbf x}^{\prime}, \omega) P({\rm \textbf x}, \omega;{\rm \textbf x}^{\prime})
 \end{align}\tag{11.40}</script><p>其中，</p>
@@ -281,24 +281,24 @@ P({\rm \textbf x}, &\omega, {\rm \textbf x}_s) = P_0({\rm \textbf x}, \omega, {\
 <script type="math/tex; mode=display">P=[I-G_0W]^{-1}P_0\tag{11.43}</script><p> 其中，$G_0({\rm \textbf x}, \omega, {\rm \textbf x}^{\prime})$为$G_0$的核，$W({\rm \textbf x}, \omega)$为势$W$的核。<br>将11.42泰勒展开后即可得到$Born$逆散射级数：</p>
 <script type="math/tex; mode=display">\begin{align}
 \notag
-P &= P_0 \\\\
-\notag&+G_0WP_0 \\\\
-\notag&-G_0WG_0WP_0 \\\\
+P &= P_0 \\
+\notag&+G_0WP_0 \\
+\notag&-G_0WG_0WP_0 \\
 \notag&+G_0WG_0WG_0WP_0-...
-\end{align}
+\notag\end{align}
 \tag{11.44}</script><p>或者，</p>
 <script type="math/tex; mode=display">\begin{align}
 \notag
-P &= P_0 \\\\
-\notag&+SG_0WG_0 \\\\
-\notag&-SG_0WG_0WS_0 \\\\
+P &= P_0 \\
+\notag&+SG_0WG_0 \\
+\notag&-SG_0WG_0WS_0 \\
 \notag&+SG_0WG_0WG_0WS_0-...
 \end{align}
 \tag{11.45}</script><p>$Born$散射级数也可写为：</p>
 <script type="math/tex; mode=display">P=P_0+SG_0W^{\prime}G_0\tag{11.46}</script><script type="math/tex; mode=display">\begin{align}
-\notag W^{\prime} &= W \\\\
-\notag & - WG_0 W  \\\\
-\notag & + WG_0 WG_0 W  \\\\
+\notag W^{\prime} &= W \\
+\notag & - WG_0 W  \\
+\notag & + WG_0 WG_0 W  \\
 \notag & - WG_0 WG_0 WG_0 W  
 \end{align}
 \tag{11.47}</script><p>忽略$Born$级数(公式11.44和11.45)三阶及以上项即可得到$Born$近似：</p>
