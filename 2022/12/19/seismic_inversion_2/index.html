@@ -300,8 +300,7 @@
 <script type="math/tex; mode=display">f(\rm \textbf x)=100(x_2-x_1)^2+(1-x_1)^2,\tag{2.19}</script><p>一个平滑但是强非线性的函数，如图2.3所示。其梯度矢量为</p>
 <script type="math/tex; mode=display">\nabla f(\rm \textbf x)=\rm \textbf g=[\frac{\partial f}{\partial x_1} \frac{\partial f}{\partial x_2}]^T=[-400x_1(x_2-x_1^2)-2(1-x_1)^2\space, \space200(x_2-x_1^2)]^T\tag{2.20}</script><p>为了更好的解释梯度物理意义，我们定义多维空间中一条线上的点为：</p>
 <script type="math/tex; mode=display">\rm \textbf x(\alpha)=\rm \textbf x' +\alpha \hat {\rm \textbf s}</script><p>其中$\hat {\rm \textbf s}$为平行于特定线的单位矢量，$\alpha$为控制矢量$\rm \textbf x$距离起始点$\rm \textbf x(\alpha =0)=\rm \textbf x’$的标量参数，定义沿公式2.1中线$\hat {\rm \textbf s}$的方向导数为$df/ d \alpha$:</p>
-<script type="math/tex; mode=display">\frac{df(\rm \textbf x)}{d\alpha} \\\\
-\notag & = \Sigma_i \nabla f(\rm \textbf x) \hat {\rm \textbf s} \\\\
+<script type="math/tex; mode=display">\frac{df(\rm \textbf x)}{d\alpha} & = \Sigma_i \nabla f(\rm \textbf x) \hat {\rm \textbf s} \\\\
 \notag & = \Sigma_i \frac{df(\rm \textbf x)}{dx_i} \frac{dx_i}{d\alpha} \\\\
 \notag & = \hat {\rm \textbf s}^T \nabla f(\rm \textbf x)
 \tag{2.22}</script><p>其中$\hat {\rm \textbf s}^T \nabla f(\rm \textbf x)$为梯度沿着线方向的投影。如果$\hat {\rm \textbf s}$平行于等高线切线方向，那么$f(\rm \textbf x)$不会沿着这个方向变化，所以$\hat {\rm \textbf s}^T \nabla f(\rm \textbf x)=0$。这意味着梯度$\rm \textbf g=\nabla f(\rm \textbf x)$垂直于等高切线，或者说其平行于最速下降方向。一维情况下，梯度就是斜率，如果斜率大于零，上升方向为右，否则其向左。<br>$f(\rm \textbf x)$的二阶导数构成了$2\times 2$的Hessian矩阵：</p>
