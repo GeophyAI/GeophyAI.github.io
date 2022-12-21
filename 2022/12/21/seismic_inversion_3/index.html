@@ -268,11 +268,11 @@
 \rm \textbf x^{(k+1)}=\rm \textbf x^{(k)}-\alpha\rm \textbf g^{(k)}
 \tag{3.1}</script><p>其中，$\alpha$是一个正数，其表示步长。$\rm \textbf x^{(k+1)}$的迭代公式沿着负梯度方向（下坡方向）$-\rm \textbf g^{(k)}$寻找一个更好的解。给定起始点$\rm \textbf x^{(k)}$以及负梯度方向$-\rm \textbf g^{(k)}$，需要进一步计算$\alpha$以使得$f(\rm \textbf x^{(k)}-\alpha\rm \textbf g^{(k)})$最小。与之相等价的是，计算的步长需要使$\rm \textbf x^{(k+1)} - \rm \textbf x^{(k)}$与 $\rm \textbf x^{(k+1)}$的等值线相切或接触（如图3.1.b所示）。当残差矢量（误差函数的均方根）小于某个设定的值后迭代终止。</p>
 <h3 id="3-1-1收敛速度"><a href="#3-1-1收敛速度" class="headerlink" title="3.1.1收敛速度"></a>3.1.1收敛速度</h3><h2 id="3-2-步长计算"><a href="#3-2-步长计算" class="headerlink" title="3.2 步长计算"></a>3.2 步长计算</h2><p><strong>精确线搜索</strong>和<strong>数值线搜索</strong>是两种常用的计算公式3.1中的步长$\alpha$来使以下公式成立的算法：</p>
-<script type="math/tex; mode=display">\underset{\alpha>0} {\rm min} f(\rm \textbf x^{(k)}-\alpha \Delta \rm \textbf x)\tag{3.7}</script><p>其中，$-\Delta \rm \textbf x$是预定义的搜索方向，即当前模型的下山方向。精确线搜索方法使用解析公式确定$\alpha$。而数值线搜索方法则在方向$-\Delta \rm \textbf x$上通过$\alpha$的多项式来近似$f(\rm \textbf x)$（Nocedal and Wright，1999。通过对梯度和曲率施加限定条件来避免陷入局部极小。<br>限制性步长（restricted-step）方法只在一个置信区域（trust region）内搜索最优模型$\rm \textbf x^{(k)}+\alpha \Delta \rm \textbf x$，这个置信区域以$\rm \textbf x$为中心，以$r$为半径，同时置信区域和步长之间的关系满足$||\alpha \Delta \rm \textbf x||&lt;r$。由于根据非线性目标函数估计得到的梯度和曲率只在$\rm \textbf x$附近是合适的，而在较远的变量位置是不合适的，因此这种限制有时是必须的。<br>与直接使用原目标函数$f(\rm \textbf x)=\rm \textbf x^T\rm \textbf H \rm \textbf x+\rm \textbf g^T\rm \textbf x$相比，也可以通过构造一个阻尼目标函数$\tilde f(\rm \textbf x)=\rm \textbf x^T\rm \textbf H \rm \textbf x+\eta^2\rm \textbf x^T\rm \textbf x+\rm \textbf g^T\rm \textbf x$来使病态Hessian稳定下来。这里,$\eta^2$是一个控制置信区域的正整数。$\eta^2$越大，步长越小，所以目标函数$\Delta \tilde f=\tilde f(\rm \textbf x+\Delta  \tilde{\rm \textbf x})-\tilde f(\rm \textbf x)$的减小将会比$\Delta  f= f(\rm \textbf x+\Delta  \rm \textbf x)- f(\rm \textbf x)$更小。如果$\Delta \tilde f/ \Delta f \geq 0.5$，阻尼不够大，所以需要增大$\eta^2$直到$\Delta \tilde f/ \Delta f$在0.25到0.5之间，对于大型3D问题，试错法（trail-and-error）的计算效率是非常低的。### 3.2.1 精确线搜索<br>下面给出精确线搜索的推导。一维线搜索问题定义为，对于给定的$\rm \textbf x$和$\Delta \rm \textbf x$，找到最优的$\alpha$来使$f(\rm \textbf x+\alpha\Delta  \rm \textbf x)$最小，这种情况下，公式2.9变为</p>
-<script type="math/tex; mode=display">f(\rm \textbf x+\alpha\Delta \rm \textbf x) 
-\approx f(\rm \textbf x)
-+\alpha \rm \textbf g^T \Delta \rm \textbf x
-+\frac{\alpha^2}{2}\Delta \rm \textbf x^T \rm \textbf H \Delta \rm \textbf x.
+<script type="math/tex; mode=display">\underset{\alpha>0} {\rm min} f(\rm \textbf x^{(k)}-\alpha \Delta \rm \textbf x)\tag{3.7}</script><p>其中，$-\Delta \rm \textbf x$是预定义的搜索方向，即当前模型的下山方向。精确线搜索方法使用解析公式确定$\alpha$。而数值线搜索方法则在方向$-\Delta \rm \textbf x$上通过$\alpha$的多项式来近似$f(\rm \textbf x)$（Nocedal and Wright，1999。通过对梯度和曲率施加限定条件来避免陷入局部极小。<br>限制性步长（restricted-step）方法只在一个置信区域（trust region）内搜索最优模型$\rm \textbf x^{(k)}+\alpha \Delta \rm \textbf x$，这个置信区域以$\rm \textbf x$为中心，以$r$为半径，同时置信区域和步长之间的关系满足$||\alpha \Delta \rm \textbf x||&lt;r$。由于根据非线性目标函数估计得到的梯度和曲率只在$\rm \textbf x$附近是合适的，而在较远的变量位置是不合适的，因此这种限制有时是必须的。<br>与直接使用原目标函数$f(\rm \textbf x)=\rm \textbf x^T\rm \textbf H \rm \textbf x+\rm \textbf g^T\rm \textbf x$相比，也可以通过构造一个阻尼目标函数$\tilde f(\rm \textbf x)=\rm \textbf x^T\rm \textbf H \rm \textbf x+\eta^2\rm \textbf x^T\rm \textbf x+\rm \textbf g^T\rm \textbf x$来使病态Hessian稳定下来。这里,$\eta^2$是一个控制置信区域的正整数。$\eta^2$越大，步长越小，所以目标函数$\Delta \tilde f=\tilde f(\rm \textbf x+\Delta  \tilde{\rm \textbf x})-\tilde f(\rm \textbf x)$的减少量将会比$\Delta  f= f(\rm \textbf x+\Delta  \rm \textbf x)- f(\rm \textbf x)$更小。如果$\Delta \tilde f/ \Delta f \geq 0.5$，阻尼不够大，所以需要增大$\eta^2$直到$\Delta \tilde f/ \Delta f$在0.25到0.5之间，对于大型3D问题，试错法（trail-and-error）的计算效率是非常低的。### 3.2.1 精确线搜索<br>下面给出精确线搜索的推导。一维线搜索问题定义为，对于给定的$\rm \textbf x$和$\Delta \rm \textbf x$，找到最优的$\alpha$来使$f(\rm \textbf x+\alpha\Delta  \rm \textbf x)$最小，这种情况下，公式2.9变为</p>
+<script type="math/tex; mode=display">f({\rm \textbf x}+\alpha\Delta {\rm \textbf x}) 
+\approx f({\rm \textbf x})
++\alpha {\rm \textbf g}^T \Delta {\rm \textbf x}
++\frac{\alpha^2}{2}\Delta {\rm \textbf x}^T \rm \textbf H \Delta \rm \textbf x.
 \tag{3.8}</script><p>上式对$\alpha$求导，并令导数等于0，可得：</p>
 <script type="math/tex; mode=display">\frac{\partial f(\rm \textbf x+\alpha \Delta \rm \textbf x)}{\partial \alpha}
 =\rm \textbf g^T\Delta \rm \textbf x+\alpha \Delta \rm \textbf x^T \rm \textbf H \Delta \rm \textbf x 
@@ -280,15 +280,15 @@
 <script type="math/tex; mode=display">\alpha ^\ast = \frac{-\rm \textbf g^g \Delta \rm \textbf x}{\Delta \rm \textbf x^T \rm \textbf H \Delta \rm \textbf x}\tag{3.10}</script><p>由此求得的步长为精确步长。这种线搜索方法为精确线搜索，因为如果$f(\rm \textbf x)$是二次泛函，那么公式3.10中的步长是完全正确的。对于最速下降法，$\Delta \rm \textbf x=-\rm \textbf g$，所以：</p>
 <script type="math/tex; mode=display">\alpha^{\ast}= \frac{\rm \textbf g^T \rm \textbf g}{ \rm \textbf g^T \rm \textbf H \rm \textbf g} \tag{3.10}</script><p>经验告诉我们，精确线搜索方法应用效果非常不好，而地震反问题中通常使用数值线搜索方法。</p>
 <h3 id="3-2-2-非精确牛顿法和非精确线搜索"><a href="#3-2-2-非精确牛顿法和非精确线搜索" class="headerlink" title="3.2.2 非精确牛顿法和非精确线搜索"></a>3.2.2 非精确牛顿法和非精确线搜索</h3><p>近似Hessian矩阵逆的方法被称为非精确牛顿法（Gill et al., 1981）。如果有一小部分反演是基于共轭梯度法来迭代近似求解的，那么非精确牛顿法又被称为截断牛顿法（truncated Newton method）。在一定的迭代次数后，共轭梯度法的解将会位于最速下降法和牛顿矢量之间，如图3.2所示。AlTheyab et al., (2013)提出了一种内外双循环的FWI算法，在内部循环中通过线性共轭梯度法来迭代近似Hessian的逆。在章节21中介绍了这种方法，其内部循环迭代得到的速度模型被用作外部循环的背景模型，而外部循环是通过非线性共轭梯度法进行迭代的。<br>通过设定终止条件来停止线搜索的方法被称为非精确线搜索方法。常用的停止准则有Wolfe准则（Nocedal and Wright, 1999）：</p>
-<script type="math/tex; mode=display">\overset {actual function} { f(\rm \textbf x^{(k)} }
+<script type="math/tex; mode=display">\overset {actual function} { f(\rm \textbf x^{(k)}) }
 \leq\overset {linear \space prediction\space of \space function} { f(\rm \textbf x^{(k)} + c_1\alpha\Delta \rm \textbf x^{(k)T} \nabla f(\rm \textbf x^{(k)}) }
 \tag{3.12}</script><p>其中，$0&lt;c_1&lt;1$，函数在$\rm \textbf x^{(k)} + c_1\alpha \rm \textbf x{(k)}$的预测要大于实际值，否则步长会超过线性近似的有效范围。用户设置一个初始步长值，如果步长满足上述条件，则会计算一个新的梯度并重新搜索；如果步长不满足上述条件，原始步长减半并重新测试是否满足Wolfe准则。<br>有时较小的步长会很容易满足上述准则，进而导致搜索效率低。为了避免过小的步长，我们也需要通过曲率条件来找到一个更合适的步长：</p>
 <script type="math/tex; mode=display">
 \overset {slope \space at \space new \space pt.}
-{   \Delta \rm \textbf x^{(k)} \nabla f(\rm \textbf x^{(k)}+\alpha\rm \textbf x^{(k)})   }
+{   { \Delta \rm \textbf x^{(k)} } \nabla f(\rm \textbf x^{(k)}+\alpha {\rm \textbf x^{(k)})}   }
 \geq
 \overset {scaled \space slope \space at \space starting \space pt.}
-{   c_2\Delta \rm \textbf x^{(k)}\nabla f(\rm \textbf x^{(k)})   }
+{   c_2\Delta {\rm \textbf x^{(k)}} \nabla f(\rm \textbf x^{(k)})   }
 \tag{3.13}</script><p>其中，$0&lt;c_1&lt;c_2&lt;1$。在这一准则中，沿着$\rm \textbf x{(k)}$处的搜索方向的放缩后的斜率要小于或者等于$\rm \textbf x^{(k)}+\alpha\rm \textbf x^{(k)}$处的该值。这样就可以避免步长较小，因为$\rm \textbf x^{(k)}+\alpha\rm \textbf x^{(k)}$处的斜率可能等于起始点$\rm \textbf x{(k)}$处的值。</p>
 <h3 id="3-2-3-数值线搜索法"><a href="#3-2-3-数值线搜索法" class="headerlink" title="3.2.3 数值线搜索法"></a>3.2.3 数值线搜索法</h3><p>当高度非线性的损失函数会打破局部二次假设，这时确切线搜索方法就不再准确了。取而代之可以在下坡方向的多个点上计算损失函数来估计步长。例如。二次线搜索首先定义搜索方向$\Delta \rm \textbf x$，然后计算多个可能步长，例如$\alpha_1=0.5$和$\alpha_2=1$，然后计算两个目标泛函$f(\rm \textbf x+\alpha_1\Delta \rm \textbf x)$和$f(\rm \textbf x + \alpha_2 \Delta \rm \textbf x)$，看他们是否小于$f(\rm \textbf x)$。然后通过下述公式来对泛函进行插值：</p>
 <script type="math/tex; mode=display">
@@ -299,8 +299,8 @@
 \notag & + \frac{\alpha(\alpha-\alpha_1)}{\alpha_2(\alpha_2-\alpha_1)} f(\rm \textbf x+\Delta \alpha_2 \Delta \rm \textbf x) 0\leq\alpha \leq \alpha_2.
 \end{align}
 \tag{3.14}</script><p>上述函数是一个关于$\alpha$的二次多项式。上述函数最小时$\alpha$的值可以通过求$f(\alpha)$对$\alpha$的导数并令其为零，然后求解$\alpha$。<br>方程3.14需要求目标函数$f(\rm \textbf x)$在三处的值，所以另一种方法是利用$f(\rm \textbf x), f(\rm \textbf x + \alpha_1 \Delta \rm \textbf x)$以及$f(\rm \textbf x)$在$\rm \textbf x$的方向导数进行二次插值：</p>
-<script type="math/tex; mode=display">f(\rm \textbf x +  \Delta \rm \textbf x)
-= \frac{\alpha^2}{\alpha_1^2}[f(\rm \textbf x +  \Delta \rm \textbf x) - \alpha_1 f \rm \textbf x)'-f(\rm \textbf x)] + \alpha f(\rm \textbf x)'+f (\rm \textbf x)
+<script type="math/tex; mode=display">f({\rm \textbf x} +  \Delta {\rm \textbf x})
+= \frac{\alpha^2}{\alpha_1^2}[f({\rm \textbf x} +  \Delta {\rm \textbf x}) - \alpha_1 f ({\rm \textbf x})'-f({\rm \textbf x})] + \alpha f({\rm \textbf x})'+f (\rm \textbf x)
 \tag{3.15}</script><p>其中，$f(\rm \textbf x)’=\frac{df(\rm \textbf x+\alpha\Delta \rm \textbf x)}{d\alpha}$表示$f(\rm \textbf x)$研制搜索方向的导数。</p>
 <h2 id="3-3-最速下降法和线性方程系统"><a href="#3-3-最速下降法和线性方程系统" class="headerlink" title="3.3 最速下降法和线性方程系统"></a>3.3 最速下降法和线性方程系统</h2><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
