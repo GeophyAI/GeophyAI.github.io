@@ -22,7 +22,7 @@
 
   <meta name="description" content="梯度优化，节选自《Seismic Inversion》">
 <meta property="og:type" content="article">
-<meta property="og:title" content="地震反演（第二章 梯度优化前言）">
+<meta property="og:title" content="地震反演第二章 梯度优化前言">
 <meta property="og:url" content="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/index.html">
 <meta property="og:site_name" content="GeophyAI">
 <meta property="og:description" content="梯度优化，节选自《Seismic Inversion》">
@@ -30,6 +30,8 @@
 <meta property="og:image" content="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/Figure2.1.png">
 <meta property="og:image" content="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/Figure2.2.png">
 <meta property="og:image" content="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/Figure2.3.png">
+<meta property="og:image" content="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/Figure2.5.png">
+<meta property="og:image" content="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/Figure2.6.png">
 <meta property="article:published_time" content="2022-12-19T03:10:46.000Z">
 <meta property="article:modified_time" content="2022-12-19T03:10:46.000Z">
 <meta property="article:author" content="shaowinw">
@@ -50,7 +52,7 @@
   };
 </script>
 
-  <title>地震反演（第二章 梯度优化前言） | GeophyAI</title>
+  <title>地震反演第二章 梯度优化前言 | GeophyAI</title>
   
 
 
@@ -212,7 +214,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          地震反演（第二章 梯度优化前言）
+          地震反演第二章 梯度优化前言
         </h1>
 
         <div class="post-meta">
@@ -333,6 +335,19 @@
 =\frac{d}{d\alpha}[(\nabla f)^2]\hat {\rm \textbf s}
 =\hat {\rm \textbf s}^T [\nabla \nabla^T f(\rm \textbf x)]\hat {\rm \textbf s}
 \tag{2.24}</script><p>因此，$\hat {\rm \textbf s}^T \rm \textbf H \hat {\rm \textbf s}$给出了$f(\rm \textbf x)$沿着特定方向$\hat {\rm \textbf s}$的曲率。</p>
+<h2 id="例子2-5-1-一维函数"><a href="#例子2-5-1-一维函数" class="headerlink" title="例子2.5.1 一维函数"></a>例子2.5.1 一维函数</h2><p>对于一元函数，公式2.14变为：</p>
+<script type="math/tex; mode=display">\frac{\partial f(x_0)}{\partial x}
+=-\frac{\partial^2 f(x_0)}{\partial x^2} \Delta x,
+\tag{2.26}</script><p>可得$\Delta x$为：</p>
+<script type="math/tex; mode=display">\Delta x=
+- \frac{\partial f(x_0)}{\partial x}
+/ \frac{\partial^2 f(x_0)}{\partial x^2} ,
+\tag{2.26}</script><p>带入公式2.18可得一元非线性函数的牛顿迭代公式为：</p>
+<script type="math/tex; mode=display">x^{(k+1)}=x^{(k)}
+-\alpha 
+\frac{\partial f(x_k)}{\partial x}
+/ \frac{\partial^2 f(x_k)}{\partial x^2}.
+\tag{2.28}</script><p>一般情况下，牛顿法的收敛速度取决于topography（由方程的曲率和斜率决定）和起始点据全局最小值的距离。<br>下面的python代码例子展示如何利用牛顿法求解一元非二次方程$f(x)=ax^4+x^2-2x$的最小值问题，迭代过程中求得的$x^k$及原函数如图2.5所示，每次迭代求得的最小值与实际最小值的残差方如图2.6所示。<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">1D Newton method to find zeros of a quartic function</span></span><br><span class="line"><span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"></span><br><span class="line">a = <span class="number">7</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">f</span>(<span class="params">x, a=a</span>):</span><br><span class="line">    <span class="string">&quot;&quot;&quot;</span></span><br><span class="line"><span class="string">    :param x: 自变量x</span></span><br><span class="line"><span class="string">    :param a: 常数a</span></span><br><span class="line"><span class="string">    :return: 返回一元四次函数在x处的值</span></span><br><span class="line"><span class="string">    &quot;&quot;&quot;</span></span><br><span class="line">    <span class="keyword">return</span> a*x**<span class="number">4</span>+x**<span class="number">2</span>-<span class="number">2</span>*x</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">x0 = -<span class="number">0.5</span>  <span class="comment"># 起始点</span></span><br><span class="line">iterations = <span class="number">10</span>  <span class="comment"># 迭代次数</span></span><br><span class="line">xx = np.zeros(iterations)  <span class="comment"># 存储每次的x</span></span><br><span class="line">residual = np.zeros(iterations)</span><br><span class="line">xx[<span class="number">0</span>] = x0</span><br><span class="line">residual[<span class="number">0</span>] = <span class="built_in">abs</span>(f(np.arange(-<span class="number">2</span>, <span class="number">2</span>, <span class="number">0.1</span>)).<span class="built_in">min</span>()-f(x0))</span><br><span class="line"><span class="keyword">for</span> it <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>, iterations):</span><br><span class="line">    x0 = xx[it-<span class="number">1</span>]</span><br><span class="line">    f1prime = a * <span class="number">4</span> * x0**<span class="number">3</span> + <span class="number">2</span> * x0 - <span class="number">2</span>  <span class="comment"># f(x)的一阶导数</span></span><br><span class="line">    f2prime = a * <span class="number">12</span> * x0**<span class="number">2</span> + <span class="number">2</span>  <span class="comment"># f(x)的二阶导数</span></span><br><span class="line">    xx[it] = xx[it-<span class="number">1</span>]-f1prime/f2prime  <span class="comment"># Newton formula</span></span><br><span class="line">    residual[it] = <span class="built_in">abs</span>(f(np.arange(-<span class="number">2</span>, <span class="number">2</span>, <span class="number">0.1</span>)).<span class="built_in">min</span>()-f(xx[it]))**<span class="number">2</span> <span class="comment"># 计算与实际最小值的残差方</span></span><br><span class="line"></span><br><span class="line">plt.plot(np.arange(-<span class="number">2</span>, <span class="number">2</span>, <span class="number">0.1</span>), f(np.arange(-<span class="number">2</span>, <span class="number">2</span>, <span class="number">0.1</span>)))</span><br><span class="line"><span class="keyword">for</span> idx, _xx <span class="keyword">in</span> <span class="built_in">enumerate</span>(xx.ravel()):</span><br><span class="line">    <span class="comment">#plt.scatter(_xx, f(_xx))</span></span><br><span class="line">    plt.annotate(<span class="string">f&quot;iter:<span class="subst">&#123;idx+<span class="number">1</span>&#125;</span>&quot;</span>, xy=(_xx, f(_xx)), xytext=(_xx+<span class="number">0.1</span>, f(_xx)+<span class="number">0.1</span>))</span><br><span class="line">plt.title(<span class="string">&quot;Quartic Function y=ax^4+x^2-2x&quot;</span>)</span><br><span class="line">plt.show()</span><br><span class="line"></span><br><span class="line">plt.plot(residual)</span><br><span class="line">plt.title(<span class="string">&quot;Residual&quot;</span>)</span><br><span class="line">plt.show()</span><br></pre></td></tr></table></figure><br><img src="/2022/12/19/seismic_inversion_2/Figure2.5.png" alt="Figure2.5"><br><img src="/2022/12/19/seismic_inversion_2/Figure2.6.png" alt="Figure2.6"></p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
     </div>
 
@@ -348,7 +363,7 @@
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/" title="地震反演（第二章 梯度优化前言）">http://blog.geophyai.com/2022/12/19/seismic_inversion_2/</a>
+    <a href="http://blog.geophyai.com/2022/12/19/seismic_inversion_2/" title="地震反演第二章 梯度优化前言">http://blog.geophyai.com/2022/12/19/seismic_inversion_2/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -368,12 +383,12 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2022/12/18/seismic_inversion_1.2/" rel="prev" title="地震反演（第一章 前言）">
-      <i class="fa fa-chevron-left"></i> 地震反演（第一章 前言）
+    <a href="/2022/12/18/seismic_inversion_1.2/" rel="prev" title="地震反演第一章 前言">
+      <i class="fa fa-chevron-left"></i> 地震反演第一章 前言
     </a></div>
       <div class="post-nav-item">
-    <a href="/2022/12/21/seismic_inversion_3/" rel="next" title="地震反演（第三章 最速下降法）">
-      地震反演（第三章 最速下降法） <i class="fa fa-chevron-right"></i>
+    <a href="/2022/12/21/seismic_inversion_3/" rel="next" title="地震反演第三章 最速下降法">
+      地震反演第三章 最速下降法 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -434,7 +449,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%BC%98%E5%8C%96-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">梯度优化-前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E7%B1%BB%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">两类优化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.</span> <span class="nav-text">多尺度策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-1-%E6%95%B0%E5%AD%A6%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">2.1 数学定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-2-%E6%A2%AF%E5%BA%A6%E4%BC%98%E5%8C%96%EF%BC%8C%E6%B3%B0%E5%8B%92%E7%BA%A7%E6%95%B0%E5%92%8C%E7%89%9B%E9%A1%BF%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">2.2 梯度优化，泰勒级数和牛顿方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-3-%E6%A2%AF%E5%BA%A6%E5%92%8CHessian%E7%9A%84%E5%87%A0%E4%BD%95%E8%A7%A3%E9%87%8A"><span class="nav-number">4.</span> <span class="nav-text">2.3 梯度和Hessian的几何解释</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%A2%AF%E5%BA%A6%E4%BC%98%E5%8C%96-%E5%89%8D%E8%A8%80"><span class="nav-number">1.</span> <span class="nav-text">梯度优化-前言</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%A4%E7%B1%BB%E4%BC%98%E5%8C%96%E6%96%B9%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">两类优化方法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9A%E5%B0%BA%E5%BA%A6%E7%AD%96%E7%95%A5"><span class="nav-number">1.2.</span> <span class="nav-text">多尺度策略</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-1-%E6%95%B0%E5%AD%A6%E5%AE%9A%E4%B9%89"><span class="nav-number">2.</span> <span class="nav-text">2.1 数学定义</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-2-%E6%A2%AF%E5%BA%A6%E4%BC%98%E5%8C%96%EF%BC%8C%E6%B3%B0%E5%8B%92%E7%BA%A7%E6%95%B0%E5%92%8C%E7%89%9B%E9%A1%BF%E6%96%B9%E6%B3%95"><span class="nav-number">3.</span> <span class="nav-text">2.2 梯度优化，泰勒级数和牛顿方法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-3-%E6%A2%AF%E5%BA%A6%E5%92%8CHessian%E7%9A%84%E5%87%A0%E4%BD%95%E8%A7%A3%E9%87%8A"><span class="nav-number">4.</span> <span class="nav-text">2.3 梯度和Hessian的几何解释</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BE%8B%E5%AD%902-5-1-%E4%B8%80%E7%BB%B4%E5%87%BD%E6%95%B0"><span class="nav-number">4.1.</span> <span class="nav-text">例子2.5.1 一维函数</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
