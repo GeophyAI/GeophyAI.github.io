@@ -1738,7 +1738,7 @@ P &= P_0 \\
       </tags>
   </entry>
   <entry>
-    <title>地震反演第二章 梯度优化前言</title>
+    <title>第二章 梯度优化前言</title>
     <url>/2022/12/19/seismic_inversion_2/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="梯度优化-前言"><a href="#梯度优化-前言" class="headerlink" title="梯度优化-前言"></a>梯度优化-前言</h1><p>定义关于实函数$f(\rm \textbf x)$的无约束最优化问题（Fletcher, 1987）为，寻找一个最优的模型矢量$\rm \textbf x^{\ast}$ 满足以下条件：</p>
 <script type="math/tex; mode=display">f(\rm \textbf x^{\ast} ) ≤ f(\rm \textbf x)\tag{2.1}</script><p>通常会将模型惩罚函数$g(\rm \textbf x))$加入数据目标函数中：</p>
@@ -1832,7 +1832,7 @@ P &= P_0 \\
       </tags>
   </entry>
   <entry>
-    <title>地震反演第一章 前言</title>
+    <title>第一章 前言</title>
     <url>/2022/12/18/seismic_inversion_1.2/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="反问题"><a href="#反问题" class="headerlink" title="反问题"></a>反问题</h1><p>在野外地震勘探中，我们采集地震数据<strong>d</strong>的过程实际上是一个正演过程，即：</p>
 <script type="math/tex; mode=display">{\rm \textbf d}={\rm \textbf {Lm}}</script><p>其中，$\rm \textbf L$为隐式地依赖模型$\rm \textbf m$的非线性正演算子，其能够通过模型$\rm \textbf m$预测数据$\rm \textbf d$。如果原始的正演算子是非线性的，那么它通常可以通过背景模型来线性化。此时，我们可以将地球物理反问题定义为利用记录的数据矢量$\rm \textbf d$反演模型矢量$\rm \textbf m$。</p>
@@ -2035,7 +2035,7 @@ P &= P_0 \\
       </tags>
   </entry>
   <entry>
-    <title>地震反演第三章 最速下降法</title>
+    <title>第三章 最速下降法</title>
     <url>/2022/12/21/seismic_inversion_3/</url>
     <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="第3章-最速下降法"><a href="#第3章-最速下降法" class="headerlink" title="第3章 最速下降法"></a>第3章 最速下降法</h1><p>本章介绍最速下降优化方法（Steppest descent，SD），其通过沿着最速下降，即负梯度$-\rm \textbf g$方向来迭代地求解优化问题。对于大型优化问题，由于其不需要计算Hessian矩阵的逆，所以其相对于牛顿方法而言计算量更小，但是由于不考虑曲率信息，其Hessian是病态的，所以可能会导致收敛效率较低。然而经验告诉我们，基于预处理和正则化的迭代最速下降法，再加上多尺度反演方法，对于解决大型的地震数据反演问题是非常有效的。</p>
 <h2 id="3-1-最速下降法介绍"><a href="#3-1-最速下降法介绍" class="headerlink" title="3.1 最速下降法介绍"></a>3.1 最速下降法介绍</h2><p>在多数三维地球物理问题中，求取和存储Hessian矩阵$\rm \textbf H$的逆是不现实的。例如一个共$1000^3=10^9$网格点的速度模型，其Hessian矩阵的逆的求取需要对$10^18$个元素进行存储和计算。另一种避免计算大型矩阵的逆，但是可能会导致低收敛效率的方法是最速下降法。回顾公式2.18：</p>
