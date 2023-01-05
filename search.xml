@@ -2088,14 +2088,14 @@ P &= P_0 \\
 <script type="math/tex; mode=display">
 \begin{align}
 \notag \rm \textbf x^{(k+1)} & =\rm \textbf x^{(k)}-\alpha ({\rm \textbf {Lx}}^{(k)}-{\rm \textbf t}) \\
-&= {\rm \textbf x}^{(k)}-\alpha {\rm \textbf r}^{(k)}
+\notag &= {\rm \textbf x}^{(k)}-\alpha {\rm \textbf r}^{(k)}
 \end{align}
 \tag{3.20}</script><p>其中，残差矢量为${\rm \textbf r}^{(k)}= {\rm \textbf {Lx}}^{(k)}-{\rm \textbf t}$。</p>
 <p>$M \times N$超定线性方程组${\rm \textbf {Lx}}={\rm \textbf t}(M&gt;N)$也能够利用最速下降法最小化目标函数求解：</p>
 <script type="math/tex; mode=display">
 \begin{align}
 \notag f({\rm \textbf x}) &= \frac{1}{2} ({\rm \textbf {Lx}}-{\rm \textbf t}) ^T ({\rm \textbf {Lx}}-{\rm \textbf t}) \\
-&=\frac{1}{2} {\rm \textbf t}^T {\rm \textbf t} -{\rm \textbf t}^T {\rm \textbf {Lx}} + \frac{1}{2}{\rm \textbf x}^T{\rm \textbf L}^T{\rm \textbf {Lx}}
+\notag &=\frac{1}{2} {\rm \textbf t}^T {\rm \textbf t} -{\rm \textbf t}^T {\rm \textbf {Lx}} + \frac{1}{2}{\rm \textbf x}^T{\rm \textbf L}^T{\rm \textbf {Lx}}
 \end{align}
 \tag{3.21}</script><p>对未知数$\rm \textbf x$求导可得$f(\rm \textbf x)$的梯度为</p>
 <script type="math/tex; mode=display">\nabla f (\rm\textbf x)={\rm\textbf L}^T{\rm\textbf {Lx}}-{\rm\textbf L}^T{\rm\textbf t}
@@ -2103,7 +2103,7 @@ P &= P_0 \\
 <script type="math/tex; mode=display">
 \begin{align}
 \notag \rm \textbf x^{(k+1)} & =\rm \textbf x^{(k)}-\alpha {\rm \textbf L}^T ({\rm \textbf {Lx}}^{(k)}-{\rm \textbf t}) \\
-&= {\rm \textbf x}^{(k)}-\alpha {\rm \textbf L}^T {\rm \textbf r}^{(k)}
+\notag &= {\rm \textbf x}^{(k)}-\alpha {\rm \textbf L}^T {\rm \textbf r}^{(k)}
 \end{align}
 \tag{3.23}</script><p>其中${\rm \textbf r}^{(k)}= {\rm \textbf {Lx}}^{(k)}-{\rm \textbf t}$为第k次迭代的残差。通过对比3.23和3.20可以发现，与方阵$\rm \textbf L$相比，残差项前多了一个$\rm \textbf L$的转置项。如果$\rm \textbf L$的特征值为$\sigma _i$那么，${\rm \textbf L}^T{\rm \textbf L}$的特征值为$\sigma _i^2$。所以一般方程要比方阵更病态。后面层析和偏移章节中会提到，这个转置矩阵相当于层析中的反传旅行时残差和最小二乘偏移中的反传地震道。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
