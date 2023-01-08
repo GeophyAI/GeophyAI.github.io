@@ -2114,4 +2114,108 @@ P &= P_0 \\
         <tag>最速下降法</tag>
       </tags>
   </entry>
+  <entry>
+    <title>第四章 共轭梯度法和准牛顿法</title>
+    <url>/2023/01/06/seismic_inversion_4/</url>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="4-共轭梯度法和准牛顿法"><a href="#4-共轭梯度法和准牛顿法" class="headerlink" title="4 共轭梯度法和准牛顿法"></a>4 共轭梯度法和准牛顿法</h1><p>本章讨论地球物理反演中常用的两种算法，共轭梯度法和准牛顿法。与牛顿法不同的是，这两种方法不需要显式计算Hessian的逆，而是沿着能够减小数据误差的方向迭代地移动下降方向。每次迭代的计算复杂度为$O(N^2)$次矩阵乘法。这些方法的另一个优势在于，二者均无需存储或显式计算Hessian。它们的缺点是无法保证快速收敛。但是，他们仍然比无预处理的最速下降法更快。</p>
+<h2 id="4-1-共轭梯度法"><a href="#4-1-共轭梯度法" class="headerlink" title="4.1 共轭梯度法"></a>4.1 共轭梯度法</h2><p>Hestenes和Stiefel（1952）提出的共轭梯度法（Conjugate-gradient，CG）是一种沿着相互共轭的方向进行线性最小化的有效方法。相比于牛顿方法，其每次迭代只需$O(N^2)$次代数运算，对于well-conditioned的正定矩阵$\rm \textbf H$，通常在远少于N次的迭代中即可实现收敛，其还具有编程简单，每次迭代只占用$O(N)$存储的优势。</p>
+<h4 id="共轭定义"><a href="#共轭定义" class="headerlink" title="共轭定义"></a>共轭定义</h4><p>当矢量$\rm \textbf {u, v}$与矩阵$\rm \textbf H$满足$(\rm \textbf u, \rm \textbf {Hv})=0$时称$\rm \textbf {u, v}$关于矩阵$\rm \textbf H$共轭。相互共轭的向量是线性独立的，并且跨越了一个$N$维的欧几里得空间。因此，任何$N\times 1$的解向量都可以扩展为N个独立共轭向量的线性组合。为了理解共轭方向的物理意义，我们首先定义准牛顿公式。</p>
+<h4 id="准牛顿公式"><a href="#准牛顿公式" class="headerlink" title="准牛顿公式"></a>准牛顿公式</h4><p>二阶导数的有限差分近似值与相邻点的一阶导数之差成正比：</p>
+<script type="math/tex; mode=display">\frac{d^2f(x)}{dx^2} \Delta x
+\approx \frac{df(x+\Delta x}{dx}
+-\frac{df(x)}{dx},
+\tag{4.1}</script><p>其中，$\Delta x$是两点之间的空间增量。上述方程是准牛顿公式的特例，其将Hessian矩阵与相邻点之间的梯度联系在了一起。准牛顿（QN）公式定义为：</p>
+<script type="math/tex; mode=display">{\rm \textbf H}({\rm \textbf x}^{k+1}-{\rm \textbf x}^{(k)})
+={\rm \textbf g}^{(k+1)}-{\rm \textbf g}^{(k)},
+\tag{4.2}</script><p>上述公式可以通过式2.9推导得到：</p>
+<script type="math/tex; mode=display">
+
+定义${\rm \textbf x}_o \rightarrow {\rm \textbf x}^{(k)}$以及$\Delta {\rm \textbf x} \rightarrow {\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)}$公式4.3即变为4.2。
+如果将${\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)}$归一化为单位矢量，那么沿此方向的函数曲率为$({\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)})^T  {\rm \textbf H} ({\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)})$。QN公式将用于推导共轭梯度法。
+
+#### 共轭矢量的几何解释
+![Figure4.1](seismic_inversion_4/Figure4.1.png)
+
+对于SPD的Hessian，可将共轭矢量解释为指向图4.1b中${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$这两个矢量所跨越的平面上的损失靶心。
+为了证明这一点，我们首先应注意到之前的搜索方向${\rm \textbf d}^{(k-1)}$和它的相关梯度${\rm \textbf g}^{(k)}$是相互垂直的，因此：
+$$({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k)})=0
+\tag{4.4}</script><p>矢量${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$跨越了如图4.1b所示的平面，损失等值线在这个平面上形成了一个局部靶心，这个局部靶心是全局最小值${\rm \textbf x}^{\ast}$的垂直投影。如果定义第$k+1$次的梯度${\rm \textbf g}^{(k+1)}$在局部靶心上，这时梯度将不存在沿着${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$所跨越平面的分量，所以${\rm \textbf g}^{(k+1)}$垂直于平面中的任何矢量，此时有：</p>
+<script type="math/tex; mode=display">({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k+1)})=0
+\tag{4.5}</script><p>将${\rm \textbf d}^{(k-1)}$的内积带入准牛顿公式4.2可得</p>
+<script type="math/tex; mode=display">({\rm \textbf d}^{(k-1)}, {\rm \textbf {Hd}}^{(k)})
+=\overset {e.q. 4.5} {({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k+1)})}
+-\overset {e.q. 4.4} {({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k)})}
+=0,
+\tag{4.6}</script><p>其中${\rm \textbf x}^{(k+1)}-{\rm \textbf x}^{(k)} \rightarrow {\rm \textbf d}^{(k)}$。这个方程说明，一个终点在局部靶心处的搜索方向${\rm \textbf d}^{(k)}$，它与之前的搜索方向${\rm \textbf d}^{(k-1)}$是共轭的，其中靶心在${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$所跨越的平面内，如图4.1b所示。</p>
+<h3 id="4-1-1-共轭梯度算法"><a href="#4-1-1-共轭梯度算法" class="headerlink" title="4.1.1 共轭梯度算法"></a>4.1.1 共轭梯度算法</h3><p>我们现在可以使用正定矩阵$\rm \textbf H$来构造一系列相互共轭的搜索向量以最小化二次损失函数。以下即为共轭梯度法，其使用最速下降方向作为初始搜索方向来寻找最优解。</p>
+<ol>
+<li>定义$k=1$时的初始模型${\rm \textbf x}^{(k-1)} \rightarrow {\rm \textbf x}^{(0)}$（如图4.1b），同时定义初始下降矢量${\rm \textbf d}^{(k-1)} \rightarrow {\rm \textbf d}^{(0)} = -{\rm \textbf g}^{(0)}$，迭代公式为：<br>$$<br>{\rm \textbf x}^{(k)}<br>={\rm \textbf x}^{(k-1)}</li>
+</ol>
+<ul>
+<li>\alpha {\rm \textbf d}^{(k-1)}.<br>\tag{4.7}$$<br>其中，$\alpha$通过线最小化方法来使$f({\rm \textbf x}^{(k-1)} +  \alpha {\rm \textbf d}^{(k-1)})$最小求得。根据公式3.10，$\alpha$可进一步表示为：<script type="math/tex; mode=display">
+\alpha=-
+\frac{({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k-1)})}
+{({\rm \textbf d}^{(k-1)}, {\rm \textbf {Hd}}^{(k-1)})}
+\tag{4.8}</script></li>
+</ul>
+<ol>
+<li>以${\rm \textbf x}^{(k)}$为初始模型，下次移动方向${\rm \textbf d}^{(k)}$需要与${\rm \textbf d}^{(k-1)}$共轭，并且其需要在${\rm \textbf g}^{(k)}=\nabla f({\rm \textbf x}^{(k)})$和${\rm \textbf d}^{(k-1)}$所跨越的平面内，即：</li>
+</ol>
+<script type="math/tex; mode=display">
+{\rm \textbf d}^{(k)} 
+={\rm \textbf g}^{(k-1)}
++ \beta {\rm \textbf d}^{(k-1)}. 
+\tag{4.9}</script><p>其中，$\beta$用于保证${\rm \textbf d}^{(k)}$与${\rm \textbf d}^{(k-1)}$共轭。将共轭定义带入公式4.9可得$\beta$为：</p>
+<script type="math/tex; mode=display">
+\beta=
+\frac{({\rm \textbf d}^{(k-1)}, {\rm \textbf {Hg}}^{(k)})}
+{({\rm \textbf d}^{(k-1)}, {\rm \textbf {Hd}}^{(k-1)})}
+\tag{4.10}</script><p>根据公式4.7可知，${\rm \textbf {Hd}}^{(k-1)}=({\rm \textbf g}^{(k)} - {\rm \textbf g}^{(k-1)})/\alpha$，结合公式4.2，公式4.10可以写为：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\notag \beta &= ({\rm \textbf g}^{(k)} - {\rm \textbf g}^{(k-1)}, {\rm \textbf g}^{(k)})
+/ (\alpha {\rm \textbf d}^{(k-1)}, {\rm \textbf {Hd}}^{(k-1)}) \\
+\notag &=({\rm \textbf g}^{(k)} - {\rm \textbf g}^{(k-1)}, {\rm \textbf g}^{(k)})
+/ ({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k)} - {\rm \textbf g}^{(k-1)}) \\
+\notag &=({\rm \textbf g}^{(k)} - {\rm \textbf g}^{(k-1)}, {\rm \textbf g}^{(k)})
+/ ({\rm \textbf g}^{(k-1)}, {\rm \textbf g}^{(k-1)}),
+\end{align}
+\tag{4.11}</script><p>在4.11最后一行公式中，我们需要将${\rm \textbf d}^{(k-1)} = {\rm \textbf g}^{(k-1)} + \beta^{‘}  {\rm \textbf d}^{(k-2)}$带入倒数第二行公式中，如图4.2b所示，第k次梯度垂直于k-1次的搜索方向，所以化简后即可得到最后一行公式。</p>
+<p>公式4.7-4.11可以总结为如下：</p>
+<script type="math/tex; mode=display">
+\alpha ^{(k)}=-
+\frac{({\rm \textbf d}^{(k)}, {\rm \textbf g}^{(k)})}
+{({\rm \textbf d}^{(k)}, {\rm \textbf {Hd}}^{(k)})}
+\tag{4.12}</script><script type="math/tex; mode=display">
+{\rm \textbf x}^{(k+1)} 
+={\rm \textbf x}^{(k)}
++ \alpha ^{(k)} {\rm \textbf d}^{(k)}. 
+\tag{4.13}</script><script type="math/tex; mode=display">
+{\rm \textbf g}^{(k+1)}=\nabla f({\rm \textbf x}^{(k+1)})
+\tag{4.14}</script><script type="math/tex; mode=display">
+{\rm \textbf d}^{(k+1)} 
+=-{\rm \textbf g}^{(k+1)}
++ \beta {\rm \textbf d}^{(k)}. 
+\tag{4.15}</script><script type="math/tex; mode=display">
+\beta = ({\rm \textbf g}^{(k+1)} - {\rm \textbf g}^{(k)}, {\rm \textbf g}^{(k+1)})
+/ ({\rm \textbf g}^{(k)}, {\rm \textbf g}^{(k)}),
+\tag{4.16}</script><p>CG法的几何解释如图4.1b所示，共轭方向${\rm \textbf d}^{(k)}$在${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$所跨越的平面内，且这个共轭矢量指向靶心。这里的靶心并非是全局最小，而是局部平面内的局部极小。</p>
+<p>公式4.13-4.16描述的是Polak-Ribiere CG法（Gill et al., 1981）。非常明显的是，由于${\rm \textbf g}^{(k)}$和{\rm \textbf g}^{(k+1)}是正交的(Nocedal and Wright，1999)，公式4.16中的$\beta$也可以写为：</p>
+<script type="math/tex; mode=display">
+\beta = ({\rm \textbf g}^{(k+1)}, {\rm \textbf g}^{(k+1)})
+/ ({\rm \textbf g}^{(k)}, {\rm \textbf g}^{(k)}),
+\tag{4.17}</script><p>将4.17代替4.16即可得到Fletcher-Reeves CG法（Gill et al., 1981）。<br>另一种求取$\alpha$的方法是Hestenes &amp; Stiefel(1952)法：</p>
+<script type="math/tex; mode=display">
+\alpha ^{(k)}=-
+\frac{({\rm \textbf g}^{(k+1)}, {\rm \textbf g}^{(k+1)})}
+{({\rm \textbf g}^{(k+1)}, {\rm \textbf {Hg}}^{(k)})}
+\tag{4.18}</script><p>对于严格的二次函数以及无限精度的算法，Polak-Ribiere和Fletcher-Reeves CG法是等价的。但是，对于非二次函数，${\rm \textbf d}^{(k)}$也可能与${\rm \textbf g}^{(k)}$正交（由于计算机的舍入误差也会导致丧失正交性）。这种情况下，${\rm \textbf g}^{(k+1)} \approx {\rm \textbf g}^{(k)}$，所以公式4.16中所示的Polak-Ribiere方法会使得$\beta =0$且${\rm \textbf d}^{(k)}=-{\rm \textbf g}^{(k)}$，此时Polak-Ribiere CG法将会重置为最速下降法，这也使得Polak-Ribiere方法更稳定。<br>所以，当算法迭代速度较慢时，${\rm \textbf g}^{(k+1)} \approx {\rm \textbf g}^{(k)}$以致于$\beta =0$并且公式4.15变为${\rm \textbf d}^{(k+1)}=-{\rm \textbf g}^{(k+1)}$，算法将自动重置为最速下降法。Polak-Ribiere CG要比Fletcher-Reeves更好一些（Nocedal &amp; Wright, 1999）。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
+      <categories>
+        <category>Seismic Inversion</category>
+      </categories>
+      <tags>
+        <tag>共轭梯度法</tag>
+      </tags>
+  </entry>
 </search>
