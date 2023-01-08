@@ -293,17 +293,16 @@
 \tag{4.6}</script><p>其中${\rm \textbf x}^{(k+1)}-{\rm \textbf x}^{(k)} \rightarrow {\rm \textbf d}^{(k)}$。这个方程说明，一个终点在局部靶心处的搜索方向${\rm \textbf d}^{(k)}$，它与之前的搜索方向${\rm \textbf d}^{(k-1)}$是共轭的，其中靶心在${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$所跨越的平面内，如图4.1b所示。</p>
 <h3 id="4-1-1-共轭梯度算法"><a href="#4-1-1-共轭梯度算法" class="headerlink" title="4.1.1 共轭梯度算法"></a>4.1.1 共轭梯度算法</h3><p>我们现在可以使用正定矩阵$\rm \textbf H$来构造一系列相互共轭的搜索向量以最小化二次损失函数。以下即为共轭梯度法，其使用最速下降方向作为初始搜索方向来寻找最优解。</p>
 <ol>
-<li>定义$k=1$时的初始模型${\rm \textbf x}^{(k-1)} \rightarrow {\rm \textbf x}^{(0)}$（如图4.1b），同时定义初始下降矢量${\rm \textbf d}^{(k-1)} \rightarrow {\rm \textbf d}^{(0)} = -{\rm \textbf g}^{(0)}$，迭代公式为：<br>$$<br>{\rm \textbf x}^{(k)}<br>={\rm \textbf x}^{(k-1)}</li>
-</ol>
-<ul>
-<li>\alpha {\rm \textbf d}^{(k-1)}.<br>\tag{4.7}$$<br>其中，$\alpha$通过线最小化方法来使$f({\rm \textbf x}^{(k-1)} +  \alpha {\rm \textbf d}^{(k-1)})$最小求得。根据公式3.10，$\alpha$可进一步表示为：<script type="math/tex; mode=display">
+<li><p>定义$k=1$时的初始模型${\rm \textbf x}^{(k-1)} \rightarrow {\rm \textbf x}^{(0)}$（如图4.1b），同时定义初始下降矢量${\rm \textbf d}^{(k-1)} \rightarrow {\rm \textbf d}^{(0)} = -{\rm \textbf g}^{(0)}$，迭代公式为：</p>
+<script type="math/tex; mode=display">{\mathbf x}^{(k)} ={\mathbf x}^{(k-1)}+ \alpha {\mathbf d}^{(k-1)}. 
+\tag{4.7}</script><p>其中，$\alpha$通过线最小化方法来使$f({\rm \textbf x}^{(k-1)} +  \alpha {\rm \textbf d}^{(k-1)})$最小求得。根据公式3.10，$\alpha$可进一步表示为：</p>
+<script type="math/tex; mode=display">
 \alpha=-
 \frac{({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k-1)})}
 {({\rm \textbf d}^{(k-1)}, {\rm \textbf {Hd}}^{(k-1)})}
 \tag{4.8}</script></li>
-</ul>
-<ol>
-<li>以${\rm \textbf x}^{(k)}$为初始模型，下次移动方向${\rm \textbf d}^{(k)}$需要与${\rm \textbf d}^{(k-1)}$共轭，并且其需要在${\rm \textbf g}^{(k)}=\nabla f({\rm \textbf x}^{(k)})$和${\rm \textbf d}^{(k-1)}$所跨越的平面内，即：</li>
+<li><p>以${\rm \textbf x}^{(k)}$为初始模型，下次移动方向${\rm \textbf d}^{(k)}$需要与${\rm \textbf d}^{(k-1)}$共轭，并且其需要在${\rm \textbf g}^{(k)}=\nabla f({\rm \textbf x}^{(k)})$和${\rm \textbf d}^{(k-1)}$所跨越的平面内，即：</p>
+</li>
 </ol>
 <script type="math/tex; mode=display">
 {\rm \textbf d}^{(k)} 
