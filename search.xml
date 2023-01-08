@@ -2129,16 +2129,12 @@ P &= P_0 \\
 ={\rm \textbf g}^{(k+1)}-{\rm \textbf g}^{(k)},
 \tag{4.2}</script><p>上述公式可以通过式2.9推导得到：</p>
 <script type="math/tex; mode=display">
-
-定义${\rm \textbf x}_o \rightarrow {\rm \textbf x}^{(k)}$以及$\Delta {\rm \textbf x} \rightarrow {\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)}$公式4.3即变为4.2。
-如果将${\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)}$归一化为单位矢量，那么沿此方向的函数曲率为$({\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)})^T  {\rm \textbf H} ({\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)})$。QN公式将用于推导共轭梯度法。
-
-#### 共轭矢量的几何解释
-![Figure4.1](seismic_inversion_4/Figure4.1.png)
-
-对于SPD的Hessian，可将共轭矢量解释为指向图4.1b中${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$这两个矢量所跨越的平面上的损失靶心。
-为了证明这一点，我们首先应注意到之前的搜索方向${\rm \textbf d}^{(k-1)}$和它的相关梯度${\rm \textbf g}^{(k)}$是相互垂直的，因此：
-$$({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k)})=0
+\overset {\rm\textbf g^{(k+1)}} {\nabla f ({\rm\textbf x}_{0}+\Delta{\rm\textbf x})}
+=\overset {\rm\textbf g^{(k)}}{\rm\textbf g(\rm\textbf x_0)} + {\rm\textbf H\Delta {\rm\textbf x}}
+\tag{4.3}</script><p>定义${\rm \textbf x}_o \rightarrow {\rm \textbf x}^{(k)}$以及$\Delta {\rm \textbf x} \rightarrow {\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)}$公式4.3即变为4.2。<br>如果将${\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)}$归一化为单位矢量，那么沿此方向的函数曲率为$({\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)})^T  {\rm \textbf H} ({\rm \textbf x}^{(k+1)} - {\rm \textbf x}^{(k)})$。QN公式将用于推导共轭梯度法。</p>
+<h4 id="共轭矢量的几何解释"><a href="#共轭矢量的几何解释" class="headerlink" title="共轭矢量的几何解释"></a>共轭矢量的几何解释</h4><p><img src="/2023/01/06/seismic_inversion_4/Figure4.1.png" alt="Figure4.1"></p>
+<p>对于SPD的Hessian，可将共轭矢量解释为指向图4.1b中${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$这两个矢量所跨越的平面上的损失靶心。<br>为了证明这一点，我们首先应注意到之前的搜索方向${\rm \textbf d}^{(k-1)}$和它的相关梯度${\rm \textbf g}^{(k)}$是相互垂直的，因此：</p>
+<script type="math/tex; mode=display">({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k)})=0
 \tag{4.4}</script><p>矢量${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$跨越了如图4.1b所示的平面，损失等值线在这个平面上形成了一个局部靶心，这个局部靶心是全局最小值${\rm \textbf x}^{\ast}$的垂直投影。如果定义第$k+1$次的梯度${\rm \textbf g}^{(k+1)}$在局部靶心上，这时梯度将不存在沿着${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$所跨越平面的分量，所以${\rm \textbf g}^{(k+1)}$垂直于平面中的任何矢量，此时有：</p>
 <script type="math/tex; mode=display">({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k+1)})=0
 \tag{4.5}</script><p>将${\rm \textbf d}^{(k-1)}$的内积带入准牛顿公式4.2可得</p>
