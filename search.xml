@@ -2115,16 +2115,16 @@ P &= P_0 \\
       </tags>
   </entry>
   <entry>
-    <title>第四章 共轭梯度法和准牛顿法</title>
+    <title>第四章 共轭梯度法和拟牛顿法</title>
     <url>/2023/01/06/seismic_inversion_4/</url>
-    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="4-共轭梯度法和准牛顿法"><a href="#4-共轭梯度法和准牛顿法" class="headerlink" title="4 共轭梯度法和准牛顿法"></a>4 共轭梯度法和准牛顿法</h1><p>本章讨论地球物理反演中常用的两种算法，共轭梯度法和准牛顿法。与牛顿法不同的是，这两种方法不需要显式计算Hessian的逆，而是沿着能够减小数据误差的方向迭代地移动下降方向。每次迭代的计算复杂度为$O(N^2)$次矩阵乘法。这些方法的另一个优势在于，二者均无需存储或显式计算Hessian。它们的缺点是无法保证快速收敛。但是，他们仍然比无预处理的最速下降法更快。</p>
+    <content><![CDATA[<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="4-共轭梯度法和拟牛顿法"><a href="#4-共轭梯度法和拟牛顿法" class="headerlink" title="4 共轭梯度法和拟牛顿法"></a>4 共轭梯度法和拟牛顿法</h1><p>本章讨论地球物理反演中常用的两种算法，共轭梯度法和拟牛顿法。与牛顿法不同的是，这两种方法不需要显式计算Hessian的逆，而是沿着能够减小数据误差的方向迭代地移动下降方向。每次迭代的计算复杂度为$O(N^2)$次矩阵乘法。这些方法的另一个优势在于，二者均无需存储或显式计算Hessian。它们的缺点是无法保证快速收敛。但是，他们仍然比无预处理的最速下降法更快。</p>
 <h2 id="4-1-共轭梯度法"><a href="#4-1-共轭梯度法" class="headerlink" title="4.1 共轭梯度法"></a>4.1 共轭梯度法</h2><p>Hestenes和Stiefel（1952）提出的共轭梯度法（Conjugate-gradient，CG）是一种沿着相互共轭的方向进行线性最小化的有效方法。相比于牛顿方法，其每次迭代只需$O(N^2)$次代数运算，对于well-conditioned的正定矩阵$\rm \textbf H$，通常在远少于N次的迭代中即可实现收敛，其还具有编程简单，每次迭代只占用$O(N)$存储的优势。</p>
-<h4 id="共轭定义"><a href="#共轭定义" class="headerlink" title="共轭定义"></a>共轭定义</h4><p>当矢量$\rm \textbf {u, v}$与矩阵$\rm \textbf H$满足$(\rm \textbf u, \rm \textbf {Hv})=0$时称$\rm \textbf {u, v}$关于矩阵$\rm \textbf H$共轭。相互共轭的向量是线性独立的，并且跨越了一个$N$维的欧几里得空间。因此，任何$N\times 1$的解向量都可以扩展为N个独立共轭向量的线性组合。为了理解共轭方向的物理意义，我们首先定义准牛顿公式。</p>
-<h4 id="准牛顿公式"><a href="#准牛顿公式" class="headerlink" title="准牛顿公式"></a>准牛顿公式</h4><p>二阶导数的有限差分近似值与相邻点的一阶导数之差成正比：</p>
+<h4 id="共轭定义"><a href="#共轭定义" class="headerlink" title="共轭定义"></a>共轭定义</h4><p>当矢量$\rm \textbf {u, v}$与矩阵$\rm \textbf H$满足$(\rm \textbf u, \rm \textbf {Hv})=0$时称$\rm \textbf {u, v}$关于矩阵$\rm \textbf H$共轭。相互共轭的向量是线性独立的，并且跨越了一个$N$维的欧几里得空间。因此，任何$N\times 1$的解向量都可以扩展为N个独立共轭向量的线性组合。为了理解共轭方向的物理意义，我们首先定义拟牛顿公式。</p>
+<h4 id="拟牛顿公式"><a href="#拟牛顿公式" class="headerlink" title="拟牛顿公式"></a>拟牛顿公式</h4><p>二阶导数的有限差分近似值与相邻点的一阶导数之差成正比：</p>
 <script type="math/tex; mode=display">\frac{d^2f(x)}{dx^2} \Delta x
 \approx \frac{df(x+\Delta x}{dx}
 -\frac{df(x)}{dx},
-\tag{4.1}</script><p>其中，$\Delta x$是两点之间的空间增量。上述方程是准牛顿公式的特例，其将Hessian矩阵与相邻点之间的梯度联系在了一起。准牛顿（QN）公式定义为：</p>
+\tag{4.1}</script><p>其中，$\Delta x$是两点之间的空间增量。上述方程是拟牛顿公式的特例，其将Hessian矩阵与相邻点之间的梯度联系在了一起。拟牛顿（QN）公式定义为：</p>
 <script type="math/tex; mode=display">{\rm \textbf H}({\rm \textbf x}^{k+1}-{\rm \textbf x}^{(k)})
 ={\rm \textbf g}^{(k+1)}-{\rm \textbf g}^{(k)},
 \tag{4.2}</script><p>上述公式可以通过式2.9推导得到：</p>
@@ -2137,7 +2137,7 @@ P &= P_0 \\
 <script type="math/tex; mode=display">({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k)})=0
 \tag{4.4}</script><p>矢量${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$跨越了如图4.1b所示的平面，损失等值线在这个平面上形成了一个局部靶心，这个局部靶心是全局最小值${\rm \textbf x}^{\ast}$的垂直投影。如果定义第$k+1$次的梯度${\rm \textbf g}^{(k+1)}$在局部靶心上，这时梯度将不存在沿着${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$所跨越平面的分量，所以${\rm \textbf g}^{(k+1)}$垂直于平面中的任何矢量，此时有：</p>
 <script type="math/tex; mode=display">({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k+1)})=0
-\tag{4.5}</script><p>将${\rm \textbf d}^{(k-1)}$的内积带入准牛顿公式4.2可得</p>
+\tag{4.5}</script><p>将${\rm \textbf d}^{(k-1)}$的内积带入拟牛顿公式4.2可得</p>
 <script type="math/tex; mode=display">({\rm \textbf d}^{(k-1)}, {\rm \textbf {Hd}}^{(k)})
 =\overset {e.q. 4.5} {({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k+1)})}
 -\overset {e.q. 4.4} {({\rm \textbf d}^{(k-1)}, {\rm \textbf g}^{(k)})}
