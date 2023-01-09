@@ -2195,7 +2195,7 @@ P &= P_0 \\
 \beta = ({\rm \textbf g}^{(k+1)} - {\rm \textbf g}^{(k)}, {\rm \textbf g}^{(k+1)})
 / ({\rm \textbf g}^{(k)}, {\rm \textbf g}^{(k)}),
 \tag{4.16}</script><p>CG法的几何解释如图4.1b所示，共轭方向${\rm \textbf d}^{(k)}$在${\rm \textbf d}^{(k-1)}$和${\rm \textbf g}^{(k)}$所跨越的平面内，且这个共轭矢量指向靶心。这里的靶心并非是全局最小，而是局部平面内的局部极小。</p>
-<p>公式4.13-4.16描述的是Polak-Ribiere CG法（Gill et al., 1981）。非常明显的是，由于${\rm \textbf g}^{(k)}$和{\rm \textbf g}^{(k+1)}是正交的(Nocedal and Wright，1999)，公式4.16中的$\beta$也可以写为：</p>
+<p>公式4.13-4.16描述的是Polak-Ribiere CG法（Gill et al., 1981）。非常明显的是，由于${\rm \textbf g}^{(k)}$和${\mathbf g}^{(k+1)}$是正交的(Nocedal and Wright，1999)，公式4.16中的$\beta$也可以写为：</p>
 <script type="math/tex; mode=display">
 \beta = ({\rm \textbf g}^{(k+1)}, {\rm \textbf g}^{(k+1)})
 / ({\rm \textbf g}^{(k)}, {\rm \textbf g}^{(k)}),
