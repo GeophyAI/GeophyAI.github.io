@@ -2245,6 +2245,63 @@ f(\mathbf x) = \frac{1}{2} \mathbf x^T \mathbf {Lx} - \mathbf x^T \mathbf t,
 <script type="math/tex; mode=display">
 \underset {k \rightarrow N} {\rm {lim}} \mathbf H^{-1}_k = \mathbf H^{-1}.
 \tag{4.32}</script><p>与牛顿方法相比，准牛顿（QN）方法的优点在于，每次更新只需要$O(N^2)$次代数运算，并且只计算一阶导数；与CG方法不同的是，其不需要周期性地重新开始迭代。然而，与CG方法的$O(N)$存储相比，仍然需要$O(N^2)$存储。降低存储的一种方法是使用limited-memory QN方法（Nocedal和Wright，1999），其只存储了几个向量来隐式构建$\mathbf H$的逆。</p>
+<h4 id="Rank-one-拟牛顿法"><a href="#Rank-one-拟牛顿法" class="headerlink" title="Rank-one 拟牛顿法"></a>Rank-one 拟牛顿法</h4><p>rank-one法中，设置4.31中初始近似$\mathbf H^{-1}$为$\mathbf H^{-1}_0 = \mathbf I$，此时有：</p>
+<script type="math/tex; mode=display">
+\mathbf x^{(1)} = \mathbf x^{(0)} -\alpha \mathbf H^{-1}_0  \mathbf g^{(0)}
+\tag{4.33}</script><p>其中，$\alpha$是通过先搜索方法最小化$f(\mathbf x)$得到的。<br>然后使更新后的$\mathbf H^{-1}_1$满足4.2准牛顿公式来更新$\mathbf H^{-1}_0$：</p>
+<script type="math/tex; mode=display">
+\mathbf x^{(1)} -\mathbf x^{(0)} =  \mathbf H^{-1}_1 (\mathbf g^{(1)} -\mathbf g^{(0)})
+\tag{4.34}</script><p>要注意的是，$\mathbf H^{-1}_0$不满足准牛顿公式，因为其只是Hessian逆的近似，为了保证4.34成立，通过rank-one更新构建$\mathbf H^{-1}_1$：</p>
+<script type="math/tex; mode=display">
+\mathbf H^{-1}_1 = \mathbf H^{-1}_0 + a \mathbf {uu}^T
+\tag{4.35}</script><p>其中$\mathbf u$是一个$N \times 1$矢量，$a$是常数。将4.35带入4.34即可得到$\mathbf u$和$a$：</p>
+<script type="math/tex; mode=display">
+\Delta \mathbf x^{(0)} = (\mathbf H^{-1}_0 + a \mathbf {uu}^T) \Delta \mathbf g^{(0)} 
+\tag{4.36}</script><p>整理上式可得：</p>
+<script type="math/tex; mode=display">
+a \mathbf {uu}^T \Delta \mathbf g^{(0)} = \Delta \mathbf x^{(0)}  - \mathbf H^{-1}_0 \Delta \mathbf g^{(0)} 
+\tag{4.37}</script><p>其中，$\Delta \mathbf x^{(0)} = \mathbf x^{(1)} -\mathbf x^{(0)}$，$\Delta \mathbf g^{(0)} = \mathbf g^{(1)} -\mathbf g^{(0)}$。$\mathbf {uu}^T$形式的矩阵被称为仅具有一个线性独立行向量的秩为1的矩阵。$\mathbf {uu}^T$的每一列都是向量$\mathbf u$的倍数，每一行都是向量$\mathbf u^T$的倍数。$\mathbf I + a \mathbf {uu}^T$形式的矩阵被称为初等矩阵。<br>上述公式中有$N+1$个未知数，但只有$N$个方程。因此一个可能的解为（Gill et al., 1981）：</p>
+<script type="math/tex; mode=display">
+\mathbf u = \Delta \mathbf x ^{(0)} - \mathbf H^{-1}_0 \Delta \mathbf g ^{(0)}
+\tag{4.38}</script><p>以及</p>
+<script type="math/tex; mode=display">
+a = \frac{1}{\mathbf u ^T \Delta \mathbf g ^{(0)}}
+\tag{4.39}</script><p>将4.38和4.39代入公式4.35可得$\mathbf H^{-1}_1$的迭代解：</p>
+<script type="math/tex; mode=display">
+\mathbf H^{-1}_{k+1}
+= \mathbf H^{-1}_{k}
++ \frac {(\Delta \mathbf x ^{(k)} - \mathbf H^{-1}_{k} \Delta \mathbf g ^{(k)})  
+(\Delta \mathbf x ^{(k)} - \mathbf H^{-1}_{k} \Delta \mathbf g ^{(k)}) ^T}
+{(\Delta \mathbf x ^{(k)} - \mathbf H^{-1}_{k} \Delta \mathbf g ^{(k)})^T  \Delta \mathbf g ^{(k)}}
+\tag{4.40}</script><p>以及</p>
+<script type="math/tex; mode=display">
+\mathbf x ^{(k+1)} = \mathbf x ^{(k)} - \alpha \mathbf H ^{-1}_k \mathbf g ^{(k+1)}
+\tag{4.41}</script><p>rank-one拟牛顿法存在两个问题。第一，$\mathbf g ^{(k)}$通常并不能保证为正定矩阵，因此优化过程并不一定是下降的。地儿，4.40中的分母可能接近或者等于0，会导致不稳定问题（Fletcher，1980）。</p>
+<h4 id="Rank-two-拟牛顿法"><a href="#Rank-two-拟牛顿法" class="headerlink" title="Rank-two 拟牛顿法"></a>Rank-two 拟牛顿法</h4><p>Rank-two拟牛顿法是Rank-one拟牛顿法的改进，其Hessian的更新公式为：</p>
+<script type="math/tex; mode=display">
+\mathbf H^{-1}_1 = \mathbf H^{-1}_0 + a \mathbf {uu}^T+b\mathbf {vv}^T,
+\tag{4.42}</script><p>其中，$N \times 1$矢量$\mathbf u$，$\mathbf u$，以及常数$a$、$b$满足4.34所示的拟牛顿公式。将4.42带入4.34可得：</p>
+<script type="math/tex; mode=display">
+(a \mathbf {uu}^T+b\mathbf {vv}^T) \Delta \mathbf g^{(k)}
+= \Delta \mathbf x^{(k)} - \mathbf H ^{-1}_k \Delta \mathbf g^{(k)},
+\tag{4.43}</script><p>一组非常明显的解为：</p>
+<script type="math/tex; mode=display">
+\mathbf u = \Delta \mathbf x ^{(k)},
+\tag{4.44}</script><script type="math/tex; mode=display">
+\mathbf v = - \mathbf H ^{-1}_k \Delta \mathbf g^{(k)},
+\tag{4.45}</script><script type="math/tex; mode=display">
+a = \frac{1}{\mathbf u^T \Delta \mathbf g ^{(k)}}
+\tag{4.46}</script><script type="math/tex; mode=display">
+b = \frac{1}{\mathbf v^T \Delta \mathbf g ^{(k)}}
+\tag{4.47}</script><p>则Rank-two拟牛顿法的更新公式为：</p>
+<script type="math/tex; mode=display">
+\mathbf H^{-1}_{k+1}
+=\mathbf H^{-1}_{k}
++\frac{\Delta\mathbf x^{(k)} {\Delta\mathbf x^{(k)}}^T} { {\Delta\mathbf x ^{(k)}}^T \Delta\mathbf g^{(k)} }
+-\frac {\mathbf H^{-1}_k \Delta\mathbf g^{(k)} (\Delta\mathbf g^{(k)} \mathbf H^{-1}_k)^T}
+{ {\Delta\mathbf g^{(k)}}^T \mathbf H^{-1}_k \Delta\mathbf g^{(k)} }
+\tag{4.48}</script><p>4.48即为Davidon-Fletcher-Powell（DFP）公式。结合确定性线搜索，DFP公式要优于最速下降法，运算效率要比CG更高（Fletcher，1980）。如果$\mathbf H^{-1}_0=\mathbf I$，DFP公式即变为CG法。DFP更新公式非常有效，但很快就被BFGS公式所超越，而BFGS公式目前被认为是所有准牛顿更新公式中最有效的（Nocedal &amp; Wright, p.197, 1999）。<br>当未知数数量较多时，QN法中是较难存储$\mathbf H^{-1}$的。这种情况下可以使用有限内存的QN法（Nocedal, 1980; Zhu et al., 1997）,其使用了不超过十次迭代的位置信息和梯度信息，通过矢量-矢量运算来构建$\mathbf H_k$。</p>
+<p>二次模型假设曲率（即$\mathbf H$的元素）在任何地方都是常数。在实际地震问题中的泛函都是高度非线性的，因此曲率值与空间中的位置相关。这意味着线性CG或QN方法（两者都假设纯二次函数）无法保证N次迭代收敛。一种典型的解决方法是具有重置的非线性CG或QN，在CG中，新的搜索方向沿着局部梯度方向。例如，在损失函数停止下降之前一直使用CG法，然后将搜索方向重置为最速下降方向，以开始新一轮CG迭代。同样也可以对QN方法进行类似的重置。</p>
 <link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>]]></content>
       <categories>
         <category>Seismic Inversion</category>
