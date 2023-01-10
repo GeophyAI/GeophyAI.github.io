@@ -270,59 +270,59 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="梯度优化-前言"><a href="#梯度优化-前言" class="headerlink" title="梯度优化-前言"></a>梯度优化-前言</h1><p>定义关于实函数$f(\rm \textbf x)$的无约束最优化问题（Fletcher, 1987）为，寻找一个最优的模型矢量$\rm \textbf x^{\ast}$ 满足以下条件：</p>
-<script type="math/tex; mode=display">f(\rm \textbf x^{\ast} ) ≤ f(\rm \textbf x)\tag{2.1}</script><p>通常会将模型惩罚函数$g(\rm \textbf x))$加入数据目标函数中：</p>
-<script type="math/tex; mode=display">\epsilon=f(\rm \textbf x)+\lambda g(\rm \textbf x), \tag{2.3}</script><p>其中，$\lambda &gt;0$为标量参数，用于平衡控制减少惩罚函数和增大目标函数。例如，在测井位置有速度曲线$\rm \textbf x^{well}$，应该强制让反演的速度模型$\rm \textbf x$在测井位置处等于声速曲线，有$g(\rm \textbf x)=||\rm \textbf x -\rm \textbf x^{well}||^2$。较大的$\lambda$意味着目标函数更多的确保反演模型接测井值，而尽管可能会导致预测数据和观测数据的误差较大。</p>
-<h2 id="两类优化方法"><a href="#两类优化方法" class="headerlink" title="两类优化方法"></a>两类优化方法</h2><p>优化方法主要包括<strong>全局优化</strong>和<strong>梯度优化</strong>两种（Gill et al., 1981）。在<strong>全局优化方法</strong>中，需要在整个模型空间中寻找$\rm \textbf x^{\ast}$使得公式$2.3$目标函数$\epsilon$最小来避免陷入局部极小。常用的全局优化算法有Monte Carlo方法(Fu and Hu, 1997)、线性和非线性编程(Horst and Pardalos, 1995),、模拟退火、遗传算法(Sen and Stoffa, 1995),和混合算法(Sen and Stoffa, 1992).等。如果优化问题足够小或者计算机足够快，地震反演就可以使用全局优化算法(Sen and<br>Stoffa, 1991; 1992; 1995)。但在实际的地震反演问题中往往是不可取的。<br>另一类优化方法是沿着目标函数的downhill方向迭代搜索模型矢量，然后在第一次局部极小时停止，即<strong>梯度优化方法</strong>。相对于全局优化方法来讲这类方法需要更小的迭代次数就可以收敛，并且无需耗费巨大的计算量和存储量，常用算法有共轭梯度法（CG）和最速下降法等。这类方法的劣势在于容易陷入局部极小。如果初始模型选择不准确，就会陷入局部极小。如图2.1所示，如果选取的初始模型靠近左侧起始位置，那么反演会很快陷入局部极小，而如果选取的模型在右侧位置，反演则能够收敛到全局最小，但是选取一个好的初始模型以跳过局部极小在实际资料的反演中是不现实的。多尺度反演(Bunks et al., 1995; Nemeth et al., 1997; Ravaut et al., 2004; Krebs et al., 2009),可以很好地解决这一问题，能够使反演跳过局部极小并收敛到全局最小或其附近。<br><img src="/2022/12/19/seismic_inversion_2/Figure2.1.png" alt="Figure2.1"></p>
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="梯度优化-前言"><a href="#梯度优化-前言" class="headerlink" title="梯度优化-前言"></a>梯度优化-前言</h1><p>定义关于实函数$f(\mathbf x)$的无约束最优化问题（Fletcher, 1987）为，寻找一个最优的模型矢量$\mathbf x^{\ast}$ 满足以下条件：</p>
+<script type="math/tex; mode=display">f(\mathbf x^{\ast} ) ≤ f(\mathbf x)\tag{2.1}</script><p>通常会将模型惩罚函数$g(\mathbf x))$加入数据目标函数中：</p>
+<script type="math/tex; mode=display">\epsilon=f(\mathbf x)+\lambda g(\mathbf x), \tag{2.3}</script><p>其中，$\lambda &gt;0$为标量参数，用于平衡控制减少惩罚函数和增大目标函数。例如，在测井位置有速度曲线$\mathbf x^{well}$，应该强制让反演的速度模型$\mathbf x$在测井位置处等于声速曲线，有$g(\mathbf x)=||\mathbf x -\mathbf x^{well}||^2$。较大的$\lambda$意味着目标函数更多的确保反演模型接测井值，而尽管可能会导致预测数据和观测数据的误差较大。</p>
+<h2 id="两类优化方法"><a href="#两类优化方法" class="headerlink" title="两类优化方法"></a>两类优化方法</h2><p>优化方法主要包括<strong>全局优化</strong>和<strong>梯度优化</strong>两种（Gill et al., 1981）。在<strong>全局优化方法</strong>中，需要在整个模型空间中寻找$\mathbf x^{\ast}$使得公式$2.3$目标函数$\epsilon$最小来避免陷入局部极小。常用的全局优化算法有Monte Carlo方法(Fu and Hu, 1997)、线性和非线性编程(Horst and Pardalos, 1995),、模拟退火、遗传算法(Sen and Stoffa, 1995),和混合算法(Sen and Stoffa, 1992).等。如果优化问题足够小或者计算机足够快，地震反演就可以使用全局优化算法(Sen and<br>Stoffa, 1991; 1992; 1995)。但在实际的地震反演问题中往往是不可取的。<br>另一类优化方法是沿着目标函数的downhill方向迭代搜索模型矢量，然后在第一次局部极小时停止，即<strong>梯度优化方法</strong>。相对于全局优化方法来讲这类方法需要更小的迭代次数就可以收敛，并且无需耗费巨大的计算量和存储量，常用算法有共轭梯度法（CG）和最速下降法等。这类方法的劣势在于容易陷入局部极小。如果初始模型选择不准确，就会陷入局部极小。如图2.1所示，如果选取的初始模型靠近左侧起始位置，那么反演会很快陷入局部极小，而如果选取的模型在右侧位置，反演则能够收敛到全局最小，但是选取一个好的初始模型以跳过局部极小在实际资料的反演中是不现实的。多尺度反演(Bunks et al., 1995; Nemeth et al., 1997; Ravaut et al., 2004; Krebs et al., 2009),可以很好地解决这一问题，能够使反演跳过局部极小并收敛到全局最小或其附近。<br><img src="/2022/12/19/seismic_inversion_2/Figure2.1.png" alt="Figure2.1"></p>
 <h2 id="多尺度策略"><a href="#多尺度策略" class="headerlink" title="多尺度策略"></a>多尺度策略</h2><p>在多尺度反中，通常要对地震数据做低通滤波以使其更简单，基于滤波后数据的目标函数也会更平滑。然后，通过梯度搜索来拟合平滑的目标函数，进而在后续的反演中添加更高频或更复杂的数据。重复以上步骤直到数据中所有的分量都反演完成。多尺度策略的变种包括骨骼化数据(Luo and Schuster, 1991a; 1991b)在前期反演中限制有限偏移距和有限时窗等。多尺度波形反演的结果显示(Bunks et al., 1995; Ravaut et al., 2004; Krebs et al., 2009)，多尺度梯度优化对于地震数据全波形反演而言是至关重要的。</p>
-<h1 id="2-1-数学定义"><a href="#2-1-数学定义" class="headerlink" title="2.1 数学定义"></a>2.1 数学定义</h1><p>函数$f(\rm \textbf x)$的梯度定义为:</p>
-<script type="math/tex; mode=display">\nabla f(\rm \textbf x):=[\frac{\partial f}{\partial x_1} ... ... ... \frac{\partial f}{\partial x_N}]^T \tag{2.4}</script><p>其中$\rm \textbf x \in R^N$，$N \times N$Hessian矩阵$\rm \textbf H$定义为$\nabla \nabla ^T f(\rm \textbf x)$，其元素为：</p>
-<script type="math/tex; mode=display">H_{ij}:=[\nabla \nabla ^T f(\rm \textbf x)]_{ij}= \frac{\partial ^2 f(\rm \textbf x)}{\partial x_i \partial x_j}\tag{2.5}</script><p>矩阵$\rm \textbf H$为实对称矩阵，因为$\frac{\partial ^2 f(\rm \textbf x)}{\partial x_i \partial x_j}=\frac{\partial ^2 f(\rm \textbf x)}{\partial x_j \partial x_i}$。Hessian矩阵中包含了$f(\rm \textbf x)$的曲率或者凹凸信息，负梯度方向$-\rm \textbf g=-\nabla f(\rm \textbf x)$则指示了$f(\rm \textbf x)$在$\rm \textbf x$处的最速下降方向。<br>根据Kelley(1999)，$N \times 1$矢量$\rm \textbf x$的欧几里得范数（Euclidean norm)定义为：</p>
-<script type="math/tex; mode=display">||\rm \textbf x||_2:=\sqrt{\underset {i=1,...,N}  \Sigma x^2_i} \tag {2.6}</script><p>由欧几里得范数推导得到矩阵范数：</p>
-<script type="math/tex; mode=display">||L||_2:=\rm \underset {x≠0} max \frac{||\rm \textbf {Lx}||_2}{||\rm \textbf x||_2}\tag{2.7}</script><p>假设$f(\rm \textbf x)$二阶可微，将$f(\rm \textbf x_0+\Delta \rm \textbf x)$在$\rm \textbf x_0$处展开可得：</p>
-<script type="math/tex; mode=display">f(\rm \textbf x_0+\Delta \rm \textbf x)=f(\rm \textbf x_0)+\rm \textbf g^T \Delta \rm \textbf x+\frac{1}{2} \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x_0)\Delta \rm \textbf x + o(||\Delta \rm \textbf x||^3) \tag{2.8}</script><p>忽略高阶项后可以得到二次模型近似：</p>
+<h1 id="2-1-数学定义"><a href="#2-1-数学定义" class="headerlink" title="2.1 数学定义"></a>2.1 数学定义</h1><p>函数$f(\mathbf x)$的梯度定义为:</p>
+<script type="math/tex; mode=display">\nabla f(\mathbf x):=[\frac{\partial f}{\partial x_1} ... ... ... \frac{\partial f}{\partial x_N}]^T \tag{2.4}</script><p>其中$\mathbf x \in R^N$，$N \times N$Hessian矩阵$\mathbf H$定义为$\nabla \nabla ^T f(\mathbf x)$，其元素为：</p>
+<script type="math/tex; mode=display">H_{ij}:=[\nabla \nabla ^T f(\mathbf x)]_{ij}= \frac{\partial ^2 f(\mathbf x)}{\partial x_i \partial x_j}\tag{2.5}</script><p>矩阵$\mathbf H$为实对称矩阵，因为$\frac{\partial ^2 f(\mathbf x)}{\partial x_i \partial x_j}=\frac{\partial ^2 f(\mathbf x)}{\partial x_j \partial x_i}$。Hessian矩阵中包含了$f(\mathbf x)$的曲率或者凹凸信息，负梯度方向$-\mathbf g=-\nabla f(\mathbf x)$则指示了$f(\mathbf x)$在$\mathbf x$处的最速下降方向。<br>根据Kelley(1999)，$N \times 1$矢量$\mathbf x$的欧几里得范数（Euclidean norm)定义为：</p>
+<script type="math/tex; mode=display">||\mathbf x||_2:=\sqrt{\underset {i=1,...,N}  \Sigma x^2_i} \tag {2.6}</script><p>由欧几里得范数推导得到矩阵范数：</p>
+<script type="math/tex; mode=display">||L||_2:=\rm \underset {x≠0} max \frac{||\mathbf {Lx}||_2}{||\mathbf x||_2}\tag{2.7}</script><p>假设$f(\mathbf x)$二阶可微，将$f(\mathbf x_0+\Delta \mathbf x)$在$\mathbf x_0$处展开可得：</p>
+<script type="math/tex; mode=display">f(\mathbf x_0+\Delta \mathbf x)=f(\mathbf x_0)+\mathbf g^T \Delta \mathbf x+\frac{1}{2} \Delta \mathbf x^T \nabla \nabla^Tf(\mathbf x_0)\Delta \mathbf x + o(||\Delta \mathbf x||^3) \tag{2.8}</script><p>忽略高阶项后可以得到二次模型近似：</p>
 <script type="math/tex; mode=display">\begin{align}
-\notag f(\rm \textbf x_0+\Delta \rm \textbf x)&≈f(\rm \textbf x_0)+\rm \textbf g^T \Delta \rm \textbf x+\frac{1}{2} \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x_0)\Delta \rm \textbf x \\
-\notag &= f(\rm \textbf x_0)+ \rm \textbf g^T \Delta \rm \textbf x +\frac{1}{2} \Delta \rm \textbf x^T \rm \textbf H \Delta \rm \textbf x
+\notag f(\mathbf x_0+\Delta \mathbf x)&≈f(\mathbf x_0)+\mathbf g^T \Delta \mathbf x+\frac{1}{2} \Delta \mathbf x^T \nabla \nabla^Tf(\mathbf x_0)\Delta \mathbf x \\
+\notag &= f(\mathbf x_0)+ \mathbf g^T \Delta \mathbf x +\frac{1}{2} \Delta \mathbf x^T \mathbf H \Delta \mathbf x
 \notag \end{align} 
-\tag{2.9}</script><p>如果存在局部或全局最小点$\rm \textbf x^{\ast}$，则图2.1中的一维曲线需满足$\partial f(\rm \textbf x^{\ast})/\partial x=0$,$\partial^2 f(\rm \textbf x^{\ast})/\partial x^2&gt;0$<br>多维情况下的最优条件为：</p>
-<script type="math/tex; mode=display">\nabla f(\rm \textbf x^{\ast})=0 \space and \space  \Delta \rm \textbf x^T \nabla \nabla^Tf(\rm \textbf x^{\ast})\Delta \rm \textbf x>0\tag {2.10}</script><p>其中，第二个条件定义了Hessian矩阵的正定性。<br>许多地球物理问题使用$\rm \textbf L^T\rm \textbf L$，即反传算子$\rm \textbf L^T$和正传算子$\rm \textbf L$的级联，来近似Hessian矩阵$\rm \textbf H$。如果$\rm \textbf L$为实数，对于实特征矢量$\rm \textbf x_i$，有：</p>
-<script type="math/tex; mode=display">\rm \textbf x^T_i[\rm \textbf L^T\rm \textbf L]\rm \textbf x_i = \lambda_i \rm \textbf x^T_i \rm \textbf x_i≥0\tag{2.11}</script><p>这里的不等号是由于$||\rm \textbf {Lx}||_i≥0$。当$\rm \textbf x$不在原点时$\rm \textbf x^T_i \rm \textbf x_i&gt;0$，所以有$\lambda_i≥0$，也因此在时空域的最小二乘偏移和全波形反演的Hessian矩阵至少是半正定的。</p>
+\tag{2.9}</script><p>如果存在局部或全局最小点$\mathbf x^{\ast}$，则图2.1中的一维曲线需满足$\partial f(\mathbf x^{\ast})/\partial x=0$,$\partial^2 f(\mathbf x^{\ast})/\partial x^2&gt;0$<br>多维情况下的最优条件为：</p>
+<script type="math/tex; mode=display">\nabla f(\mathbf x^{\ast})=0 \space and \space  \Delta \mathbf x^T \nabla \nabla^Tf(\mathbf x^{\ast})\Delta \mathbf x>0\tag {2.10}</script><p>其中，第二个条件定义了Hessian矩阵的正定性。<br>许多地球物理问题使用$\mathbf L^T\mathbf L$，即反传算子$\mathbf L^T$和正传算子$\mathbf L$的级联，来近似Hessian矩阵$\mathbf H$。如果$\mathbf L$为实数，对于实特征矢量$\mathbf x_i$，有：</p>
+<script type="math/tex; mode=display">\mathbf x^T_i[\mathbf L^T\mathbf L]\mathbf x_i = \lambda_i \mathbf x^T_i \mathbf x_i≥0\tag{2.11}</script><p>这里的不等号是由于$||\mathbf {Lx}||_i≥0$。当$\mathbf x$不在原点时$\mathbf x^T_i \mathbf x_i&gt;0$，所以有$\lambda_i≥0$，也因此在时空域的最小二乘偏移和全波形反演的Hessian矩阵至少是半正定的。</p>
 <h1 id="2-2-梯度优化，泰勒级数和牛顿方法"><a href="#2-2-梯度优化，泰勒级数和牛顿方法" class="headerlink" title="2.2 梯度优化，泰勒级数和牛顿方法"></a>2.2 梯度优化，泰勒级数和牛顿方法</h1><p>公式2.9可以表示为:</p>
-<script type="math/tex; mode=display">f(\rm \textbf x_0+\Delta \rm \textbf x) ≈ f(\rm \textbf x_0)+ \underset {i=1:N} \Sigma \frac{\partial f(\rm \textbf x_0)}{\partial x_i}\Delta x_i +\frac{1}{2} \underset {i=1:N} \Sigma\underset {j=1:N} \Sigma \frac{\partial^2 f(\rm \textbf x_0)}{\partial x_i \partial x_j}\Delta x_i\Delta x_j \tag{2.12}</script><p>对于一个足够小的$\Delta \rm \textbf x$，截断泰勒级数是原函数在$\rm \textbf x_0+\Delta \rm \textbf x$一个较好的近似。当N=2时，，公式2.12是一个椭圆，其最小值在$\rm \textbf x^{\ast}$。如果Hessian矩阵中的交叉项为0（即$\partial ^2f(\rm \textbf x)/\partial x_i \partial x_j=0 \space for \space i !=j$)，椭圆的最大轴和最小轴将和$x_1$、$x_2$平行，否则他们将和图2.2所示一样有一定角度的旋转。<br><img src="/2022/12/19/seismic_inversion_2/Figure2.2.png" alt="Figure2.2"></p>
-<p>定义$\Delta \rm \textbf x = \rm \textbf  x - \rm \textbf x_0$，$\partial \Delta x_i/\partial x_k=\delta_{ik}$，将第k个分量的梯度带入得：</p>
+<script type="math/tex; mode=display">f(\mathbf x_0+\Delta \mathbf x) ≈ f(\mathbf x_0)+ \underset {i=1:N} \Sigma \frac{\partial f(\mathbf x_0)}{\partial x_i}\Delta x_i +\frac{1}{2} \underset {i=1:N} \Sigma\underset {j=1:N} \Sigma \frac{\partial^2 f(\mathbf x_0)}{\partial x_i \partial x_j}\Delta x_i\Delta x_j \tag{2.12}</script><p>对于一个足够小的$\Delta \mathbf x$，截断泰勒级数是原函数在$\mathbf x_0+\Delta \mathbf x$一个较好的近似。当N=2时，，公式2.12是一个椭圆，其最小值在$\mathbf x^{\ast}$。如果Hessian矩阵中的交叉项为0（即$\partial ^2f(\mathbf x)/\partial x_i \partial x_j=0 \space for \space i !=j$)，椭圆的最大轴和最小轴将和$x_1$、$x_2$平行，否则他们将和图2.2所示一样有一定角度的旋转。<br><img src="/2022/12/19/seismic_inversion_2/Figure2.2.png" alt="Figure2.2"></p>
+<p>定义$\Delta \mathbf x = \mathbf  x - \mathbf x_0$，$\partial \Delta x_i/\partial x_k=\delta_{ik}$，将第k个分量的梯度带入得：</p>
 <script type="math/tex; mode=display">\begin{align}
-\notag \frac{\partial f(\rm \textbf x)}{\partial x_k}&=\frac{\partial f(\rm \textbf x+\Delta \rm \textbf x)}{\partial x_k}\\
-\notag & = \frac {\partial f(\rm \textbf x_0)}{\partial x_k}+\underset {j=1:N}\Sigma \frac{\partial^2f(\rm \textbf x_0)}{\partial x_k \partial x_j} \Delta x_j
+\notag \frac{\partial f(\mathbf x)}{\partial x_k}&=\frac{\partial f(\mathbf x+\Delta \mathbf x)}{\partial x_k}\\
+\notag & = \frac {\partial f(\mathbf x_0)}{\partial x_k}+\underset {j=1:N}\Sigma \frac{\partial^2f(\mathbf x_0)}{\partial x_k \partial x_j} \Delta x_j
 \notag \end{align}
-\tag{2.13}</script><p>如果$\rm \textbf x$在$f(\rm \textbf x)$的最小值点上，那么$\frac{\partial f(\rm \textbf x)}{\partial x_k}=0$，公式2.13可化简为线性系统：</p>
-<script type="math/tex; mode=display">g_k=-\Sigma_{j=1}^{N} \frac{\partial ^2 f(\rm \textbf x_0)}{\partial x_k \partial x_j} \Delta x_j \space or \space \rm \textbf g=-\rm \textbf H \Delta \rm \textbf x\tag{2.14}</script><p>其中$g_k=\partial f(\rm \textbf x)/ \partial x_k | \rm \textbf x=\rm \textbf x_0$</p>
-<p>求解2.14中$\Delta \rm \textbf x$可得：</p>
-<script type="math/tex; mode=display">\Delta \rm \textbf x = - \rm \textbf H^{-1}\rm \textbf g \tag {2.15}</script><p>因此，给定一个试验模型$\rm \textbf x_0$，利用梯度优化算法求解2.14中的$\Delta \rm \textbf x$进而求得$\rm \textbf x^{\ast}=\rm \textbf x_0+\Delta \rm \textbf x$来减小目标函数$f(\rm \textbf x)$。<br>如果方程构成的系统是线性的，那么其构成的Hessian矩阵与$\rm \textbf x$无关，，所以二次函数为如图2.2所示的椭圆。在这种情况下，可以直接使用LU分解来求解$\rm \textbf x^{\ast}$。这种方法被称线性牛顿方法。如果直接求解较为困难，则可以采用迭代方程</p>
-<script type="math/tex; mode=display">x^{(k+1)}_i=x^{k}_i-\underset{j}\Sigma\beta^{(k)}_{ij}g^{(k)}_j,  \tag{2.16}</script><p>通过对梯度分量加权，即$\beta^{(k)}_{ij}g^{(k)}_j$来迭代地更新解$x^{(k)}_i$，其中$\beta_{ij}$是权系数。例如，最速下降法中，定义$\beta^{(k)}_{ij}=\delta_{ij}\alpha^{(k)}$，其中$\alpha^{(k)}$为第$k$次迭代的步长。在合适的条件下，迭代梯度方法将使模型收敛到$\rm \textbf x^{\ast}$。在公式2.16两侧同时减去$\rm \textbf x_0$得到等价的更新公式：</p>
-<script type="math/tex; mode=display">\Delta x^{(k+1)}_i=\Delta x^{k}_i-\underset{j}\Sigma\beta^{(k)}_{ij}g^{(k)}_j,\tag{2.17}</script><p>其中，公式2.17中更新的是扰动矢量分量$\Delta x_i$而不是实际的解的分量。<br><img src="/2022/12/19/seismic_inversion_2/Figure2.3.png" alt="Figure2.3"><br>如果$f(\rm \textbf x)$为多项式形式而不是二次型，那么他的等值面僵尸非椭圆的，如图2.3所示，Hessian$\rm \textbf H=\rm \textbf H(\rm \textbf x)$依赖于$\rm \textbf x$，这时需要非线性的牛顿迭代法来更新解：</p>
-<script type="math/tex; mode=display">\rm \textbf x^{(k+1)}=\rm \textbf x^{(k)}-\alpha[\rm \textbf H^{(k)}]^{-1}\rm \textbf g^{(k)}\tag{2.18}</script><p>这里的$\alpha$与二次目标函数的相同，均为标量步长，非二次型函数的步长需要在每次迭代中重新确定。如果利用$\delta_{ij}/H^{(k)}_{ii}$来近似$[\rm \textbf H^{(k)}]^{-1}_{ij}$，那么公式2.18即为预处理的最速下降法。对方程所构建系统进行预处理的目的是寻找一个预处理算子$\rm \textbf P$来减小$\rm \textbf {HP}$或$\rm \textbf {PH}$预处理系统矩阵的数量，其中预处理算子$\rm \textbf P$近似Hessian矩阵$\rm \textbf H$的逆。</p>
-<p>另一种用矢量近似$[\rm \textbf H^{(k)}]^{-1} \rm \textbf g^{(k)}$的方法是求取前一次更新方向的共轭，即共轭方向方法，其中共轭梯度（conjugate-gradient，CG）法是一种特例。共轭梯度法或最速下降法的优势是不需要求取Hessian矩阵的逆、不需要存储大量的矩阵。但是，对于有许多局部极小值点的目标函数而言，梯度优化方法不能保证收敛到全局最小。</p>
+\tag{2.13}</script><p>如果$\mathbf x$在$f(\mathbf x)$的最小值点上，那么$\frac{\partial f(\mathbf x)}{\partial x_k}=0$，公式2.13可化简为线性系统：</p>
+<script type="math/tex; mode=display">g_k=-\Sigma_{j=1}^{N} \frac{\partial ^2 f(\mathbf x_0)}{\partial x_k \partial x_j} \Delta x_j \space or \space \mathbf g=-\mathbf H \Delta \mathbf x\tag{2.14}</script><p>其中$g_k=\partial f(\mathbf x)/ \partial x_k | \mathbf x=\mathbf x_0$</p>
+<p>求解2.14中$\Delta \mathbf x$可得：</p>
+<script type="math/tex; mode=display">\Delta \mathbf x = - \mathbf H^{-1}\mathbf g \tag {2.15}</script><p>因此，给定一个试验模型$\mathbf x_0$，利用梯度优化算法求解2.14中的$\Delta \mathbf x$进而求得$\mathbf x^{\ast}=\mathbf x_0+\Delta \mathbf x$来减小目标函数$f(\mathbf x)$。<br>如果方程构成的系统是线性的，那么其构成的Hessian矩阵与$\mathbf x$无关，，所以二次函数为如图2.2所示的椭圆。在这种情况下，可以直接使用LU分解来求解$\mathbf x^{\ast}$。这种方法被称线性牛顿方法。如果直接求解较为困难，则可以采用迭代方程</p>
+<script type="math/tex; mode=display">x^{(k+1)}_i=x^{k}_i-\underset{j}\Sigma\beta^{(k)}_{ij}g^{(k)}_j,  \tag{2.16}</script><p>通过对梯度分量加权，即$\beta^{(k)}_{ij}g^{(k)}_j$来迭代地更新解$x^{(k)}_i$，其中$\beta_{ij}$是权系数。例如，最速下降法中，定义$\beta^{(k)}_{ij}=\delta_{ij}\alpha^{(k)}$，其中$\alpha^{(k)}$为第$k$次迭代的步长。在合适的条件下，迭代梯度方法将使模型收敛到$\mathbf x^{\ast}$。在公式2.16两侧同时减去$\mathbf x_0$得到等价的更新公式：</p>
+<script type="math/tex; mode=display">\Delta x^{(k+1)}_i=\Delta x^{k}_i-\underset{j}\Sigma\beta^{(k)}_{ij}g^{(k)}_j,\tag{2.17}</script><p>其中，公式2.17中更新的是扰动矢量分量$\Delta x_i$而不是实际的解的分量。<br><img src="/2022/12/19/seismic_inversion_2/Figure2.3.png" alt="Figure2.3"><br>如果$f(\mathbf x)$为多项式形式而不是二次型，那么他的等值面僵尸非椭圆的，如图2.3所示，Hessian$\mathbf H=\mathbf H(\mathbf x)$依赖于$\mathbf x$，这时需要非线性的牛顿迭代法来更新解：</p>
+<script type="math/tex; mode=display">\mathbf x^{(k+1)}=\mathbf x^{(k)}-\alpha[\mathbf H^{(k)}]^{-1}\mathbf g^{(k)}\tag{2.18}</script><p>这里的$\alpha$与二次目标函数的相同，均为标量步长，非二次型函数的步长需要在每次迭代中重新确定。如果利用$\delta_{ij}/H^{(k)}_{ii}$来近似$[\mathbf H^{(k)}]^{-1}_{ij}$，那么公式2.18即为预处理的最速下降法。对方程所构建系统进行预处理的目的是寻找一个预处理算子$\mathbf P$来减小$\mathbf {HP}$或$\mathbf {PH}$预处理系统矩阵的数量，其中预处理算子$\mathbf P$近似Hessian矩阵$\mathbf H$的逆。</p>
+<p>另一种用矢量近似$[\mathbf H^{(k)}]^{-1} \mathbf g^{(k)}$的方法是求取前一次更新方向的共轭，即共轭方向方法，其中共轭梯度（conjugate-gradient，CG）法是一种特例。共轭梯度法或最速下降法的优势是不需要求取Hessian矩阵的逆、不需要存储大量的矩阵。但是，对于有许多局部极小值点的目标函数而言，梯度优化方法不能保证收敛到全局最小。</p>
 <h1 id="2-3-梯度和Hessian的几何解释"><a href="#2-3-梯度和Hessian的几何解释" class="headerlink" title="2.3 梯度和Hessian的几何解释"></a>2.3 梯度和Hessian的几何解释</h1><p>下面通过Rosenbrock函数来对梯度和Hessian作几何上的解释，Rosenbrock方程如下：</p>
-<script type="math/tex; mode=display">f(\rm \textbf x)=100(x_2-x_1)^2+(1-x_1)^2,\tag{2.19}</script><p>其为一个平滑但是强非线性的函数，如图2.3所示。其梯度矢量为</p>
+<script type="math/tex; mode=display">f(\mathbf x)=100(x_2-x_1)^2+(1-x_1)^2,\tag{2.19}</script><p>其为一个平滑但是强非线性的函数，如图2.3所示。其梯度矢量为</p>
 <script type="math/tex; mode=display">
 \begin{align}
-\notag \nabla f(\rm \textbf x)&=\rm \textbf g\\
+\notag \nabla f(\mathbf x)&=\mathbf g\\
 \notag &=[\frac{\partial f}{\partial x_1} \frac{\partial f}{\partial x_2}]^T\\
 \notag & =[-400x_1(x_2-x_1^2)-2(1-x_1)^2\space, \space200(x_2-x_1^2)]^T
 \end{align}
 \tag{2.20}</script><p>为了更好的解释梯度物理意义，我们定义多维空间中一条线上的点为：</p>
-<script type="math/tex; mode=display">\rm \textbf x(\alpha)=\rm \textbf x' +\alpha \hat {\rm \textbf s}</script><p>其中$\hat {\rm \textbf s}$为平行于特定线的单位矢量，$\alpha$为控制矢量$\rm \textbf x$距离起始点$\rm \textbf x(\alpha =0)=\rm \textbf x’$的标量参数，定义沿公式2.1中线$\hat {\rm \textbf s}$的方向导数为$df/ d \alpha$:</p>
+<script type="math/tex; mode=display">\mathbf x(\alpha)=\mathbf x' +\alpha \hat {\mathbf s}</script><p>其中$\hat {\mathbf s}$为平行于特定线的单位矢量，$\alpha$为控制矢量$\mathbf x$距离起始点$\mathbf x(\alpha =0)=\mathbf x’$的标量参数，定义沿公式2.1中线$\hat {\mathbf s}$的方向导数为$df/ d \alpha$:</p>
 <script type="math/tex; mode=display">
 \begin{align}
-\frac{df(\rm \textbf x)}{d\alpha} \notag& = \Sigma_i \nabla f(\rm \textbf x) \hat {\rm \textbf s} \\
-\notag & = \Sigma_i \frac{df(\rm \textbf x)}{dx_i} \frac{dx_i}{d\alpha} \\
-\notag & = \hat {\rm \textbf s}^T \nabla f(\rm \textbf x)
+\frac{df(\mathbf x)}{d\alpha} \notag& = \Sigma_i \nabla f(\mathbf x) \hat {\mathbf s} \\
+\notag & = \Sigma_i \frac{df(\mathbf x)}{dx_i} \frac{dx_i}{d\alpha} \\
+\notag & = \hat {\mathbf s}^T \nabla f(\mathbf x)
 \end{align}
-\tag{2.22}</script><p>其中$\hat {\rm \textbf s}^T \nabla f(\rm \textbf x)$为梯度沿着线方向的投影。如果$\hat {\rm \textbf s}$平行于等高线切线方向，那么$f(\rm \textbf x)$不会沿着这个方向变化，所以$\hat {\rm \textbf s}^T \nabla f(\rm \textbf x)=0$。这意味着梯度$\rm \textbf g=\nabla f(\rm \textbf x)$垂直于等高切线，或者说其平行于最速下降方向。一维情况下，梯度就是斜率，如果斜率大于零，上升方向为右，否则其向左。<br>$f(\rm \textbf x)$的二阶导数构成了$2\times 2$的Hessian矩阵：</p>
+\tag{2.22}</script><p>其中$\hat {\mathbf s}^T \nabla f(\mathbf x)$为梯度沿着线方向的投影。如果$\hat {\mathbf s}$平行于等高线切线方向，那么$f(\mathbf x)$不会沿着这个方向变化，所以$\hat {\mathbf s}^T \nabla f(\mathbf x)=0$。这意味着梯度$\mathbf g=\nabla f(\mathbf x)$垂直于等高切线，或者说其平行于最速下降方向。一维情况下，梯度就是斜率，如果斜率大于零，上升方向为右，否则其向左。<br>$f(\mathbf x)$的二阶导数构成了$2\times 2$的Hessian矩阵：</p>
 <script type="math/tex; mode=display">
 \begin{align}
-\rm \textbf H \notag &=[\nabla \nabla^T]f(\rm \textbf x) \\
+\mathbf H \notag &=[\nabla \nabla^T]f(\mathbf x) \\
 \notag & =
 \begin{bmatrix}
 \frac{\partial^2 f}{\partial x_1^2} & \frac{\partial^2 f}{\partial x_1x_2} \\
@@ -334,12 +334,12 @@
 -400x_1 & 200\\
 \end{bmatrix}
 \end{align}
-\tag{2.23}</script><p>与二次函数的椭圆等值面和常数Hessian矩阵不同的是，2.23说明Hessian矩阵中的曲率值依赖于$\rm \textbf x$，且其多项式阶数大于2。<br>与将$\hat {\rm \textbf s}^T \nabla f(\rm \textbf x)$定义为$f(\rm \textbf x)$沿着线方向$\hat {\rm \textbf s}$的斜率相同，二阶导数、或者说$f(\rm \textbf x)$沿着相同线的曲率为</p>
+\tag{2.23}</script><p>与二次函数的椭圆等值面和常数Hessian矩阵不同的是，2.23说明Hessian矩阵中的曲率值依赖于$\mathbf x$，且其多项式阶数大于2。<br>与将$\hat {\mathbf s}^T \nabla f(\mathbf x)$定义为$f(\mathbf x)$沿着线方向$\hat {\mathbf s}$的斜率相同，二阶导数、或者说$f(\mathbf x)$沿着相同线的曲率为</p>
 <script type="math/tex; mode=display">\frac{d^2f}{d\alpha^2}
 =\frac{d}{d\alpha}\frac{df}{d\alpha}
-=\frac{d}{d\alpha}[(\nabla f)^2]\hat {\rm \textbf s}
-=\hat {\rm \textbf s}^T [\nabla \nabla^T f(\rm \textbf x)]\hat {\rm \textbf s}
-\tag{2.24}</script><p>因此，$\hat {\rm \textbf s}^T \rm \textbf H \hat {\rm \textbf s}$给出了$f(\rm \textbf x)$沿着特定方向$\hat {\rm \textbf s}$的曲率。</p>
+=\frac{d}{d\alpha}[(\nabla f)^2]\hat {\mathbf s}
+=\hat {\mathbf s}^T [\nabla \nabla^T f(\mathbf x)]\hat {\mathbf s}
+\tag{2.24}</script><p>因此，$\hat {\mathbf s}^T \mathbf H \hat {\mathbf s}$给出了$f(\mathbf x)$沿着特定方向$\hat {\mathbf s}$的曲率。</p>
 <h2 id="例子2-5-1-一维函数"><a href="#例子2-5-1-一维函数" class="headerlink" title="例子2.5.1 一维函数"></a>例子2.5.1 一维函数</h2><p>对于一元函数，公式2.14变为：</p>
 <script type="math/tex; mode=display">\frac{\partial f(x_0)}{\partial x}
 =-\frac{\partial^2 f(x_0)}{\partial x^2} \Delta x,
