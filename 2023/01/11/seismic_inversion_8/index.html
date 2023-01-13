@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans SC:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="波动方程解，节选自《Seismic Inversion》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第八章 波动方程数值解">
+<meta property="og:url" content="http://blog.geophyai.com/2023/01/11/seismic_inversion_8/index.html">
+<meta property="og:site_name" content="GeophyAI">
+<meta property="og:description" content="波动方程解，节选自《Seismic Inversion》">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-01-11T03:00:00.000Z">
+<meta property="article:modified_time" content="2023-01-13T03:00:00.000Z">
+<meta property="article:author" content="shaowinw">
+<meta property="article:tag" content="波动方程">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.geophyai.com/2023/01/11/seismic_inversion_8/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第八章 波动方程数值解 | GeophyAI</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">GeophyAI</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Python与地球物理数据处理</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2023/01/11/seismic_inversion_8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="shaowinw">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeophyAI">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第八章 波动方程数值解
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-01-11 11:00:00" itemprop="dateCreated datePublished" datetime="2023-01-11T11:00:00+08:00">2023-01-11</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-01-13 11:00:00" itemprop="dateModified" datetime="2023-01-13T11:00:00+08:00">2023-01-13</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Seismic-Inversion/" itemprop="url" rel="index"><span itemprop="name">Seismic Inversion</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/01/11/seismic_inversion_8/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/01/11/seismic_inversion_8/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">波动方程解，节选自《Seismic Inversion》</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="波动方程数值解"><a href="#波动方程数值解" class="headerlink" title="波动方程数值解"></a>波动方程数值解</h1><p>本章节介绍了求解声波方程和弹性波方程数值解的一些方法。这些方法求取的解中包含有初至和多次散射等所有的同相轴，因此常被用于逆时偏移（Reverse time migration, RTM）和波形反演（Waveform inversion）。我们将概述规则网格（Kelly et al.，1976）和交错网格（Virieux，1984和1986；Levander，1988）下的有限差分方法。为了获得更高的精度，需要更高阶的格式，因此现已经开发出比有限差分法更精确的谱方法（Spectral collocation）。Trefehen（2000）写道：“如果想要在一个简单的域上高精度地求解ODE或PDE，并且如果定义问题的数据是平滑的，那么谱方法通常是最好的选择。它们通常可以达到十位数的精度，而有限差分法或有限元法则仅可以达到两位数或三位数精度。在精度较低的情况下，其计算机内存消耗与其他方案相比更少。”因此，本章还介绍了伪谱（Pseudospetral）和谱元法（Spectral element）。伪谱法（Kosloff和Baysal，1982；Kosloff等人，1984）精度最高，但当界面两侧阻抗差异较大时可能会出现明显的数值误差。这一问题主要可以通过谱元法（Komatitsch et al.，2005；Kudela et al.，2007）来解决，并且其求解仍然可保持高精度和可观的效率。</p>
+<h2 id="8-1-有限差分法"><a href="#8-1-有限差分法" class="headerlink" title="8.1 有限差分法"></a>8.1 有限差分法</h2><p>表8.1中展示了一阶、二阶偏导数不同格式、不同精度的有限差分（Finite difference, FD）近似，其精度的阶数可通过泰勒展开来估计。</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\notag \frac{f(x+\Delta x)-f(x)}{\Delta x}
+&=\frac{1}{\Delta x}[f(x) + \frac{df(x)}{dx} \Delta x \\
+\notag &+ \frac{1}{2} \frac{d^2f(x)}{dx^2} (\Delta x)^2 + ... - f(x)] \\
+\notag &= \frac{df(x)}{dx} +1/2  \frac{d^2f(x)}{dx^2} \Delta x + ..., \\
+\notag &=  \frac{df(x)}{dx} + O(\Delta x)
+\end{align}
+\tag{8.1}</script><p>这意味着中点在$x$处的FD近似在采样间隔$\Delta x$中是一阶精确的，其中项$O(x)$表示截断误差。类似地，对二阶导数$d[df(x)/dx]/dx$的中心FD近似可以通过对括号中的项应用一阶精确的前向FD近似和对括号外项应用一阶准确的后向FD近似来导出。</p>
+<h3 id="8-1-1-波动方程的有限差分近似"><a href="#8-1-1-波动方程的有限差分近似" class="headerlink" title="8.1.1 波动方程的有限差分近似"></a>8.1.1 波动方程的有限差分近似</h3><p>常密度介质中的二维声波方程公式为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial^2p(\mathbf x, t^{\prime})}{\partial x^2}
++ \frac{\partial^2p(\mathbf x, t^{\prime})}{\partial z^2}
+- \frac {1}{c(x,z)^2} \frac{\partial^2p(\mathbf x, t^{\prime})}{\partial t^{\prime}}
+=f(\mathbf x, t^{\prime}),
+\tag{8.2}</script><p>其中，$c(x,z)^2$为速度模型，$p(\mathbf x, t^{\prime})$为压力场，$f(\mathbf x, t^{\prime})$为非均匀震源项。连续的波动方程及其解可以离散在均匀分布的时间-空间域网格上：</p>
+<script type="math/tex; mode=display">
+(x,z,t^{\prime}) \leftrightarrow (i\Delta x, j\Delta z, t\Delta t), \\
+p(x,z,t^{\prime}) \leftrightarrow p^t_{ij}, \\
+f(x,z,t^{\prime}) \leftrightarrow f^t_{ij}, \\
+c(x,z) \leftrightarrow c_{ij}
+\tag{8.3}</script><p>方便起见，假设垂向空间步长$\Delta z$等于水平空间步长$\Delta x$。可以使用一个以$x, y, t$为坐标轴的三维数据体将离散解可视化（如图8.1所示）。数据体的深度、宽度和时间长度分别为$M\Delta z=D, N\Delta x = X, L\Delta t = T$，其中$M,N,L$均为整数。<br>求解$(i,j,t)$的压力场，并使用二阶中心差分来近似公式8.2中的二阶偏导数可得:</p>
+<script type="math/tex; mode=display">
+\frac{\partial p^2}{\partial t^{\prime}} \leftrightarrow [p^{t+1}_{ij}-2p^{t}_{ij}+p^{t-1}_{ij}]/(\Delta t)^2,\\
+\frac{\partial p^2}{\partial x^{\prime}} \leftrightarrow [p^{t}_{i+1j}-2p^{t}_{ij}+p^{t}_{i-1j}]/(\Delta x)^2,\\
+\frac{\partial p^2}{\partial z^{\prime}} \leftrightarrow [p^{t}_{ij+1}-2p^{t}_{ij}+p^{t}_{ij-1}]/(\Delta z)^2
+\tag{8.4}</script><p>整理可得波动方程离散时间递推格式：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+\notag for &\space t = 2:nt \\
+\notag &p^{t+1}_{ij} = 2p^{t}_{ij}-p^{t-1}_ij +a[p^t_{i+1j}-2p^t_{ij}+p^t_{i-1j}]
++a[p^t_{ij+1}-2p^t_{ij}+p^t_{ij-1}]-(\Delta x)^2af^t_{ij}\\
+\notag &end
+\tag{8.5}</script><p>其中，$a=(c_{ij}\Delta t/\Delta x)^2$。这里假定初始条件为$p(\mathbf x, t^{\prime})=0$，所以源波场是由body-force项$f^{t}_{ij}$所激发产生的。<br>从$t$变换到坐标$−t$，即反转时间，波动方程8.2的形式将保持不变。这意味着时间反转后，波动方程的响应将与原始方程相同，只是时间变量的符号发生了变化。在这种情况下，图8.2中的前向光锥将变成后向光锥。重要的一点是，通过在时间上向后求解而不是在时间上向前求解，可以用有限差分方程生成后向光锥。这种后向锥体可用于从后来的数据重建早期的波场，这些数据被称为后向外推（backward-extrapolated）波场（第11章）。</p>
+<h3 id="8-1-2-稳定性和精度分析"><a href="#8-1-2-稳定性和精度分析" class="headerlink" title="8.1.2  稳定性和精度分析"></a>8.1.2  稳定性和精度分析</h3><p>经验发现，如果每个最小波长至少有10个点，并且传播距离不超过十几个波长，则2-2（即时间和空间中二阶精度）差分格式的精度（Kelly et al.，1976）在均匀介质中是可接受的。在非均质介质中，每个波长通常使用15-20个点。更高阶精度，比如2-4差分格式需要大约五个点/波长（Levander，1988），但在非均匀介质中每波长需要10至15点。如果网格点间距太粗，则倾斜界面显示为阶梯，每个阶梯的边缘都会成为强散射点。如果波传播超过30个波长，经验表明需要2–8或更高的差分精度。事实上，Stork（2013）声称，在传播50个波长后，波的时间误差不应超过四分之一周期，否则波形反演将会出问题。</p>
+<p>CFL（Courant Friedrichs-Lewy）稳定性条件中，满足波动方程和$t=0$初始条件的有限差分解的数值依赖域DOD（Domain of  dependence, DOD）必须比解析DOD（Mitchell和Griffiths，1980）有更大（如图8.3所示）来确定。否则，FD解将忽略影响$(x_0, t_0)$处解的一些初始条件。这种忽略将导致不稳定的有限差分解。为了避免这种ignorance，数值传播速度（$\Delta x / \Delta t$）必须要比实际传播速度$c$更快。这一条件等价于一维的CFL稳定性准则：</p>
+<script type="math/tex; mode=display">
+\frac{1}{c} > \frac{\Delta x}{\Delta t},
+\tag{8.6}</script><p>在更高维度的空间中，具有如下形式：</p>
+<script type="math/tex; mode=display">
+\frac{1}{\sqrt N} > \frac{c\Delta x}{\Delta t},
+\tag{8.7}</script><p>其中，$N=1,2,3$表示空间维度，$\Delta x$需要满足精度条件，$\Delta t$需要满足条件稳定性条件。</p>
+<p>有限差分格式不稳定指的是误差随着时间递推而逐渐增大。例如，假设一阶双曲波动方程的解是归一化指数$p^t_j=e^{ikx_j}$由指数$t$表示的特定时间步长。将该指数代入一维波动方程的FD递推格式中，可得到其迭代解$p^{t+p}_j=\lambda ^p e^{ikx_j}$,其中$|lambda$是放大系数，取决于时间和空间采样间隔。如果放大系数|λ|＞1，差分解不稳定。</p>
+<h3 id="8-1-3-基于Matlab的二维声波方程有限差分求解"><a href="#8-1-3-基于Matlab的二维声波方程有限差分求解" class="headerlink" title="8.1.3 基于Matlab的二维声波方程有限差分求解"></a>8.1.3 基于Matlab的二维声波方程有限差分求解</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">% (NX,NZ,NT) - input- (Horizontal,Vertical) gridpt dimens. of vel</span></span><br><span class="line"><span class="comment">% model &amp; # Time Steps</span></span><br><span class="line"><span class="comment">% FR - input- Peak frequency of Ricker wavelet</span></span><br><span class="line"><span class="comment">% BVEL - input- NXxNZ matrix of background velocity model</span></span><br><span class="line"><span class="comment">% (dx,dt) - input- (space, time) sample intervals</span></span><br><span class="line"><span class="comment">% (xs,zs) - input- (x,z) coordinates of line source</span></span><br><span class="line"><span class="comment">% RICKER(NT) - input- NT vector of source time histories</span></span><br><span class="line"><span class="comment">% (p2,p1,p0) - calc.- (future,present,past) NXxNZ matrices of</span></span><br><span class="line"><span class="comment">% modeled pressure field</span></span><br><span class="line"><span class="comment">% (p0,p1) -output- Old and present pressure panels at time NT.</span></span><br><span class="line"><span class="comment">% REALDATA(NX,NT) -output- CSG seismograms at z=2</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"></span><br><span class="line">c=<span class="number">4.0</span>;FRE=<span class="number">20</span>;</span><br><span class="line">NX=<span class="number">300</span>;NZ=NX; dx=c/FRE/<span class="number">20</span>;dt=<span class="number">.5</span>*dx/c;</span><br><span class="line">xs=<span class="built_in">round</span>(NX/<span class="number">2.3</span>); zs=<span class="built_in">round</span>(NX/<span class="number">2</span>);NT=<span class="number">600</span>;</span><br><span class="line">t=[<span class="number">0</span>:<span class="number">1</span>:NT<span class="number">-1</span>]*dt<span class="number">-0.95</span>/FRE;RICKER=<span class="built_in">zeros</span>(<span class="built_in">length</span>(t));</span><br><span class="line">RICKER= (<span class="number">1</span>-t .*t * FRE^<span class="number">2</span> *<span class="built_in">pi</span>^<span class="number">2</span> ) .*<span class="built_in">exp</span>(- t.^<span class="number">2</span> * <span class="built_in">pi</span>^<span class="number">2</span> * FRE^<span class="number">2</span> ) ;</span><br><span class="line"><span class="built_in">plot</span>([<span class="number">0</span>:NT<span class="number">-1</span>]*dt,RICKER);</span><br><span class="line">title(’Ricker Wavelet’);xlabel(’Time (s)’)</span><br><span class="line">BVEL=<span class="built_in">ones</span>(NX,NZ)*c;</span><br><span class="line">BVEL(NX-<span class="built_in">round</span>(NX/<span class="number">2</span>):NX,:)= BVEL(NX-<span class="built_in">round</span>(NX/<span class="number">2</span>):NX,:)*<span class="number">1.2</span>;</span><br><span class="line">REALDATA=<span class="built_in">zeros</span>(NX,NT);</span><br><span class="line">p0=<span class="built_in">zeros</span>(NX,NZ);p1=p0;p2=p0;</span><br><span class="line">cns=(dt/dx*BVEL).^<span class="number">2</span>;</span><br><span class="line">NX=<span class="number">200</span>;NZ=NX;</span><br><span class="line"><span class="comment">%for it=NT:-1 %Reverse Time Looping</span></span><br><span class="line"><span class="keyword">for</span> it=<span class="number">1</span>:<span class="number">1</span>:NT <span class="comment">%Forward Time Looping</span></span><br><span class="line">    p2 = <span class="number">2</span>*p1 - p0 + cns.*del2(p1);</span><br><span class="line">    p2(xs,zs) = p2(xs,zs) + RICKER(it);</span><br><span class="line">    REALDATA(:,it) = p2(xs,:)’;</span><br><span class="line">    p0=p1;p1=p2;</span><br><span class="line">    <span class="keyword">if</span> <span class="built_in">round</span>(it/<span class="number">20</span>)*<span class="number">20</span>==it;p00=p0/<span class="built_in">max</span>(<span class="built_in">abs</span>(p0(:))+<span class="number">.001</span>);</span><br><span class="line">        imagesc([<span class="number">1</span>:NX]*dx,[<span class="number">1</span>:NX]*dx,(p00+BVEL)); colorbar;</span><br><span class="line">        pause(<span class="number">.1</span>);</span><br><span class="line">    <span class="keyword">end</span></span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line">p1=p0;p0=p2;</span><br><span class="line">title(’Snapshot of Acoustic Waves’)</span><br><span class="line">xlabel(’X (km)’)</span><br><span class="line">ylabel(’Z (km)’)</span><br></pre></td></tr></table></figure>
+<h2 id="8-2-伪谱法求解波动方程"><a href="#8-2-伪谱法求解波动方程" class="headerlink" title="8.2 伪谱法求解波动方程"></a>8.2 伪谱法求解波动方程</h2><p>利用有限差分法求解波动方程有一个问题，就是当波的传播距离较长时，数值频散会使解产生误差。为了减少这些误差，需要使用更高阶的有限差分格式，但这会导致差分格式更长且消耗更多的计算时间。一种有效地将离散导数算子的范围增加到计算网格宽度的方法是伪谱方法（Kreiss &amp; Oliger，1972；Kosloff &amp; Baysal，1982；Koslopf et al.，1984），其在傅里叶域中计算空间导数。理论上，每个波长只需要两个点即可在平滑的介质中对波动方程进行精确求解。<br>对于如下形式的一维波动方程：</p>
+<script type="math/tex; mode=display">
+\frac{\partial p^2}{\partial t} = \rho c^2 \frac{\partial}{\partial x} (\frac {1}{\rho} \frac{\partial p}{\partial x})
+\tag{8.8}</script><p>其中，$\rho$为密度。<br>伪谱法求解的流程为：</p>
+<ol>
+<li>计算空间偏导数$\frac{1}{\rho} \frac{\partial p}{\partial x}$：对压力场做快速傅里叶变换（FFT）得到$P$，然后乘以$ik_x$。</li>
+<li>对$ik_xP$做逆FFT，其结果乘以$1/ \rho$得到$\frac{1}{\rho} \partial p / \partial x$。然后再对结果进行上述操作得到空间偏导数$\partial(1/\rho \partial p/\partial x)/\partial x$。</li>
+<li>通过二阶精度有限差分近似波动方程中的二阶时间偏导数。下一时刻的波长可以通过当前和前一时刻波场值计算得到。</li>
+<li>计算时间加1，重复步骤1-4直到设置的波场持续时间。</li>
+</ol>
+<p>空间导数做FFT后表示波数乘以$ik_x$，其在空间上等价于与计算域一样宽的离散导数算子。它需要周期边界条件，但吸收边界条件（见附录8A和Liu &amp; Sen，2010年；2012年）也可以。</p>
+<h3 id="8-2-1-基于Matlab的二维声波方程伪谱法求解"><a href="#8-2-1-基于Matlab的二维声波方程伪谱法求解" class="headerlink" title="8.2.1 基于Matlab的二维声波方程伪谱法求解"></a>8.2.1 基于Matlab的二维声波方程伪谱法求解</h3><figure class="highlight matlab"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"><span class="comment">% Pseudospectral solution of 1D acoustic wave equation by Kai Lu</span></span><br><span class="line"><span class="comment">% method=1 pseudospectral method</span></span><br><span class="line"><span class="comment">% method=2 finite difference method</span></span><br><span class="line"><span class="comment">%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%</span></span><br><span class="line"></span><br><span class="line">clear all; <span class="built_in">hold</span> off;</span><br><span class="line">method=<span class="number">1</span>;</span><br><span class="line">c=<span class="number">4.0</span>;FRE=<span class="number">20</span>;nx=<span class="number">2000</span>;</span><br><span class="line">dx=c/FRE/<span class="number">10</span>; <span class="comment">%set dx</span></span><br><span class="line">dt=<span class="number">.3</span>*dx/c; <span class="comment">%set dt</span></span><br><span class="line">nt=<span class="number">2000</span>;</span><br><span class="line">sx=nx/<span class="number">2</span>;</span><br><span class="line">thick=<span class="number">300</span>; <span class="comment">% sponge thickness</span></span><br><span class="line">alpha=<span class="built_in">pi</span>/<span class="number">5</span>/thick;</span><br><span class="line"><span class="built_in">factor</span>=<span class="number">9</span>; <span class="comment">% sponge factor</span></span><br><span class="line"><span class="comment">% generate wavelet</span></span><br><span class="line">t=(<span class="number">-200</span>:<span class="number">1</span>:nt<span class="number">-201</span>)*dt<span class="number">-0.95</span>/FRE;</span><br><span class="line">ricker=(<span class="number">1</span>-t.*t*FRE^<span class="number">2</span>*<span class="built_in">pi</span>^<span class="number">2</span>).*<span class="built_in">exp</span>(-t.*t*<span class="built_in">pi</span>^<span class="number">2</span>*FRE^<span class="number">2</span>/<span class="number">2</span>);</span><br><span class="line"><span class="built_in">plot</span>((<span class="number">0</span>:nt<span class="number">-1</span>)*dt,ricker);title(’Ricker Wavelet’);xlabel(’Time (s)’);</span><br><span class="line">pause(<span class="number">1</span>);</span><br><span class="line"><span class="comment">% initiate wavefield</span></span><br><span class="line">p2=<span class="built_in">zeros</span>(<span class="number">1</span>,nx); p1=p2;p0=p2;</span><br><span class="line"><span class="comment">% calculate wavenumber</span></span><br><span class="line">k=<span class="built_in">zeros</span>(<span class="number">1</span>,nx);</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:nx</span><br><span class="line">    k(<span class="built_in">i</span>)=<span class="number">2</span>*<span class="built_in">pi</span>*(<span class="built_in">i</span><span class="number">-1</span>)/nx/dx;</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"><span class="keyword">for</span> <span class="built_in">i</span>=nx/<span class="number">2</span>+<span class="number">2</span>:nx</span><br><span class="line">    k(<span class="built_in">i</span>)=k(<span class="built_in">i</span>)/(<span class="built_in">i</span><span class="number">-1</span>)*(<span class="built_in">i</span>-nx<span class="number">-1</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br><span class="line"><span class="comment">% extrapolate wavefield</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> it=<span class="number">1</span>:nt;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> method==<span class="number">1</span>;</span><br><span class="line">        <span class="comment">% pseudo-spectral method</span></span><br><span class="line">        P1=fft(p1); DP1=-k.^<span class="number">2.</span>*P1; dp1=<span class="built_in">real</span>(ifft(DP1));</span><br><span class="line">        p2=<span class="number">2</span>*p1-p0+c^<span class="number">2</span>*dt^<span class="number">2</span>*dp1;</span><br><span class="line">    <span class="keyword">elseif</span> method==<span class="number">2</span></span><br><span class="line">        <span class="comment">% finite difference method</span></span><br><span class="line">        p2(<span class="number">2</span>:nx<span class="number">-1</span>)=<span class="number">2</span>*p1(<span class="number">2</span>:nx<span class="number">-1</span>)-p0(<span class="number">2</span>:nx<span class="number">-1</span>)+(c*dt/dx)^<span class="number">2</span>*(p1(<span class="number">3</span>:nx)<span class="number">-2</span>*p1(<span class="number">2</span>:nx<span class="number">-1</span>)+p1(<span class="number">1</span>:nx<span class="number">-2</span>));</span><br><span class="line">    <span class="keyword">end</span>;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">% add source</span></span><br><span class="line">    <span class="keyword">if</span> (it==<span class="number">1</span>);</span><br><span class="line">        p2(sx)=p2(sx)+ricker(it);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        p2(sx)=p2(sx)+ricker(it)-ricker(it<span class="number">-1</span>);</span><br><span class="line">    <span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">% sponge ABC</span></span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=<span class="number">1</span>:thick</span><br><span class="line">        p2(<span class="built_in">i</span>)=p2(<span class="built_in">i</span>)*(<span class="built_in">cos</span>(alpha*(thick+<span class="number">1</span>-<span class="built_in">i</span>))^<span class="number">0.5</span>+<span class="built_in">factor</span>)/(<span class="built_in">factor</span>+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">end</span>;</span><br><span class="line">    <span class="keyword">for</span> <span class="built_in">i</span>=nx-thick+<span class="number">1</span>:nx;</span><br><span class="line">        p2(<span class="built_in">i</span>)=p2(<span class="built_in">i</span>)*(<span class="built_in">cos</span>(alpha*(<span class="built_in">i</span>-nx+thick))^<span class="number">0.5</span>+<span class="built_in">factor</span>)/(<span class="built_in">factor</span>+<span class="number">1</span>);</span><br><span class="line">    <span class="keyword">end</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">% free surface ABC</span></span><br><span class="line">    <span class="comment">% p2(nx)=0;</span></span><br><span class="line">    <span class="comment">% p2(1)=0;</span></span><br><span class="line">    <span class="comment">% update wavefield</span></span><br><span class="line">    p0=p1;p1=p2;</span><br><span class="line">    <span class="built_in">plot</span>((<span class="number">0</span>:nx<span class="number">-1</span><span class="number">-2</span>*thick),<span class="built_in">real</span>(p2(thick+<span class="number">1</span>:nx-thick)));</span><br><span class="line">    axis([<span class="number">0</span> nx<span class="number">-1</span><span class="number">-2</span>*thick <span class="number">-2.5</span> <span class="number">2.5</span>]);</span><br><span class="line">    title(’Pressure snapshot’);</span><br><span class="line">    xlabel(’Distance’);</span><br><span class="line">    pause(<span class="number">0.01</span>);</span><br><span class="line"><span class="keyword">end</span>;</span><br></pre></td></tr></table></figure>
+<p>伪光谱法的主要缺点：当波跨越强变化界面时会产生Gibbs-like误差。这一问题限制了伪谱法在地球物理中的应用，因为其需要模型是平滑的，但谱精度的原理在谱元法中起着重要作用。</p>
+<h3 id="8-2-2-稳定性和精读分析"><a href="#8-2-2-稳定性和精读分析" class="headerlink" title="8.2.2 稳定性和精读分析"></a>8.2.2 稳定性和精读分析</h3><p>CFL稳定性条件是必要条件而不是充分条件。因此，我们需要用von Neumann来进一步进行稳定性分析。首先假设一维波动方程的解为平面波$p_j=e^{i(kj\Delta x-n\omega\Delta t)}$，其中$j$和$n$表示空间和时间索引。利用FFT可得到二阶偏导数为：</p>
+<script type="math/tex; mode=display">
+\frac{\partial ^2 p_j}{\partial x^2} = -k^2 e^{i(kj\Delta x-n\omega\Delta t)}
+\tag{8.9}</script><p>然后将平面波解带入二阶时间偏导数公式8.4中，可得</p>
+<script type="math/tex; mode=display">
+\frac{\partial ^2 p_j}{\partial t^2}=-\frac{4}{\Delta t^2} {\rm sin}^2 (\omega \Delta t/2) e^{i(kj\Delta x-n\omega\Delta t)}
+\tag{8.10}</script><p>将以上公式带入波动方程可得离散数值频散关系为$k=\frac{2}{c\Delta t} {\rm sin} \frac{\omega \Delta t}{2}$，其反函数为：</p>
+<script type="math/tex; mode=display">
+\omega = \frac{2}{\Delta t}{\rm sin}^{-1} (\frac{kc\Delta t}{2})
+\tag{8.11}</script><p>当$\Delta t &lt;&lt;1$且如下公式成立时，公式8.11很好地近似了实际的频散关系$\omega=kc$</p>
+<script type="math/tex; mode=display">
+\frac{k_{max}c\Delta t}{2} <1
+\tag{8.12}</script><p>其中，$k_{max}=\pi / \Delta x$是unaliased平面波的最大波长。这种情况下，频散非常小且对于均匀介质是稳定的。但如果速度场不是平滑的，而是有明显的阻抗变化，反射波场中会出现明显的误差（Trefethen, 2000）。</p>
+<h2 id="8-3-谱元法求解波动方程"><a href="#8-3-谱元法求解波动方程" class="headerlink" title="8.3 谱元法求解波动方程"></a>8.3 谱元法求解波动方程</h2><p>在2.5D和3D地球弹性模型中，常利用谱元法（Spectral element）求解波动方程（Komatitsch et al.，2005）。其与标准有限差分法相比，其可以使用不规则网格以适应不规则自由起伏地形和地下界面，并且不回产生假的阶梯散射。与有限差分使用空间差分相类似，如果谱元法积分的阶数足够高，则频散很小。 由于质量矩阵是对角阵，因此谱元法比具有集中质量近似（lumped-mass approximation）的标准有限元方法（Marfurt，1984）更精确。对于具有不规则界面的模型，由于谱元的边界可以与界面几何相适应，因此谱元法建模也比伪谱更准确。</p>
+<link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>shaowinw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.geophyai.com/2023/01/11/seismic_inversion_8/" title="第八章 波动方程数值解">http://blog.geophyai.com/2023/01/11/seismic_inversion_8/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%B3%A2%E5%8A%A8%E6%96%B9%E7%A8%8B/" rel="tag"> <i class="fa fa-tag"></i> 波动方程</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/01/06/seismic_inversion_4/" rel="prev" title="第四章 共轭梯度法和拟牛顿法">
+      <i class="fa fa-chevron-left"></i> 第四章 共轭梯度法和拟牛顿法
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A2%E5%8A%A8%E6%96%B9%E7%A8%8B%E6%95%B0%E5%80%BC%E8%A7%A3"><span class="nav-number">1.</span> <span class="nav-text">波动方程数值解</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#8-1-%E6%9C%89%E9%99%90%E5%B7%AE%E5%88%86%E6%B3%95"><span class="nav-number">1.1.</span> <span class="nav-text">8.1 有限差分法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-1-%E6%B3%A2%E5%8A%A8%E6%96%B9%E7%A8%8B%E7%9A%84%E6%9C%89%E9%99%90%E5%B7%AE%E5%88%86%E8%BF%91%E4%BC%BC"><span class="nav-number">1.1.1.</span> <span class="nav-text">8.1.1 波动方程的有限差分近似</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-2-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E7%B2%BE%E5%BA%A6%E5%88%86%E6%9E%90"><span class="nav-number">1.1.2.</span> <span class="nav-text">8.1.2  稳定性和精度分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-1-3-%E5%9F%BA%E4%BA%8EMatlab%E7%9A%84%E4%BA%8C%E7%BB%B4%E5%A3%B0%E6%B3%A2%E6%96%B9%E7%A8%8B%E6%9C%89%E9%99%90%E5%B7%AE%E5%88%86%E6%B1%82%E8%A7%A3"><span class="nav-number">1.1.3.</span> <span class="nav-text">8.1.3 基于Matlab的二维声波方程有限差分求解</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-2-%E4%BC%AA%E8%B0%B1%E6%B3%95%E6%B1%82%E8%A7%A3%E6%B3%A2%E5%8A%A8%E6%96%B9%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">8.2 伪谱法求解波动方程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-1-%E5%9F%BA%E4%BA%8EMatlab%E7%9A%84%E4%BA%8C%E7%BB%B4%E5%A3%B0%E6%B3%A2%E6%96%B9%E7%A8%8B%E4%BC%AA%E8%B0%B1%E6%B3%95%E6%B1%82%E8%A7%A3"><span class="nav-number">1.2.1.</span> <span class="nav-text">8.2.1 基于Matlab的二维声波方程伪谱法求解</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-2-2-%E7%A8%B3%E5%AE%9A%E6%80%A7%E5%92%8C%E7%B2%BE%E8%AF%BB%E5%88%86%E6%9E%90"><span class="nav-number">1.2.2.</span> <span class="nav-text">8.2.2 稳定性和精读分析</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#8-3-%E8%B0%B1%E5%85%83%E6%B3%95%E6%B1%82%E8%A7%A3%E6%B3%A2%E5%8A%A8%E6%96%B9%E7%A8%8B"><span class="nav-number">1.3.</span> <span class="nav-text">8.3 谱元法求解波动方程</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">shaowinw</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">44</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">28</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备20023201号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shaowinw</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2023/01/11/seismic_inversion_8/',]
+      });
+      });
+  </script>
+
+<script src="../js/src/av-min.js"></script>
+<script src="../js/src/valine.min.js"></script>
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/gh//AshinWang/SimpleValine/SimpleValine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'xGkAfNjiLy2iAFwuv2Itmye6-gzGzoHsz',
+      appKey     : 'IGOUrFEiKTeXfsDJwsmNLMnd',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
