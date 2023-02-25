@@ -23,19 +23,19 @@
   <meta name="description" content="共轭梯度，节选自《Seismic Inversion》">
 <meta property="og:type" content="article">
 <meta property="og:title" content="第五章 射线路径走时层析">
-<meta property="og:url" content="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/index.html">
+<meta property="og:url" content="http://blog.geophyai.com/2023/01/15/seismic_inversion_5/index.html">
 <meta property="og:site_name" content="GeophyAI">
 <meta property="og:description" content="共轭梯度，节选自《Seismic Inversion》">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/Figure5.1.png">
-<meta property="article:published_time" content="2023-02-26T03:00:00.000Z">
+<meta property="og:image" content="http://blog.geophyai.com/2023/01/15/seismic_inversion_5/Figure5.1.png">
+<meta property="article:published_time" content="2023-01-15T03:00:00.000Z">
 <meta property="article:modified_time" content="2023-02-26T02:00:00.000Z">
 <meta property="article:author" content="shaowinw">
 <meta property="article:tag" content="层析成像">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/Figure5.1.png">
+<meta name="twitter:image" content="http://blog.geophyai.com/2023/01/15/seismic_inversion_5/Figure5.1.png">
 
-<link rel="canonical" href="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/">
+<link rel="canonical" href="http://blog.geophyai.com/2023/01/15/seismic_inversion_5/">
 
 
 <script id="page-configurations">
@@ -197,7 +197,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2023/01/15/seismic_inversion_5/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -219,10 +219,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              
 
-              <time title="创建时间：2023-02-26 11:00:00 / 修改时间：10:00:00" itemprop="dateCreated datePublished" datetime="2023-02-26T11:00:00+08:00">2023-02-26</time>
+              <time title="创建时间：2023-01-15 11:00:00" itemprop="dateCreated datePublished" datetime="2023-01-15T11:00:00+08:00">2023-01-15</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2023-02-26 10:00:00" itemprop="dateModified" datetime="2023-02-26T10:00:00+08:00">2023-02-26</time>
+              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
@@ -242,8 +248,8 @@
       </span>
       <span class="post-meta-item-text">Valine：</span>
     
-    <a title="valine" href="/2023/02/26/seismic_inversion_5/#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/2023/02/26/seismic_inversion_5/" itemprop="commentCount"></span>
+    <a title="valine" href="/2023/01/15/seismic_inversion_5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/01/15/seismic_inversion_5/" itemprop="commentCount"></span>
     </a>
   </span>
   
@@ -309,7 +315,7 @@ s_2
 \tag{5.8}</script><p>这些方程是不相容（inconsstent）的，因为没有解能够同时满足所有方程。例如，第一个和第二个方程是冲突的。<br>与方程5.8相关的物理示例是断层图像，成像实验如图5.1所示。每条射线的旅行时由方程5.7所确定，速度模型被离散为N个未知常慢度的单元。走时积分可以近似通过对第$j$个网格中的第$i$条射线路径段$l_{ig}$加权求和得到</p>
 <script type="math/tex; mode=display">
 t_i=\sum_{j=1}^N l_{i j} s_j
-\tag{5.9}</script><p>这里我们假设数据集中共拾取了$M$个旅行时。由此形成了$M\times N$的方程组，用矩阵向量可以表示为$\mathbf {Ls} = \mathbf t$，其中$\mathbf t$表示测量得到的大小为$M \times 1$的旅行时矢量，$\mathbf s$表示大小为$N \times 1$的每个网格中的未知慢度矢量。大小为$M \times N$的矩阵$\mathbf L$包含了先的分段长度。<br>我们的目标是求解方程组5.9并在每个单元格中找到未知的慢度值$s_j$，即如图1.1中的速度断层图所示。几何上，将方程5.8绘制为在图5.2中所示的虚线，没有交叉点意味着这些方程是不相容的。实际上，这种不相容性可能是由于走时拾取错误和/或用于模拟数据的物理机制是不完备的而产生的。解不存在违反了Hadamard（1902）第1章讨论了适定解的准则。<br><img src="/2023/02/26/seismic_inversion_5/Figure5.1.png" alt="Figure5.1"><br>尽管方程5.8没有确切解，但是在线交叉最密集的地方可以找到近似解。这种折中方案即使目标函数$\epsilon$最小化的最小二乘解：</p>
+\tag{5.9}</script><p>这里我们假设数据集中共拾取了$M$个旅行时。由此形成了$M\times N$的方程组，用矩阵向量可以表示为$\mathbf {Ls} = \mathbf t$，其中$\mathbf t$表示测量得到的大小为$M \times 1$的旅行时矢量，$\mathbf s$表示大小为$N \times 1$的每个网格中的未知慢度矢量。大小为$M \times N$的矩阵$\mathbf L$包含了先的分段长度。<br>我们的目标是求解方程组5.9并在每个单元格中找到未知的慢度值$s_j$，即如图1.1中的速度断层图所示。几何上，将方程5.8绘制为在图5.2中所示的虚线，没有交叉点意味着这些方程是不相容的。实际上，这种不相容性可能是由于走时拾取错误和/或用于模拟数据的物理机制是不完备的而产生的。解不存在违反了Hadamard（1902）第1章讨论了适定解的准则。<br><img src="/2023/01/15/seismic_inversion_5/Figure5.1.png" alt="Figure5.1"><br>尽管方程5.8没有确切解，但是在线交叉最密集的地方可以找到近似解。这种折中方案即使目标函数$\epsilon$最小化的最小二乘解：</p>
 <script type="math/tex; mode=display">
 \begin{aligned}
 \epsilon & =1 / 2[\mathbf{L s}-\mathbf{t}]^T[\mathbf{L s}-\mathbf{t}] \\
@@ -345,7 +351,7 @@ t_i=\sum_{j=1}^N l_{i j} s_j
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/" title="第五章 射线路径走时层析">http://blog.geophyai.com/2023/02/26/seismic_inversion_5/</a>
+    <a href="http://blog.geophyai.com/2023/01/15/seismic_inversion_5/" title="第五章 射线路径走时层析">http://blog.geophyai.com/2023/01/15/seismic_inversion_5/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -614,7 +620,7 @@ t_i=\sum_{j=1}^N l_{i j} s_j
       quicklink({
         timeout : 3000,
         priority: true,
-        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2023/02/26/seismic_inversion_5/',]
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2023/01/15/seismic_inversion_5/',]
       });
       });
   </script>
