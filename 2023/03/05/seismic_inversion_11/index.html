@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans SC:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="波动方程解，节选自《Seismic Inversion》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第八章 逆时偏移">
+<meta property="og:url" content="http://blog.geophyai.com/2023/03/05/seismic_inversion_11/index.html">
+<meta property="og:site_name" content="GeophyAI">
+<meta property="og:description" content="波动方程解，节选自《Seismic Inversion》">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2023-03-05T03:00:00.000Z">
+<meta property="article:modified_time" content="2023-03-05T03:00:00.000Z">
+<meta property="article:author" content="shaowinw">
+<meta property="article:tag" content="逆时偏移RTM">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://blog.geophyai.com/2023/03/05/seismic_inversion_11/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第八章 逆时偏移 | GeophyAI</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">GeophyAI</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Python与地球物理数据处理</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2023/03/05/seismic_inversion_11/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="shaowinw">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeophyAI">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第八章 逆时偏移
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2023-03-05 11:00:00" itemprop="dateCreated datePublished" datetime="2023-03-05T11:00:00+08:00">2023-03-05</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Seismic-Inversion/" itemprop="url" rel="index"><span itemprop="name">Seismic Inversion</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/03/05/seismic_inversion_11/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/03/05/seismic_inversion_11/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">波动方程解，节选自《Seismic Inversion》</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="逆时偏移"><a href="#逆时偏移" class="headerlink" title="逆时偏移"></a>逆时偏移</h1><p>在本章中，我们推导逆时偏移（RTM）算法。在石油工业生产中，该算法被广泛应用于对盐下反射体的成像。同时，它还被用于迭代地偏移残差LSM和FWI。与其他偏移方法相比，例如第 10 章中讨论的绕射叠加偏移，RTM 考虑了波场中的所有类型的波，如果速度模型足够精确的话其同时包含了初至和多次波。 这可以提升成像分辨率，但它的代价是对偏移速度模型中的误差更敏感。当频率小20Hz时，RTM 是用于偏移盐体等复杂地质构造的首选成像方法。我们将推导出通用成像方程并讨论RTM的实际应用。</p>
+<h2 id="11-1-前言"><a href="#11-1-前言" class="headerlink" title="11.1 前言"></a>11.1 前言</h2><p>第10章介绍了估计反射率分布（即偏移成像）的绕射叠加偏移（Diffraction-stack migration, DM）方法，其沿着“时差曲线”对地震道的振幅进行加权求和。对于一般速度分布，偏移距-时间坐标中的时差曲线是不规则的、类似双曲线的。标准 DM 存在的问题是它只考虑了初至成像，而无法模拟多次波或者说不能很好地偏移多次波。 事实上，与时差曲线相关的初至能量相对于其他反射可能是相当弱的，所以 DM 成像结果可能质量较差。这一问题在盐下成像时（入射和反射波场defocus）非常明显。<br>为了从一定程度上解决由于大速度对比导致的散焦（defocusing）问题，Baysal et al. (1983), McMechan (1983)和Whitmore (1983)引入了逆时偏移的概念。相较于使用射线追踪法，逆时偏移中使用波动方程的有限差分解估计格林函数$G(\mathbf x| \mathbf x’)$。如果速度模型是准确已知的，那么所有来自可能的成像点的arrivals都被考虑在内，包括多次波、绕射波和转换波等。另外，如果速度模型足够精确，能够有效提升偏移成像的信噪比，能够对陡倾角成像、也能够对高对比速度下方构造成像。但是，偏移速度模型中小的误差可能会引起偏移成像中较大的defocusing。所以，速度模型精度越高，RTM成像精度越高。下章节将推导通用成像算法下的RTM公式。</p>
+<h2 id="11-2-通用成像算法"><a href="#11-2-通用成像算法" class="headerlink" title="11.2 通用成像算法"></a>11.2 通用成像算法</h2><p>地震成像和偏移的目标分别是根据记录的地震数据估计地球的慢度和反射率分布。两种算法都源自相同的梯度优化方法，如步骤所示：</p>
+<ol>
+<li>损失函数：假设由$\mathbf s$处发出的谐波能量源被地震检波器$\mathbf g$记录。为了简单起见，这里假设声学近似，观测到的压力谱用 $P(\mathbf g| \mathbf s)^{obs}$ 表示，其中未知源小波$w(t)$的频谱用$W(\omega)$表示。压力损失函数$\epsilon$如下所示:<script type="math/tex; mode=display">
+\epsilon = 1/2 \int_{\omega}d \omega \sum_g \sum_s |\Delta P (\mathbf g | \mathbf s)|^2
+\tag{11.1}</script>其中，$\Delta P(\mathbf g| \mathbf s)=P(\mathbf g| \mathbf s)-P(\mathbf g| \mathbf s)^{obs}$是数据残差，$P(\mathbf g| \mathbf s)$为通过波动方程数值求解得到的预测压力场。假设已知的初始速度模型是一个足够精确到实际数据的模型。对源所有频率进行积分并对源和检波点的所有坐标求和。预测压力场通过有限差分法求解时空域或时频域波动方程得到。</li>
+<li>慢度梯度和Frechet导数：使用最速下降法，第$i+1$次迭代的慢度模型$s(\mathbf x)^{(t)}$由以下公式得到：<script type="math/tex; mode=display">
+s(\mathbf x)^{(t+1)}=s(\mathbf x)^{(t)}-\alpha \gamma(\mathbf x)^{(t)},
+\tag{11.2}</script>其中$\alpha$为迭代步长，$\gamma(\mathbf x)^{(t)}$损失梯度，梯度定义如下：<script type="math/tex; mode=display">
+\begin{aligned}
+\gamma(\mathbf{x})^{(i)} & =\frac{\partial \epsilon_i}{\partial s(\mathbf{x})} \\
+& =\int_\omega d \omega \sum_g \sum_s \operatorname{Real}\left[\Delta P(\mathbf{g} \mid \mathbf{s})_i \frac{\partial P(\mathbf{g} \mid \mathbf{s})_i^*}{\partial s(\mathbf{x})}\right],
+\end{aligned}</script>其中第$i$次数据残差$<br>\Delta P(\mathbf{g} \mid \mathbf{s})_i=P(\mathbf{g} \mid \mathbf{s})_i-<br>\Delta P(\mathbf{g} \mid \mathbf{s})_{obs}$。算子$Real[ ]$表示求括号中复数的实部。下面表述中实数符号将被删除，因为对频率的求和是对称的，被加数的虚部是在 ω 反对称。<br>$P$关于$s$的扰动是Frechet导数（公式10.23），将其带入11.3得到梯度公式：<script type="math/tex; mode=display">
+\gamma (\mathbf x)^{t} = 2s(\mathbf x) \int_{\omega} d \omega \omega^2 \sum_g \sum_s W(\omega)^* x \Delta P(\mathbf g | \mathbf s)_t G(\mathbf x| \mathbf g)_t^* G(\mathbf x| \mathbf s)_t^*
+\tag{11.4}</script>其中，$G(\mathbf x | \mathbf x’)$是第$i$个模型的格林函数。</li>
+<li>慢度更新：将公式11.4带入11.2得到慢度更新公式：<script type="math/tex; mode=display">
+\begin{aligned}
+s(\mathbf{x})^{(t+1)}= & s(\mathbf{x})^{(t)}-\alpha 2 s(\mathbf{x})^{(t)} \int_\omega d \omega \omega^2 \sum_g \sum_s \\
+& \times \Delta P(\mathbf{g} \mid \mathbf{s})_t W(\omega)^* G(\mathbf{x} \mid \mathbf{g})_t^* G(\mathbf{x} \mid \mathbf{s})_t^*,
+\end{aligned}
+\tag{11.5}</script>重复步骤1到3知道收敛到$s(\mathbf x)$。以下五种成像算法都能从以上公式推导得到。</li>
+</ol>
+<ul>
+<li>反射波偏移。如果平滑的背景慢度模型不产生反射，那么数据残差$\Delta P(\mathbf g | \mathbf s)_t$只包含上行反射，那么第一次迭代的梯度$\delta s(\mathbf{x})=s(\mathbf{x})^{(1)}-s(\mathbf{x})^{(0)}$即为偏移剖面，其为地下反射体分布的近似。如果使用双程波动方程的有限差分解，那么这一近似即为逆时偏移剖面(Baysal et al., 1983; McMechan, 1983; Whitmore,1983)。如果使用单程波格林函数(Gazdag, 1978; Claerbout, 1992)替换公式11.5的双程波格林函数，那么公式11.5变为单程波偏移；如果使用渐近的基于射线的格林函数，其变为到绕射叠加偏移。这种渐近格林函数仅能够模拟初至反射波，但是高斯束法(Hill, 1990; Hill, 2001; Nowack et al., 2003)能够模拟多次波。</li>
+<li>最小二乘偏移。如果平滑背景慢度在每次迭代中都是相同的，即$G\left(\mathbf{x} \mid \mathbf{x}^{\prime}\right)_1=G\left(\mathbf{x} \mid \mathbf{x}^{\prime}\right)_2=G\left(\mathbf{x} \mid \mathbf{x}^{\prime}\right)_3=\ldots$最后的reflectivity image即为最小二乘偏移剖面（LSM）(Nemeth, 1996; Nemeth et al., 1999; Duquet et al., 2000)。最小二乘偏移又被称为线性化Born反演(Lailly, 1983; Tarantola, 1984b)，15-18章内容。</li>
+<li>全波形反演。如果格林函数中的高波数反射率和平滑慢度模型在每次迭代后都更新，那么即为全波形反演 (FWI) tomo（arantola 和 Valette，1982；Tarantola，1984a 和 1987；Mora，1987 和 1989），也被称为非线性反演成像（Pica 等，1990）。第 19 章到第 23 章介绍了理其论和示例。</li>
+<li>旅行时层析成像。如果数据残差除地震道之外的数据，例如旅行时间残差$\tau$，那么 Fréchet 导数的调整导致波动方程层析成像 (Woodward, 1992) 或波动方程<br>走时反演 (Luo and Schuster, 1991a, 1991b). 详见第 20 至 21 章。</li>
+<li>广义FWI。广义FWI算法以以下公式为目标函数：<script type="math/tex; mode=display">
+\epsilon=\frac{1}{2} \Delta \mathbf{d}^{\dagger} \Delta \mathrm{T}^2 \Delta \mathrm{d}
+\tag{11.6}</script>梯度为：<script type="math/tex; mode=display">
+\frac{\partial \epsilon}{\partial s(\mathbf{x})}=\frac{\partial \Delta \mathbf{d}^{\dagger}}{\partial s(\mathbf{x})} \Delta \mathbf{T}^2 \Delta \mathbf{d}+\Delta \mathbf{d}^{\dagger} \frac{\partial \Delta \mathbf{T}}{\partial s(\mathbf{x})} \Delta \mathrm{T} \Delta \mathbf{d}</script>为方便期间，假定矢量和矩阵均为实数，$\Delta \mathbf T$是旅行时残差的对角矩阵。如果$\Delta \mathbf{d}=\mathbf{L} \Delta \mathbf{m}$，此时梯度变为：<script type="math/tex; mode=display">
+\begin{aligned}
+\frac{\partial \epsilon}{\partial s(\mathbf{x})}= & \overbrace{\frac{\partial \Delta \mathbf{m}^{\dagger}}{\partial s(\mathbf{x})} \mathbf{L}^{\dagger} \Delta \mathbf{T}^2 \Delta \mathbf{d}}^{\text {small-residual FWI }}+\overbrace{\Delta \mathbf{m}^{\dagger} \frac{\partial \mathbf{L}^{\dagger}}{\partial s(\mathbf{x})} \Delta \mathbf{T}^2 \Delta \mathbf{d}}^{\text {large-residual FWI }} \\
+& +\overbrace{\Delta \mathbf{d}^{\dagger} \frac{\partial \Delta \mathbf{T}}{\partial s(\mathbf{x})} \Delta \mathbf{T} \Delta \mathbf{d}}^{\text {WT }}
+\end{aligned}
+\tag{11.8}</script>其中，WT表示将在第20章中讨论的波动方程旅行时反演，其用于更新速度模型的低波数分量。小残差 FWI 梯度类似于经典FWI 并且对小数据残差有效。 正如第19到22章所讨论，它可以同时更新速度模型的低波数和高波数分量但是偏向于更深处的高波数分量。当存在大量数据残差时，大残差 FWI 梯度用于高斯牛顿法（参见Gill et al.，1981 和Exercise 12) 。这一流程等同于大残差的高斯-牛顿法应用于像域反演，如第26章所讨论。</li>
+</ul>
+<p>当$i=0$时，整理公式15可得到慢度残差：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+m(\mathbf{x})^{\mathrm{mig}}= & s(\mathbf{x})^{(1)}-s(\mathbf{x})^{(0)}=-\alpha 2 s(\mathbf{x}) \int_\omega d \omega \omega^2 \sum_g \sum_s \\
+& \times \Delta P(\mathbf{g} \mid \mathbf{s}) W(\omega)^* G(\mathbf{x} \mid \mathbf{g})^* G(\mathbf{x} \mid \mathbf{s})^*,
+\end{aligned}
+\tag{11.9}</script><p>其中，$m(\mathbf x)^{mig}$，即偏移剖面，近似了反射体分布。第 10.1.5 节中提供该公式在绕射叠加偏移中的解释。接下来的两节根据广义绕射偏移和逆时偏移算法解释公式 11.9。</p>
+<h3 id="11-2-1-逆时偏移-广义绕射叠加偏移"><a href="#11-2-1-逆时偏移-广义绕射叠加偏移" class="headerlink" title="11.2.1 逆时偏移=广义绕射叠加偏移"></a>11.2.1 逆时偏移=广义绕射叠加偏移</h3><p>方程 11.9 描述的偏移图像是纯实数，因此对于一个炮集，复共轭可以得到</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+m(\mathbf{x})^{\mathrm{mig}} & =-2 s(\mathbf{x}) \int_\omega d \omega \sum_g \omega^2 W(\omega) \Delta P(\mathbf{g} \mid \mathbf{s})^* G(\mathbf{x} \mid \mathbf{g}) G(\mathbf{x} \mid \mathbf{s}), \\
+& =2 \int_t d t \sum_g \overbrace{\ddot{d}(\mathbf{g}, t \mid \mathbf{s}, 0)}^{\text {reflection data }} \overbrace{g(\mathbf{x}, t \mid \mathbf{g}, 0) \star g(\mathbf{x}, t \mid \mathbf{s}, 0)}^{\text {migration kernel }},
+\end{aligned}</script><p>其中，为了符号方便，$W(\omega)=1/2 \pi, \Delta p=(\mathbf g, t | \mathbf s, 0)  \rightarrow d(\mathbf g, t | \mathbf s, 0), s(\mathbf x) \rightarrow 1, w(t) =\delta(t)$。<br>公式11.10与广义绕射叠加偏移（GDM）等价，偏移图像域逆时偏移相同（Schuster, 2002)。如果格林函数只考虑直达波，（即$g(\mathbf{x}, t \mid \mathbf{s}, 0) \approx \delta(t-|\mathbf{x}-\mathbf{s}| / c) /|\mathbf{x}-\mathbf{s}|$），GDM公式变为由公式10.47所描述的DM方法。如图11.1a所示，偏移核$g(\mathbf{x}, t \mid \mathbf{g}, 0) \star g(\mathbf{x}, t \mid \mathbf{s}, 0)=\delta(t-|\mathbf{x}-\mathbf{g}| / c-|\mathbf{x}-\mathbf{s}| / c) /|\mathbf{x}-\mathbf{g}||\mathbf{x}-\mathbf{s}|$对于在$\mathbf x=(0,d)$的特定成像点在$x_g—t$空间为一条双曲线。相反，如果格林函数是通过有限差分求解的波动方程，偏移核在数据空间中为多条双曲线，如图 11.1b所示。<br>与图 11.1a 中的初至偏移核不同，只有当trail成像点与实际散射位置十分接近时，$x_g—t$空间中预测的多个时差曲线（彩色实线和虚线）与实际时差（黑色双曲线）的点积才可以忽略不计。 因此，多次波偏移图像的分辨率应该比初至波偏移更高。<br>GDM图像的计算与DM的计算相类似，对于一个特定的trail成像点$\mathbf x$，$m(\mathbf x)^{mig}$是通过炮集记录与偏移核之间的点积$g(\mathbf{x}, t \mid \mathbf{g}, 0) \star g(\mathbf{x}, t \mid \mathbf{s}, 0)$。与DM不同的是，GDM核同时考虑了初至波和所有的多次散射波。详情见第13章。</p>
+<h3 id="11-2-2-逆时偏移"><a href="#11-2-2-逆时偏移" class="headerlink" title="11.2.2 逆时偏移"></a>11.2.2 逆时偏移</h3><p>公式11.9中的梯度可以整理为一个更易理解的形式：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+& m(\mathbf{x})^{\mathrm{mig}}=-\int_\omega d \omega \omega^2 \sum_g[W(\omega) G(\mathbf{x} \mid \mathbf{s})]^*\left[G(\mathbf{g} \mid \mathbf{x})^* \tilde{d}(\mathbf{g} \mid \mathbf{s})\right] \\
+& =\overbrace{[w(t) \star g(\mathbf{x}, t \mid \mathbf{s}, 0)]}^{D(\mathbf{x}, t)=\text { downgoing source }} \\
+& \left.\otimes \overbrace{\left[\sum_g g(\mathbf{g},-t \mid \mathbf{x}, 0) \star \ddot{d}(g, t \mid \mathbf{s}, 0)\right]}^{U(\mathbf{x}, t)=\text { backpropagated upgoing reff. }}\right|_{t=0}, \\
+& =\sum_t D(\mathbf{x}, t) U(\mathbf{x}, t) \\
+&
+\end{aligned}</script><p>方便起见，取$\mathbf s(\mathbf x)$为$1/2 \pi$，假设只有一个源$\mathbf s$，$\tilde{d}(\mathbf{g} \mid \mathbf{s})=\Delta P(\mathbf{g} \mid \mathbf{s})$表示只含有上行反射波的地震道数据（已经去掉了直达波和潜波）。这一方程表明， 在trail成像点$\mathbf x$的叠前RTM $m(\mathbf x)^{\text {mig}}$通过下行震源波场$D(\mathbf x, t)$与反传反射波$U(\mathbf x, t)$的零延迟时间互相关计算得到(McMechan, 1983; Whitmore, 1983)。<br>$D(\mathbf{x}, t)=w(t) \star g(\mathbf{x}, t \mid \mathbf{s}, 0)$表示下行波场（在均质介质中，源波场是严格的下行波，但在非均质介质中它由上行波和下行波组成。 尽管如此，我们还是将其称为“下行”源波。），反传的反射上行波为$U(\mathbf{x}, t)=\sum_g g(\mathbf{g},-t \mid \mathbf{x}, 0) \star \ddot{d}(\mathbf{g}, t \mid \mathbf{s}, 0)$。对于脉冲源，反传的反射只有在$\mathbf x=\mathbf x_{scatt}$时才会与$D(\mathbf x, t)$相遇。理想情况下，这意味着唯一的非零点积$\sum_t U(\mathbf{x}, t) D(\mathbf{x}, t)$出现在散射点的位置。然而在实际应用中，由于震源子波的有限带宽、有限的源-接收器孔径、稀疏的检波器和源采样间隔、偏移速度不准确、多次波和转换波，以及反向传播的反射波场作为散焦波场出现在散射体下方等情况，会导致偏移伪影的出现。<br>可以在RTM中加预处理项$I(\mathbf x)$来对较弱的偏移振幅进行加权以提升较弱的振幅：</p>
+<script type="math/tex; mode=display">
+m(\mathbf{x})^{\mathrm{mig}}=\frac{\sum_t D(\mathbf{x}, t) U(\mathbf{x}, t)}{I(\mathbf{x})}
+\tag{11.12}</script><p>这一项可以视为对Hessian逆的近似（见第11.4章节）且可以补偿减弱的下行源波场和由于几何扩展和衰减引起的上行反射(Beydoun and Mendes, 1989)。它也可以用来对震源子波反褶积，这种情况下通常在时间域用加权的反褶积滤波器或者带通的矩阵来近似Hessian的逆，而非进行频域的划分(Hu et al., 2001; Yu et al., 2006)。如果有多个炮集，还需要对源进行叠加来获得叠加RTM偏移剖面。当然，RTM 成像的质量取决于偏移速度的准确性，因为较大的速度错误将导致由不同炮集叠加得到的$m(\marthbf x)^{mig}$非常模糊。</p>
+<h2 id="11-3-逆时偏移数值示例"><a href="#11-3-逆时偏移数值示例" class="headerlink" title="11.3 逆时偏移数值示例"></a>11.3 逆时偏移数值示例</h2><h2 id="11-4-逆时偏移实际应用"><a href="#11-4-逆时偏移实际应用" class="headerlink" title="11.4 逆时偏移实际应用"></a>11.4 逆时偏移实际应用</h2><h2 id="11-5-总结"><a href="#11-5-总结" class="headerlink" title="11.5 总结"></a>11.5 总结</h2><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>shaowinw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.geophyai.com/2023/03/05/seismic_inversion_11/" title="第八章 逆时偏移">http://blog.geophyai.com/2023/03/05/seismic_inversion_11/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%80%86%E6%97%B6%E5%81%8F%E7%A7%BBRTM/" rel="tag"> <i class="fa fa-tag"></i> 逆时偏移RTM</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/02/26/seismic_inversion_5/" rel="prev" title="第五章 射线路径走时层析">
+      <i class="fa fa-chevron-left"></i> 第五章 射线路径走时层析
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%86%E6%97%B6%E5%81%8F%E7%A7%BB"><span class="nav-number">1.</span> <span class="nav-text">逆时偏移</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#11-1-%E5%89%8D%E8%A8%80"><span class="nav-number">1.1.</span> <span class="nav-text">11.1 前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-2-%E9%80%9A%E7%94%A8%E6%88%90%E5%83%8F%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">11.2 通用成像算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-1-%E9%80%86%E6%97%B6%E5%81%8F%E7%A7%BB-%E5%B9%BF%E4%B9%89%E7%BB%95%E5%B0%84%E5%8F%A0%E5%8A%A0%E5%81%8F%E7%A7%BB"><span class="nav-number">1.2.1.</span> <span class="nav-text">11.2.1 逆时偏移&#x3D;广义绕射叠加偏移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-2-2-%E9%80%86%E6%97%B6%E5%81%8F%E7%A7%BB"><span class="nav-number">1.2.2.</span> <span class="nav-text">11.2.2 逆时偏移</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-3-%E9%80%86%E6%97%B6%E5%81%8F%E7%A7%BB%E6%95%B0%E5%80%BC%E7%A4%BA%E4%BE%8B"><span class="nav-number">1.3.</span> <span class="nav-text">11.3 逆时偏移数值示例</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-4-%E9%80%86%E6%97%B6%E5%81%8F%E7%A7%BB%E5%AE%9E%E9%99%85%E5%BA%94%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">11.4 逆时偏移实际应用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#11-5-%E6%80%BB%E7%BB%93"><span class="nav-number">1.5.</span> <span class="nav-text">11.5 总结</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">shaowinw</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备20023201号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shaowinw</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2023/03/05/seismic_inversion_11/',]
+      });
+      });
+  </script>
+
+<script src="../js/src/av-min.js"></script>
+<script src="../js/src/valine.min.js"></script>
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/gh//AshinWang/SimpleValine/SimpleValine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'xGkAfNjiLy2iAFwuv2Itmye6-gzGzoHsz',
+      appKey     : 'IGOUrFEiKTeXfsDJwsmNLMnd',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>

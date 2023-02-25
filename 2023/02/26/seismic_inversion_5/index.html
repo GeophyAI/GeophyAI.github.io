@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 6.3.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Sans SC:300,300italic,400,400italic,700,700italic|Microsoft YaHei:300,300italic,400,400italic,700,700italic|Courier New:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"blog.geophyai.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="共轭梯度，节选自《Seismic Inversion》">
+<meta property="og:type" content="article">
+<meta property="og:title" content="第五章 射线路径走时层析">
+<meta property="og:url" content="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/index.html">
+<meta property="og:site_name" content="GeophyAI">
+<meta property="og:description" content="共轭梯度，节选自《Seismic Inversion》">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/Figure5.1.png">
+<meta property="article:published_time" content="2023-02-26T03:00:00.000Z">
+<meta property="article:modified_time" content="2023-02-26T02:00:00.000Z">
+<meta property="article:author" content="shaowinw">
+<meta property="article:tag" content="层析成像">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/Figure5.1.png">
+
+<link rel="canonical" href="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>第五章 射线路径走时层析 | GeophyAI</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">GeophyAI</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">Python与地球物理数据处理</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="shaowinw">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="GeophyAI">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          第五章 射线路径走时层析
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2023-02-26 11:00:00 / 修改时间：10:00:00" itemprop="dateCreated datePublished" datetime="2023-02-26T11:00:00+08:00">2023-02-26</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Seismic-Inversion/" itemprop="url" rel="index"><span itemprop="name">Seismic Inversion</span></a>
+                </span>
+            </span>
+
+          
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/2023/02/26/seismic_inversion_5/#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/2023/02/26/seismic_inversion_5/" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  
+            <div class="post-description">共轭梯度，节选自《Seismic Inversion》</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/hint.css/2.4.1/hint.min.css"><h1 id="射线路径走时层析"><a href="#射线路径走时层析" class="headerlink" title="射线路径走时层析"></a>射线路径走时层析</h1><p>正如第1章所讨论的，地球物理走时层析成像是一种通过反演指定体波的走时来获得地球速度分布的方法。从20世纪70年代初期开始，它已成为地震成像地球内部的主要手段(Aki et al., 1977; Dziewonski and Anderson, 1984; Humphreys et al.,1984; Bishop et al., 1985; Nolet, 1987; Iyer, 1989; Zelt and Smith, 1992; Iyer and Hirahara, 1993)。之前大多数采用射线追踪的高频近似实现走时层析成像，但近来趋势是使用有限频率的层析成像(Harlan, 1990; Luo and Schuster, 1991a; Woodward, 1992; Marquering et al., 1999; Montelli et al., 2004)，其中走时残差沿着波路径（wavepaths）而不是射线路径（raypaths）进行反投影。有限频率波动方程层析成像，也被称为波动方程层析成像(Woodward, 1992)或者波动方程走时层析成像(Luo and Schuster, 1991a; Marquering et al., 1999)，其精度要高于射线路径层析。但是，由于其必须对每个源求波动方程的数值解，所以其成本至少比射线路径层析成像高一个数量级。<br>走时层析成像还在其他领域中使用，例如医学成像（Duric et al., 2007），非破坏性评估（Leonard et al., 2002）和气象学（Ostashev et al., 2009）。<br>在本章中，我们介绍射线路径走时层析成像方法。射线理论用于计算源和接收器之间的射线路径，并沿着这些射线路径涂抹加权走时残差以更新模型。层析速度模型是下一次迭代的起始模型，并且由于模型变化会扰动射线，所以射线通常需要重新计算。</p>
+<h2 id="5-1-扰动走时积分"><a href="#5-1-扰动走时积分" class="headerlink" title="5.1 扰动走时积分"></a>5.1 扰动走时积分</h2><p>3D Eikonal方程（如下所示，推导见公式5.43）：</p>
+<script type="math/tex; mode=display">
+|\nabla t(\mathbf{x})|^2=\left|\frac{\partial t(\mathbf{x})}{\partial x}\right|^2+\left|\frac{\partial t(\mathbf{x})}{\partial y}\right|^2+\left|\frac{\partial t(\mathbf{x})}{\partial z}\right|^2=s(\mathbf{x})^2
+\tag{5.1}</script><p>可以用来推导扰动慢度介质中的走时积分。这里，$t(\mathbf x)$是一个event从源传播到特定检波器的走时，$s(\mathbf x)$是慢度分布。</p>
+<p><strong>走时积分方程</strong>是走时层析成像中有效更新慢度模型的关键方程。它的推导始于定义背景慢度场$s(\mathbf x)$的慢度扰动$\delta s(\mathbf x)$。相应的扰动走时场定义为$t(\mathbf x) + \delta t(\mathbf x)$，其中$t(\mathbf x)$是背景模型中未扰动的走时场，$\delta t(\mathbf x)$是由慢度扰动引起的走时扰动。扰动走时场满足Eikonal方程</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+|\nabla t(\mathbf{x})+\nabla \delta t(\mathbf{x})|^2 & =|\nabla t(\mathbf{x})|^2+2 \nabla \delta t(\mathbf{x}) \cdot \nabla t(\mathbf{x})+|\nabla \delta t(\mathbf{x})|^2, \\
+& =[s(\mathbf{x})]^2+2 \delta s(\mathbf{x}) s(\mathbf{x})+[\delta s(\mathbf{x})]^2 .
+\end{aligned}
+\tag{5.2}</script><p>从公式5.2中减去未扰动的Eikonal方程5.1可得</p>
+<script type="math/tex; mode=display">
+2 \nabla t(\mathbf{x}) \cdot \nabla \delta t(\mathbf{x})+|\nabla \delta t(\mathbf{x})|^2=2 \delta s(\mathbf{x}) s(\mathbf{x})+[\delta s(\mathbf{x})]^2 .
+\tag{5.3}</script><p>忽略扰动参数的二阶项可得</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\nabla t(\mathbf{x}) \cdot \nabla \delta t(\mathbf{x}) & =|\nabla t(\mathbf{x})| \hat{d \mathbf{l}} \cdot \nabla \delta t(\mathbf{x}) \\
+& =\delta s(\mathbf{x}) s(\mathbf{x})
+\end{aligned}
+\tag{5.4}</script><p>其中，定义$\hat{d \mathbf{l}}$为平行于微扰动射线方向的单位矢量，所以$\nabla t(\mathbf{x})= |\nabla t(\mathbf{x})| \hat{d \mathbf{l}}$。</p>
+<p>定义沿着$\hat{d \mathbf{l}}$的方向导数$d/dl= $\hat{d \mathbf{l}} \cdot \nabla$（此方向导数由背景慢度模型决定，而不是扰动模型），对公式5.4除以$|\nabla t(\mathbf x)|=s(\mathbf x)$得：</p>
+<script type="math/tex; mode=display">
+d \delta t(\mathbf{x}) / d l=\delta s(\mathbf{x})
+\tag{5.5}</script><p>重新整理可得走时扰动相对于慢度变化的Frechet导数</p>
+<script type="math/tex; mode=display">
+d \delta t(\mathbf{x}) / \delta s=d l
+\tag{5.6}</script><p>Frechet导数是评价数据对于慢度模型中扰动的敏感性的工具。<br>公式5.5两侧同时乘以$d l$并沿着旧的从源到检波器$\mathbf x$的路径积分可得到扰动走时积分</p>
+<script type="math/tex; mode=display">
+\delta t(\mathbf{x})=\int_{\text {raypath }} \delta s\left(\mathbf{x}^{\prime}\right) d l^{\prime},
+\tag{5.7}</script><p>这个方程在扰动参数上是一阶精确的。被术语“射线路径”表示的积分路径是源位置和接收器位置$\mathbf x$的一个隐函数。<br>方程5.7表明，由于慢度扰动而引起的走时扰动是通过沿着旧的射线路径进行加权积分来计算的。这是一种节约计算成本的有效方法，因为走时扰动的计算使用旧的射线路径，而不需要通过扰动慢度模型重新跟踪射线。</p>
+<h2 id="5-2-射线路径走时成像"><a href="#5-2-射线路径走时成像" class="headerlink" title="5.2 射线路径走时成像"></a>5.2 射线路径走时成像</h2><p>一个超定的线性方程组中，方程数量多于未知数的个数，例如一个$4 \times 2$方程组$\mathbf {Ls} = \mathbf {t}$</p>
+<script type="math/tex; mode=display">
+\left[\begin{array}{cc}
+0 & 1 \\
+0 & 1 \\
+1 & 1 \\
+0.7 & 1
+\end{array}\right] \cdot\left(\begin{array}{l}
+s_1 \\
+s_2
+\end{array}\right)=\left(\begin{array}{c}
+0.5 \\
+0.4 \\
+1 \\
+1
+\end{array}\right) .
+\tag{5.8}</script><p>这些方程是不相容（inconsstent）的，因为没有解能够同时满足所有方程。例如，第一个和第二个方程是冲突的。<br>与方程5.8相关的物理示例是断层图像，成像实验如图5.1所示。每条射线的旅行时由方程5.7所确定，速度模型被离散为N个未知常慢度的单元。走时积分可以近似通过对第$j$个网格中的第$i$条射线路径段$l_{ig}$加权求和得到</p>
+<script type="math/tex; mode=display">
+t_i=\sum_{j=1}^N l_{i j} s_j
+\tag{5.9}</script><p>这里我们假设数据集中共拾取了$M$个旅行时。由此形成了$M\times N$的方程组，用矩阵向量可以表示为$\mathbf {Ls} = \mathbf t$，其中$\mathbf t$表示测量得到的大小为$M \times 1$的旅行时矢量，$\mathbf s$表示大小为$N \times 1$的每个网格中的未知慢度矢量。大小为$M \times N$的矩阵$\mathbf L$包含了先的分段长度。<br>我们的目标是求解方程组5.9并在每个单元格中找到未知的慢度值$s_j$，即如图1.1中的速度断层图所示。几何上，将方程5.8绘制为在图5.2中所示的虚线，没有交叉点意味着这些方程是不相容的。实际上，这种不相容性可能是由于走时拾取错误和/或用于模拟数据的物理机制是不完备的而产生的。解不存在违反了Hadamard（1902）第1章讨论了适定解的准则。<br><img src="/2023/02/26/seismic_inversion_5/Figure5.1.png" alt="Figure5.1"><br>尽管方程5.8没有确切解，但是在线交叉最密集的地方可以找到近似解。这种折中方案即使目标函数$\epsilon$最小化的最小二乘解：</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\epsilon & =1 / 2[\mathbf{L s}-\mathbf{t}]^T[\mathbf{L s}-\mathbf{t}] \\
+& =1 / 2 \sum_{i=1}^4 \sum_{j=1}^2\left(l_{i j} s_j-t_i\right)^2 \\
+& =1 / 2 \sum_{i=1}^4 r_i^2
+\end{aligned}
+\tag{5.10}</script><p>其中$r_i=\sum_j l_{i j} s_j-t_i$是第$i$次的残差，即预测走时和观测走时第$i$个分量的差。如果射线弯曲，那么公式5.8中矩阵的元素将取决于未知数$\mathbf s$。在这种情况下，走时方程是非线性的，必须在每次迭代后为新的慢度模型重新计算射线。<br>根据s1和s2绘制如图5.2损失函数碗（error bowl）。此损失函数碗的底部直接位于最优解$\mathbf s^*$之上，即为最小二乘解。由于这个损失函数碗有底，所以最小二乘解存在。<br>通过检查找到最优解</p>
+<p>图5.2可能适用于方程组只有几个未知数的情况，但当未知数个数变多时是不切实际的。更系统的方法是认识到在误差碗的底部，损失函数对于所有下标$k$均为零的偏导数均为零，即$\partial \epsilon /\partial s_k=0$，其中</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\partial \epsilon / \partial s_k & =\sum_{i=1}^4 \sum_{j=1}^2\left[\left(l_{i j} s_j-t_i\right) l_{i j} \frac{\partial s_j}{\partial s_k}+\left(l_{i j} s_j-t_i\right) s_j \frac{\partial l_{i j}}{\partial s_k}\right] \\
+& \approx \sum_{i=1}^4 \sum_{j=1}^2\left(l_{i j} s_j-t_i\right) l_{i j} \delta_{j k},
+\end{aligned}
+\tag{5.11}</script><p>其中当$j=k$时，Kronecker delta函数$\delta_{jk}=1$，否则其为0。通常要忽略公式5.11中的最右侧项$s_j \partial l_{i j} / \partial s_k\left(\sum_j l_{i j} s_j-t_i\right)$，一是因为其计算成本太高，二是因为当背景慢度模型足够接近实际模型时，偏导数$\partial l_{ij}/\partial s_k$非常小。使用Gauss-Newton（Gill et al., 1987）求解公式5.11所示的超定方程组。如果$\left|s_j \partial l_{i j} / \partial s_k\right|$和$\left|l_{i j} \partial s_j / \partial s_k\right|$具有相同阶数，然后保留第二项即为高斯-牛顿大残差方法（Gill等人，1981）。参见练习13和14以及第26章。<br>所以Gauss-Newton法的梯度（Gill等人，1981）如下所示。</p>
+<script type="math/tex; mode=display">
+\begin{aligned}
+\partial \epsilon / \partial s_k & =\sum_{i=1}^4\left(l_{i k} s_k-t_i\right) l_{i k} \\
+& =\left[\mathbf{L}^T(\mathbf{L s}-\mathbf{t})\right]_k=0 \quad k=1,2,
+\end{aligned}
+\tag{5.12}</script><p>这里，第$k$个分量的梯度矢量为$\left[\mathbf{L}^T(\mathbf{L s}-\mathbf{t})\right]_k$。</p>
+<h3 id="5-2-1-正规方程"><a href="#5-2-1-正规方程" class="headerlink" title="5.2.1 正规方程"></a>5.2.1 正规方程</h3><h3 id="5-2-2-病态方程和正则化"><a href="#5-2-2-病态方程和正则化" class="headerlink" title="5.2.2 病态方程和正则化"></a>5.2.2 病态方程和正则化</h3><h2 id="5-3-迭代最速下降解"><a href="#5-3-迭代最速下降解" class="headerlink" title="5.3 迭代最速下降解"></a>5.3 迭代最速下降解</h2><link rel="stylesheet" href="/css/spoiler.css" type="text/css"><script src="/js/spoiler.js" type="text/javascript" async></script>
+    </div>
+
+    
+    
+    
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>shaowinw
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="http://blog.geophyai.com/2023/02/26/seismic_inversion_5/" title="第五章 射线路径走时层析">http://blog.geophyai.com/2023/02/26/seismic_inversion_5/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%B1%82%E6%9E%90%E6%88%90%E5%83%8F/" rel="tag"> <i class="fa fa-tag"></i> 层析成像</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/01/11/seismic_inversion_8/" rel="prev" title="第八章 波动方程数值解">
+      <i class="fa fa-chevron-left"></i> 第八章 波动方程数值解
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2023/03/05/seismic_inversion_11/" rel="next" title="第八章 逆时偏移">
+      第八章 逆时偏移 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="valine-comments"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B0%84%E7%BA%BF%E8%B7%AF%E5%BE%84%E8%B5%B0%E6%97%B6%E5%B1%82%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">射线路径走时层析</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-%E6%89%B0%E5%8A%A8%E8%B5%B0%E6%97%B6%E7%A7%AF%E5%88%86"><span class="nav-number">1.1.</span> <span class="nav-text">5.1 扰动走时积分</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-%E5%B0%84%E7%BA%BF%E8%B7%AF%E5%BE%84%E8%B5%B0%E6%97%B6%E6%88%90%E5%83%8F"><span class="nav-number">1.2.</span> <span class="nav-text">5.2 射线路径走时成像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-1-%E6%AD%A3%E8%A7%84%E6%96%B9%E7%A8%8B"><span class="nav-number">1.2.1.</span> <span class="nav-text">5.2.1 正规方程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-2-2-%E7%97%85%E6%80%81%E6%96%B9%E7%A8%8B%E5%92%8C%E6%AD%A3%E5%88%99%E5%8C%96"><span class="nav-number">1.2.2.</span> <span class="nav-text">5.2.2 病态方程和正则化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-%E8%BF%AD%E4%BB%A3%E6%9C%80%E9%80%9F%E4%B8%8B%E9%99%8D%E8%A7%A3"><span class="nav-number">1.3.</span> <span class="nav-text">5.3 迭代最速下降解</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">shaowinw</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">46</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">15</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">30</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="http://www.beian.miit.gov.cn/" rel="noopener" target="_blank">鲁ICP备20023201号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">shaowinw</span>
+</div>
+
+
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
+
+  
+  <script src="//cdn.jsdelivr.net/npm/quicklink@1/dist/quicklink.umd.js"></script>
+  <script>
+      window.addEventListener('load', () => {
+      quicklink({
+        timeout : 3000,
+        priority: true,
+        ignores : [uri => uri.includes('#'),uri => uri === 'http://blog.geophyai.com/2023/02/26/seismic_inversion_5/',]
+      });
+      });
+  </script>
+
+<script src="../js/src/av-min.js"></script>
+<script src="../js/src/valine.min.js"></script>
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('https://cdn.jsdelivr.net/gh//AshinWang/SimpleValine/SimpleValine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'xGkAfNjiLy2iAFwuv2Itmye6-gzGzoHsz',
+      appKey     : 'IGOUrFEiKTeXfsDJwsmNLMnd',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
+
+</body>
+</html>
